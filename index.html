@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>小狗的家</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#EAF6FF; --blue:#3E8EDE; --sun:#FFC83D; --pink:#FF7FA3; --ink:#22305C; --card:#FFFFFF;
+  --muted:#6B7899; --line:#CFE3F5; --ok:#2FB57C; --danger:#E5486B; --gold:#E0A800; --purple:#8F6BFF;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --sky:#141C33; --blue:#6FB2F2; --sun:#FFCF5A; --pink:#FF94B3; --ink:#EEF3FF; --card:#1F2946;
+    --muted:#A3B0CF; --line:#34416A; --ok:#4FD39A; --danger:#FF7091; --gold:#FFD24A; --purple:#B59EFF;
+  }
+}
+:root[data-theme="dark"]{
+  --sky:#141C33; --blue:#6FB2F2; --sun:#FFCF5A; --pink:#FF94B3; --ink:#EEF3FF; --card:#1F2946;
+  --muted:#A3B0CF; --line:#34416A; --ok:#4FD39A; --danger:#FF7091; --gold:#FFD24A; --purple:#B59EFF;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--sky);color:var(--ink);
+  font-family:"Zen Maru Gothic","Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  line-height:1.6;-webkit-tap-highlight-color:transparent}
+svg{max-width:100%}
+.wrap{max-width:560px;margin:0 auto;padding:12px 14px 48px}
+
+/* pet header */
+.pet-head{display:flex;align-items:center;gap:10px;margin:4px 0 6px}
+.pet-head .nm{font-size:1.5rem;font-weight:900}
+.lv{background:var(--ink);color:var(--card);font-weight:900;border-radius:10px;padding:0 10px}
+.stage-name{color:var(--muted);font-weight:700;font-size:.9rem}
+.exp{margin-left:auto;text-align:right;font-size:.8rem;color:var(--muted);min-width:120px}
+.exp .bar{height:12px;margin-top:2px}
+.bar{height:16px;border:3px solid var(--ink);border-radius:999px;background:var(--card);overflow:hidden}
+.bar i{display:block;height:100%;width:0;transition:width .8s cubic-bezier(.3,1.3,.5,1)}
+.bar.exp-bar i{background:var(--ok)}
+.bar.score-bar i{background:repeating-linear-gradient(45deg,var(--pink) 0 10px,#FF9DB8 10px 20px)}
+
+/* room */
+.room{position:relative;isolation:isolate;width:100%;aspect-ratio:4/3;border:4px solid #22305C;border-radius:22px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.wall{position:absolute;inset:0 0 38% 0;background:#FFF1D6;transition:background .4s}
+.floor{position:absolute;inset:62% 0 0 0;background:#E8C49A;border-top:4px solid #22305C;transition:background .4s}
+.baseboard{position:absolute;left:0;right:0;top:calc(62% - 10px);height:10px;background:rgba(34,48,92,.15)}
+.thing{position:absolute;transform:translate(-50%,-100%);touch-action:none;cursor:grab}
+.thing svg{display:block;width:100%;height:auto;overflow:visible}
+.thing.flip svg{transform:scaleX(-1)}
+.thing.sel{filter:drop-shadow(0 0 0 #fff) drop-shadow(0 0 6px #FFC83D) drop-shadow(0 0 2px #FFC83D)}
+.thing.dragging{cursor:grabbing;filter:drop-shadow(0 8px 6px rgba(0,0,0,.25))}
+.pup{position:absolute;top:0;transform:translate(-50%,-100%);cursor:pointer;transition-property:left;transition-timing-function:linear}
+.pup .inner{transition:transform .3s}
+.pup.left .inner{transform:scaleX(-1)}
+.pup svg{display:block;width:100%;height:auto;overflow:visible}
+.pup.walking .legs{animation:step .3s steps(2) infinite}
+@keyframes step{50%{transform:translateY(-3px)}}
+.pup .tail{transform-origin:22px 62px;animation:wag .5s ease-in-out infinite alternate}
+@keyframes wag{to{transform:rotate(18deg)}}
+.pup.jump .inner2{animation:hop .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes hop{40%{transform:translateY(-30%)}}
+.heart{position:absolute;font-size:22px;pointer-events:none;animation:floatUp 1s ease-out forwards;z-index:999}
+@keyframes floatUp{to{transform:translateY(-60px);opacity:0}}
+.room-empty{position:absolute;left:50%;top:28%;transform:translateX(-50%);color:#8A6A43;font-weight:700;font-size:.9rem;text-align:center;width:80%;pointer-events:none}
+.selbar{display:flex;align-items:center;gap:8px;margin-top:8px;background:var(--card);border:3px solid var(--ink);border-radius:14px;padding:6px 10px}
+.selbar[hidden]{display:none}
+.selbar b{flex:1}
+
+/* tickets & draws */
+.drawzone{text-align:center;margin-top:14px}
+.tickets{display:inline-flex;align-items:baseline;gap:8px;background:var(--card);border:3px solid var(--ink);border-radius:999px;padding:4px 18px}
+.tickets b{font-size:2rem;font-weight:900;color:var(--blue);line-height:1}
+.tickets.bump{animation:bump .5s}
+@keyframes bump{40%{transform:scale(1.18)}}
+.progress{max-width:320px;margin:8px auto 12px}
+.draws{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;max-width:400px;margin:0 auto}
+.draw-btn{font:inherit;font-weight:900;color:#22305C;background:var(--sun);border:3px solid var(--ink);border-radius:18px;
+  padding:10px 0 8px;box-shadow:0 5px 0 var(--ink);cursor:pointer;line-height:1.2;transition:transform .08s,box-shadow .08s}
+.draw-btn span{display:block;font-size:1.2rem}
+.draw-btn small{font-size:.75rem;font-weight:700}
+.draw-btn.d5{background:#FF9DB8}.draw-btn.d10{background:#B9A4FF}
+.draw-btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.draw-btn:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
+.hint{color:var(--muted);font-size:.88rem;margin:10px 0 0}
+
+/* tabs */
+.tabs{display:flex;gap:4px;margin:26px 0 0;border-bottom:3px solid var(--ink)}
+.tab{flex:1;font:inherit;font-weight:700;font-size:.95rem;color:var(--muted);background:transparent;border:3px solid transparent;border-bottom:0;
+  border-radius:14px 14px 0 0;padding:9px 2px;margin-bottom:-3px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--card);color:var(--ink);border-color:var(--ink)}
+.panel{background:var(--card);border:3px solid var(--ink);border-top:0;border-radius:0 0 18px 18px;padding:16px}
+.panel[hidden]{display:none}
+h2{font-size:1.15rem;margin:0 0 10px}
+h3{font-size:1rem;margin:22px 0 8px}
+label{display:block;font-weight:700;font-size:.9rem;margin-bottom:4px}
+input[type=text],input[type=number],input[type=date],textarea{width:100%;font:inherit;color:var(--ink);background:var(--sky);border:2px solid var(--line);border-radius:12px;padding:9px 12px}
+textarea{min-height:70px;resize:vertical}
+input:focus-visible,button:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.btn{font:inherit;font-weight:700;border-radius:12px;padding:9px 16px;cursor:pointer;border:2px solid var(--ink);background:var(--blue);color:#fff}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.small{padding:3px 10px;font-size:.85rem}
+.btn.danger{background:transparent;color:var(--danger);border-color:var(--danger)}
+.btn.wide{width:100%}
+.meta{color:var(--muted);font-size:.85rem}
+
+/* bag */
+.collect{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bag{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{position:relative;background:var(--sky);border:2px solid var(--line);border-radius:14px;padding:6px 4px 4px;text-align:center;font:inherit;color:var(--ink);cursor:pointer}
+.slot .ic{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.slot .ic svg{width:86%;height:86%}
+.slot .nm{font-size:.72rem;font-weight:700;line-height:1.2;min-height:2.4em;display:flex;align-items:center;justify-content:center}
+.slot .cnt{position:absolute;right:4px;top:3px;font-size:.7rem;font-weight:900;color:var(--muted)}
+.slot.t2{border-color:var(--purple)}.slot.t3{border-color:var(--gold);box-shadow:inset 0 0 0 2px var(--gold)}
+.slot.locked{cursor:default}.slot.locked .ic{filter:brightness(0);opacity:.15}
+.slot.using{background:var(--sun);color:#22305C}
+.swatch{display:block;width:78%;aspect-ratio:1;border-radius:50%;border:3px solid #22305C}
+.legend{display:flex;gap:12px;font-size:.8rem;font-weight:700;margin:4px 0 10px;flex-wrap:wrap}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+
+/* exams */
+.batch-row,.batch-head{display:grid;grid-template-columns:1.3fr 1fr 36px;gap:8px;align-items:center}
+.batch-row{margin-bottom:8px}
+.batch-head{font-weight:700;font-size:.85rem;color:var(--muted);margin-bottom:4px}
+.batch-row .x{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);background:transparent;color:var(--muted);font:inherit;font-weight:900;cursor:pointer}
+.batch-actions{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:6px}
+details.quick{margin-top:14px;background:var(--sky);border-radius:12px;padding:10px 12px}
+details.quick summary{font-weight:700;cursor:pointer}
+.preview-line{font-weight:700;color:var(--ok);margin:10px 0 0;min-height:1.6em}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:2px dashed var(--line)}
+.list li:last-child{border-bottom:0}
+.score{font-size:1.35rem;font-weight:900;min-width:50px;text-align:center}
+.score.full{color:var(--pink)}
+.grow{flex:1;min-width:0}
+.empty{color:var(--muted);justify-content:center}
+.total{display:flex;justify-content:space-between;gap:8px;background:var(--sky);border-radius:12px;padding:9px 14px;font-weight:700;font-size:.9rem}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.reward-row{display:grid;grid-template-columns:70px 1fr 36px;gap:8px;margin-bottom:8px}
+.rw-lv{font-weight:900;min-width:56px}
+.rw-state{font-size:.8rem;font-weight:700;white-space:nowrap}
+.rw-state.ready{color:var(--pink)}.rw-state.done{color:var(--ok)}
+
+/* draw stage */
+.stage,.modal{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;
+  padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  background:radial-gradient(circle at 50% 40%,#3B4C8A 0%,#1A2246 70%);overflow-y:auto}
+.stage[hidden],.modal[hidden]{display:none}
+.rays{position:fixed;inset:-50%;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.07) 0 10deg,transparent 10deg 20deg);animation:rot 24s linear infinite;pointer-events:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+.stage.gold .rays,.modal .rays{background:repeating-conic-gradient(from 0deg,rgba(255,210,74,.18) 0 10deg,transparent 10deg 20deg)}
+.stage-inner{position:relative;width:min(520px,100%);text-align:center;color:#fff}
+.stage-title{font-size:1.7rem;font-weight:900;margin:0 0 4px;text-shadow:0 3px 0 rgba(0,0,0,.3)}
+.stage-sub{margin:0 0 18px;opacity:.9;font-size:.95rem;min-height:1.5em}
+.cap-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px 6px;justify-items:center;margin:0 auto 16px}
+.cap-grid.n1{grid-template-columns:1fr}
+.cap-grid.n1 .cell{--s:150px}
+.cell{--s:62px;display:flex;flex-direction:column;align-items:center;width:100%;background:none;border:0;padding:0;font:inherit;color:#fff;cursor:pointer}
+.cap{position:relative;width:var(--s);height:var(--s);opacity:0;animation:drop .7s cubic-bezier(.3,1.5,.5,1) forwards;animation-delay:var(--d)}
+@keyframes drop{0%{transform:translateY(-120vh) rotate(-200deg);opacity:1}70%{transform:translateY(0) rotate(10deg);opacity:1}100%{transform:none;opacity:1}}
+.cap .top,.cap .bot{position:absolute;left:0;width:100%;height:50%;border:3px solid #22305C;transition:transform .45s cubic-bezier(.3,1.4,.5,1),opacity .45s}
+.cap .top{top:0;border-radius:999px 999px 0 0;background:var(--c,#FF7FA3);border-bottom-width:1.5px}
+.cap .top::after{content:"";position:absolute;left:18%;top:20%;width:24%;height:30%;border-radius:50%;background:rgba(255,255,255,.6)}
+.cap .bot{bottom:0;border-radius:0 0 999px 999px;background:#fff;border-top-width:1.5px}
+.cap .prize{position:absolute;inset:6%;border-radius:22%;overflow:hidden;background:#fff;border:3px solid #22305C;transform:scale(0);transition:transform .5s cubic-bezier(.3,1.7,.5,1) .12s;display:flex;align-items:center;justify-content:center}
+.cap .prize svg{width:88%;height:88%}
+.cap .prize .swatch{width:80%}
+.cell .name{font-size:.72rem;font-weight:700;line-height:1.25;margin-top:6px;min-height:2.5em;opacity:0;transition:opacity .3s .35s}
+.cell .new{display:inline-block;background:var(--pink);color:#fff;border-radius:6px;padding:0 4px;font-size:.65rem;margin-bottom:1px}
+.cap-grid.n1 .cell .name{font-size:1.25rem}
+.cell.r3 .cap{--c:#FFD24A}.cell.r2 .cap{--c:#B79CFF}
+.cell.r3 .cap::before,.cell.r2 .cap::before{content:"";position:absolute;inset:-12px;border-radius:50%;opacity:0;animation:aura 1.2s ease-in-out infinite;animation-delay:calc(var(--d) + .7s)}
+.cell.r3 .cap::before{background:radial-gradient(circle,rgba(255,210,74,.9),transparent 70%)}
+.cell.r2 .cap::before{background:radial-gradient(circle,rgba(183,156,255,.8),transparent 70%)}
+@keyframes aura{0%,100%{opacity:.2;transform:scale(.9)}50%{opacity:1;transform:scale(1.15)}}
+.cell.r3:not(.open) .cap .top,.cell.r3:not(.open) .cap .bot{animation:wobble .5s ease-in-out infinite;animation-delay:calc(var(--d) + .7s)}
+@keyframes wobble{0%,100%{rotate:0deg}25%{rotate:-8deg}75%{rotate:8deg}}
+.cell.open .cap .top{transform:translateY(-70%) rotate(-35deg);opacity:0}
+.cell.open .cap .bot{transform:translateY(60%) rotate(20deg);opacity:0}
+.cell.open .cap .prize{transform:scale(1)}
+.cell.open .name{opacity:1}
+.cell.open.r3 .cap .prize{border-color:#FFD24A;box-shadow:0 0 0 3px #22305C,0 0 24px 6px rgba(255,210,74,.9)}
+.cell.open.r2 .cap .prize{border-color:#B79CFF;box-shadow:0 0 0 3px #22305C,0 0 16px 4px rgba(183,156,255,.8)}
+.burst-star{position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px;background:var(--sc);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:star .7s ease-out forwards;pointer-events:none}
+@keyframes star{to{transform:translate(var(--tx),var(--ty)) scale(1.6);opacity:0}}
+.stage-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.stage-actions .btn{min-width:130px;background:var(--sun);color:#22305C;border-color:#22305C;font-weight:900}
+.summary{background:rgba(255,255,255,.12);border-radius:14px;padding:10px 14px;margin:0 0 16px;font-weight:700}
+.summary[hidden]{display:none}
+.lvup-pup{width:180px;margin:0 auto;animation:hop .8s cubic-bezier(.3,1.6,.5,1) infinite}
+.reward-card{background:#fff;color:#22305C;border-radius:16px;border:3px solid #22305C;padding:10px 14px;margin:12px 0 16px;font-weight:700}
+
+.flash{position:fixed;inset:0;background:#fff;z-index:30;pointer-events:none;opacity:0}
+.flash.on{animation:flash .5s ease-out}
+@keyframes flash{0%{opacity:.9}100%{opacity:0}}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:31;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:10px;height:14px;border-radius:3px;animation:fall 1.8s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+.sync{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;color:var(--muted);background:var(--card);border:2px solid var(--line);border-radius:999px;padding:1px 10px;margin-bottom:6px}
+.sync.ok{color:var(--ok);border-color:var(--ok)}.sync.err{color:var(--danger);border-color:var(--danger)}
+.log{list-style:none;margin:0;padding:0;font-size:.88rem}
+.log li{padding:7px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:82px 1fr;gap:8px}
+.log time{color:var(--muted);font-size:.78rem;line-height:1.5}
+.log .dev{display:inline-block;font-size:.7rem;font-weight:700;color:var(--blue);border:1.5px solid currentColor;border-radius:6px;padding:0 4px;margin-right:4px}
+.gate-card{background:#fff;color:#22305C;border:3px solid #22305C;border-radius:20px;padding:16px;text-align:center}
+.gate-card .meta{color:#6B7899}.gate-card input{background:#EAF6FF;color:#22305C;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.gate-card .btn.ghost{color:#22305C;border-color:#22305C}
+.family{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sky);border-radius:12px;padding:10px 14px}
+.family b{font-size:1.3rem;letter-spacing:.12em}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,40px);opacity:0;background:var(--ink);color:var(--card);font-weight:700;padding:10px 18px;border-radius:999px;z-index:40;transition:.3s;max-width:90vw;text-align:center;pointer-events:none}
+.toast.show{transform:translate(-50%,0);opacity:1}
+@media (prefers-reduced-motion: reduce){
+  .rays,.confetti i,.cap,.cap::before,.cap .top,.cap .bot,.tickets.bump,.pup .tail,.pup .legs,.lvup-pup,.heart{animation:none!important}
+  .cap{opacity:1}.pup{transition:none!important}
+}
+@media (max-width:400px){.settings-grid{grid-template-columns:1fr 1fr}.cell{--s:54px}.bag{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="sync" id="sync">📱 只存在這台裝置</div>
+  <div class="pet-head">
+    <span class="nm" id="petName">小橘</span>
+    <span class="lv">Lv <span id="lvNum">1</span></span>
+    <span class="stage-name" id="stageName"></span>
+    <div class="exp"><span id="expText"></span><div class="bar exp-bar"><i id="expFill"></i></div></div>
+  </div>
+
+  <div class="room" id="room" aria-label="小狗的房間">
+    <div class="wall" id="wall"></div>
+    <div class="floor" id="floor"></div>
+    <div class="baseboard"></div>
+    <div class="room-empty" id="roomEmpty">房間空空的…<br>抽扭蛋拿家具來布置吧！</div>
+    <div id="things"></div>
+    <div class="pup" id="pup" role="button" aria-label="摸摸小狗"><div class="inner2"><div class="inner" id="pupSvg"></div></div></div>
+  </div>
+  <div class="selbar" id="selbar" hidden>
+    <b id="selName"></b>
+    <button class="btn small ghost" id="selFlip">翻面</button>
+    <button class="btn small danger" id="selBack">收回背包</button>
+    <button class="btn small" id="selDone">好了</button>
+  </div>
+  <p class="meta" style="margin:6px 0 0;text-align:center">拖曳家具可以移動位置，點一下可以翻面或收回</p>
+
+  <section class="drawzone">
+    <div class="tickets" id="ticketBox" aria-live="polite"><span>扭蛋券</span><b id="ticketCount">0</b><span>張</span></div>
+    <div class="progress">
+      <div class="bar score-bar" role="progressbar" aria-label="下一張扭蛋券的進度"><i id="barFill"></i></div>
+      <div class="meta" id="barText"></div>
+    </div>
+    <div class="draws">
+      <button class="draw-btn" data-n="1"><span>單抽</span><small id="c1"></small></button>
+      <button class="draw-btn d5" data-n="5"><span>5 連抽</span><small id="c5"></small></button>
+      <button class="draw-btn d10" data-n="10"><span>10 連抽</span><small id="c10"></small></button>
+    </div>
+    <p class="hint" id="drawHint"></p>
+  </section>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="bag">背包圖鑑</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="exam">登記考卷</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="parent">家長設定</button>
+  </div>
+
+  <section class="panel" id="tab-bag" role="tabpanel">
+    <div class="collect"><h2 style="margin:0">背包圖鑑</h2><b id="collectText"></b></div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--line)"></i>普通</span>
+      <span><i class="dot" style="background:var(--purple)"></i>少見</span>
+      <span><i class="dot" style="background:var(--gold)"></i>稀有</span>
+    </div>
+    <h3 style="margin-top:4px">家具和裝飾</h3>
+    <p class="meta" style="margin:-4px 0 8px">點一下就會擺進房間</p>
+    <div class="bag" id="bagItems"></div>
+    <h3>壁紙和地板</h3>
+    <p class="meta" style="margin:-4px 0 8px">點一下換上，再點一次換回原本的</p>
+    <div class="bag" id="bagThemes"></div>
+  </section>
+
+  <section class="panel" id="tab-exam" role="tabpanel" hidden>
+    <h2>一次登記多張考卷</h2>
+    <div style="margin-bottom:10px"><label for="exDate">考試日期</label><input id="exDate" type="date"></div>
+    <div class="batch-head"><span>科目</span><span>分數</span><span></span></div>
+    <div id="batchRows"></div>
+    <div class="batch-actions">
+      <button class="btn ghost" id="addRow">再加一張</button>
+      <button class="btn" id="submitBatch">登記全部考卷</button>
+    </div>
+    <p class="preview-line" id="batchPreview"></p>
+    <details class="quick">
+      <summary>快速輸入一串分數</summary>
+      <p class="meta" style="margin:6px 0">用空白、逗號或換行分開，例如：100 95 88 100</p>
+      <textarea id="quickText" aria-label="快速輸入分數"></textarea>
+      <button class="btn wide" id="quickSubmit" style="margin-top:8px">登記這些分數</button>
+    </details>
+    <h3>考卷紀錄</h3>
+    <div class="total" id="totalLine"></div>
+    <ul class="list" id="examList"></ul>
+  </section>
+
+  <section class="panel" id="tab-parent" role="tabpanel" hidden>
+    <h2>家長設定</h2>
+    <label for="setName">小狗的名字</label>
+    <input id="setName" type="text" maxlength="8">
+
+    <h3>集點規則</h3>
+    <div class="settings-grid">
+      <div><label for="setThreshold">每累積幾分</label><input id="setThreshold" type="number" min="10" max="1000"></div>
+      <div><label for="setPer">換幾張券</label><input id="setPer" type="number" min="1" max="10"></div>
+      <div><label for="setCost">抽一次要</label><input id="setCost" type="number" min="1" max="20"></div>
+    </div>
+    <p class="meta">分數會一直累加，沒滿也會留著。改規則會用全部分數重新計算。</p>
+
+    <h3>升級獎勵（實體禮物）</h3>
+    <p class="meta" style="margin-top:-4px">小狗升到這個等級時，會跳出「可以跟爸媽領禮物」。孩子領到後按「已領取」。</p>
+    <ul class="list" id="rewardList"></ul>
+    <div class="reward-row" style="margin-top:10px">
+      <input id="rwLv" type="number" min="2" max="99" placeholder="等級" aria-label="等級">
+      <input id="rwName" type="text" placeholder="例如：大耳狗吊飾" aria-label="禮物名稱">
+      <button class="btn small" id="rwAdd" aria-label="新增獎勵">＋</button>
+    </div>
+
+    <h3>家庭代碼</h3>
+    <div class="family"><b id="famCode">尚未連結</b><button class="btn small" id="famCopy">複製邀請連結</button></div>
+    <p class="meta">在其他裝置打開邀請連結就會共用同一隻小狗。代碼請只給家人。</p>
+    <button class="btn small ghost" id="famSwitch">換成別的家庭代碼</button>
+
+    <h3>活動紀錄</h3>
+    <p class="meta" style="margin-top:-4px" id="syncInfo"></p>
+    <ul class="log" id="logList"></ul>
+    <button class="btn ghost wide" id="logMore" style="margin-top:8px" hidden>顯示更多</button>
+
+    <h3>這台裝置</h3>
+    <label for="setDevice">裝置名字（紀錄裡會顯示是哪台玩的）</label>
+    <input id="setDevice" type="text" maxlength="12">
+
+    <h3>重新開始</h3>
+    <button class="btn danger wide" id="resetAll">清除全部進度</button>
+    <p class="meta">考卷、等級、背包和房間都會清空，升級獎勵的清單會保留。</p>
+  </section>
+</div>
+
+<div class="stage" id="stage" hidden role="dialog" aria-modal="true" aria-labelledby="stageTitle">
+  <div class="rays"></div>
+  <div class="stage-inner">
+    <p class="stage-title" id="stageTitle"></p>
+    <p class="stage-sub" id="stageSub"></p>
+    <div class="cap-grid" id="capGrid"></div>
+    <div class="summary" id="summary" hidden></div>
+    <div class="stage-actions">
+      <button class="btn" id="openAll">全部打開</button>
+      <button class="btn" id="stageDone" hidden>放進背包</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="lvModal" hidden role="dialog" aria-modal="true" aria-labelledby="lvTitle">
+  <div class="rays"></div>
+  <div class="stage-inner">
+    <div class="lvup-pup" id="lvPup"></div>
+    <p class="stage-title" id="lvTitle"></p>
+    <p class="stage-sub" id="lvSub"></p>
+    <div id="lvReward"></div>
+    <div class="stage-actions"><button class="btn" id="lvClose">太棒了</button></div>
+  </div>
+</div>
+
+<div class="modal" id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="rays"></div>
+  <div class="stage-inner">
+    <div class="lvup-pup" id="gatePup" style="width:130px"></div>
+    <p class="stage-title" id="gateTitle">連結你的家庭</p>
+    <p class="stage-sub">同一個家庭的裝置會共用同一隻小狗和進度</p>
+    <div class="gate-card">
+      <button class="btn wide" id="gateNew">建立新的家庭（第一次用選這個）</button>
+      <p class="meta" style="margin:16px 0 6px">或輸入其他裝置上的 8 碼家庭代碼</p>
+      <div style="display:flex;gap:8px"><input id="gateCode" type="text" maxlength="8" autocapitalize="characters" autocomplete="off" placeholder="例如 K3P9QX2M" aria-label="家庭代碼"><button class="btn" id="gateJoin" style="white-space:nowrap">加入</button></div>
+      <p class="meta" id="gateMsg" style="min-height:1.5em;margin:6px 0 0"></p>
+      <p class="meta" style="margin:4px 0 10px">加入後，這台原本的進度會換成家庭的進度</p>
+      <button class="btn ghost small" id="gateSkip">先不要，只存在這台</button>
+    </div>
+  </div>
+</div>
+<div class="flash" id="flash"></div>
+<div class="confetti" id="confetti"></div>
+<div class="toast" id="toast" role="status"></div>
+<datalist id="subjects"><option>國語</option><option>數學</option><option>英文</option><option>自然</option><option>社會</option></datalist>
+
+<script>
+const KEY='exam-pet-v1', OLD_KEY='exam-lottery-v1';
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const wait=ms=>new Promise(r=>setTimeout(r,reduced?0:ms));
+
+/* ===== item catalog (original art) ===== */
+const L='stroke="#22305C" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
+function star(cx,cy,r,fill){let p='';for(let i=0;i<10;i++){const a=Math.PI/5*i-Math.PI/2,rr=i%2?r*.45:r;p+=`${(cx+Math.cos(a)*rr).toFixed(1)},${(cy+Math.sin(a)*rr).toFixed(1)} `}return `<polygon points="${p}" fill="${fill}" ${L}/>`}
+const ITEMS=[
+ {id:'plant',name:'小盆栽',tier:1,w:14,svg:`<ellipse cx="38" cy="38" rx="10" ry="20" fill="#5CC27A" ${L} transform="rotate(-25 38 38)"/><ellipse cx="62" cy="38" rx="10" ry="20" fill="#5CC27A" ${L} transform="rotate(25 62 38)"/><ellipse cx="50" cy="30" rx="10" ry="24" fill="#7ED6A7" ${L}/><path d="M32 58h36l-6 34H38z" fill="#E8913A" ${L}/>`},
+ {id:'rug',name:'圓圓地毯',tier:1,w:32,flat:1,svg:`<ellipse cx="50" cy="78" rx="47" ry="16" fill="#FF9DB8" ${L}/><ellipse cx="50" cy="78" rx="33" ry="10" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="6 5"/>`},
+ {id:'stool',name:'小凳子',tier:1,w:13,svg:`<rect x="28" y="58" width="7" height="34" fill="#C98B55" ${L}/><rect x="65" y="58" width="7" height="34" fill="#C98B55" ${L}/><ellipse cx="50" cy="56" rx="28" ry="10" fill="#FFC83D" ${L}/>`},
+ {id:'bowl',name:'狗狗飯碗',tier:1,w:12,svg:`<circle cx="38" cy="68" r="7" fill="#B5763F" ${L}/><circle cx="52" cy="65" r="7" fill="#B5763F" ${L}/><circle cx="64" cy="69" r="7" fill="#B5763F" ${L}/><path d="M16 72h68l-8 20H24z" fill="#3E8EDE" ${L}/>`},
+ {id:'ball',name:'彈力球',tier:1,w:9,svg:`<circle cx="50" cy="72" r="20" fill="#FF7FA3" ${L}/><path d="M32 64q18 12 36 0" fill="none" stroke="#fff" stroke-width="5"/>`},
+ {id:'cushion',name:'黃色抱枕',tier:1,w:13,svg:`<rect x="20" y="58" width="60" height="34" rx="14" fill="#FFC83D" ${L}/><circle cx="50" cy="75" r="4" fill="#22305C"/>`},
+ {id:'clock',name:'掛鐘',tier:1,w:13,wall:1,svg:`<circle cx="50" cy="56" r="34" fill="#fff" ${L}/><path d="M50 56V36M50 56l14 8" ${L} stroke-width="4"/><circle cx="50" cy="56" r="4" fill="#22305C"/>`},
+ {id:'frame',name:'風景畫',tier:1,w:18,wall:1,svg:`<rect x="12" y="30" width="76" height="60" rx="4" fill="#E8913A" ${L}/><rect x="20" y="38" width="60" height="44" fill="#BDE6FF"/><path d="M20 82l18-22 12 12 12-12 18 22z" fill="#5CC27A"/><circle cx="68" cy="48" r="5" fill="#FFC83D"/>`},
+ {id:'lamp',name:'檯燈',tier:2,w:15,svg:`<path d="M50 40v46" ${L} stroke-width="5"/><path d="M30 40h40L60 12H40z" fill="#FFC83D" ${L}/><ellipse cx="50" cy="88" rx="16" ry="5" fill="#3E8EDE" ${L}/>`},
+ {id:'shelf',name:'書櫃',tier:2,w:22,svg:`<rect x="20" y="8" width="60" height="86" rx="3" fill="#C98B55" ${L}/><rect x="26" y="14" width="7" height="24" fill="#FF7FA3"/><rect x="35" y="18" width="7" height="20" fill="#3E8EDE"/><rect x="44" y="14" width="7" height="24" fill="#FFC83D"/><rect x="58" y="44" width="7" height="22" fill="#7ED6A7"/><rect x="67" y="42" width="7" height="24" fill="#B79CFF"/><rect x="28" y="70" width="7" height="22" fill="#3E8EDE"/><rect x="37" y="74" width="16" height="18" fill="#FF9F5A"/><path d="M20 38h60M20 66h60" ${L}/>`},
+ {id:'sofa',name:'藍色沙發',tier:2,w:32,svg:`<rect x="14" y="40" width="72" height="36" rx="10" fill="#3E8EDE" ${L}/><rect x="22" y="62" width="56" height="20" rx="6" fill="#6FB2F2" ${L}/><rect x="6" y="54" width="18" height="32" rx="7" fill="#3E8EDE" ${L}/><rect x="76" y="54" width="18" height="32" rx="7" fill="#3E8EDE" ${L}/><path d="M22 86v6M78 86v6" ${L} stroke-width="5"/>`},
+ {id:'bed',name:'狗狗睡墊',tier:2,w:26,flat:1,svg:`<ellipse cx="50" cy="74" rx="44" ry="18" fill="#FF7FA3" ${L}/><ellipse cx="50" cy="72" rx="32" ry="10" fill="#FFE4EC" ${L}/>`},
+ {id:'window',name:'窗戶',tier:2,w:22,wall:1,svg:`<rect x="18" y="14" width="64" height="66" rx="4" fill="#BDE6FF" ${L}/><circle cx="34" cy="30" r="7" fill="#fff"/><path d="M50 14v66M18 47h64" ${L}/><path d="M12 82h76" ${L} stroke-width="6"/>`},
+ {id:'fish',name:'金魚缸',tier:2,w:15,svg:`<circle cx="50" cy="58" r="28" fill="#BDE6FF" ${L}/><path d="M42 60q8-9 15 0q-7 9-15 0zM57 60l7-6v12z" fill="#FF9F5A" stroke="#22305C" stroke-width="2"/><rect x="32" y="84" width="36" height="8" rx="2" fill="#C98B55" ${L}/>`},
+ {id:'vase',name:'花瓶',tier:2,w:13,svg:`<path d="M50 52V22M43 52L34 26M57 52l9-26" stroke="#3FA765" stroke-width="3"/><circle cx="50" cy="18" r="8" fill="#FF7FA3" ${L}/><circle cx="33" cy="23" r="7" fill="#FFC83D" ${L}/><circle cx="67" cy="23" r="7" fill="#B79CFF" ${L}/><path d="M38 50h24q7 16 0 42H38q-7-26 0-42z" fill="#3E8EDE" ${L}/>`},
+ {id:'castle',name:'城堡狗屋',tier:3,w:30,svg:`<rect x="18" y="40" width="64" height="52" fill="#FFE4EC" ${L}/><rect x="8" y="30" width="18" height="62" fill="#FFB3C8" ${L}/><rect x="74" y="30" width="18" height="62" fill="#FFB3C8" ${L}/><path d="M6 30l11-15 11 15zM72 30l11-15 11 15z" fill="#B79CFF" ${L}/><path d="M32 40l18-24 18 24z" fill="#B79CFF" ${L}/><path d="M50 16V4l11 4-11 4" fill="#FFC83D" ${L}/><path d="M37 92V72a13 13 0 0126 0v20z" fill="#22305C"/>`},
+ {id:'rainbow',name:'彩虹夜燈',tier:3,w:24,svg:`<path d="M10 80a40 40 0 0180 0" fill="none" stroke="#FF7FA3" stroke-width="8"/><path d="M18 80a32 32 0 0164 0" fill="none" stroke="#FFC83D" stroke-width="8"/><path d="M26 80a24 24 0 0148 0" fill="none" stroke="#7ED6A7" stroke-width="8"/><path d="M34 80a16 16 0 0132 0" fill="none" stroke="#3E8EDE" stroke-width="8"/><rect x="6" y="80" width="88" height="12" rx="6" fill="#fff" ${L}/>`},
+ {id:'piano',name:'小鋼琴',tier:3,w:30,svg:`<rect x="12" y="28" width="76" height="42" rx="4" fill="#3A3A52" ${L}/><rect x="16" y="54" width="68" height="14" fill="#fff" stroke="#22305C" stroke-width="2"/><path d="M27 54v8M37 54v8M51 54v8M61 54v8M71 54v8" stroke="#22305C" stroke-width="4"/><path d="M20 70v22M80 70v22" ${L} stroke-width="5"/>${star(70,40,7,'#FFC83D')}`},
+ {id:'stars',name:'星星吊燈',tier:3,w:18,wall:1,top:1,svg:`<path d="M50 0v26M28 26h44M28 26v14M50 26v22M72 26v14" ${L}/>${star(28,50,11,'#FFD24A')}${star(50,60,13,'#FFE680')}${star(72,50,11,'#FFD24A')}`},
+ {id:'tree',name:'閃亮小樹',tier:3,w:22,svg:`<rect x="44" y="78" width="12" height="14" fill="#C98B55" ${L}/><path d="M50 12L76 46H62L82 78H18L38 46H24z" fill="#3FA765" ${L}/><circle cx="40" cy="62" r="4.5" fill="#FF7FA3"/><circle cx="62" cy="68" r="4.5" fill="#FFC83D"/><circle cx="52" cy="42" r="4.5" fill="#6FB2F2"/>${star(50,12,10,'#FFD24A')}`},
+];
+const THEMES=[
+ {id:'f_wood',name:'木頭地板',tier:1,kind:'floor',bg:'repeating-linear-gradient(90deg,#C98B55 0 38px,#B97A47 38px 41px)'},
+ {id:'f_tile',name:'格子地板',tier:1,kind:'floor',bg:'repeating-conic-gradient(#fff 0 25%,#BFE3FF 0 50%) 0 0/36px 36px'},
+ {id:'w_sky',name:'藍天壁紙',tier:2,kind:'wall',bg:'radial-gradient(ellipse 40px 16px at 30% 30%,#fff 98%,transparent) ,radial-gradient(ellipse 50px 18px at 75% 55%,#fff 98%,transparent),linear-gradient(#9FD8FF,#E3F4FF)'},
+ {id:'w_dots',name:'粉紅點點壁紙',tier:2,kind:'wall',bg:'radial-gradient(circle,#FFB3C8 18%,transparent 21%) 0 0/28px 28px,#FFE4EC'},
+ {id:'f_grass',name:'草地地板',tier:2,kind:'floor',bg:'repeating-linear-gradient(90deg,#8ED38B 0 20px,#7CC679 20px 40px)'},
+ {id:'w_stars',name:'星空壁紙',tier:3,kind:'wall',bg:'radial-gradient(circle,#FFE680 9%,transparent 12%) 0 0/34px 34px,radial-gradient(circle,#fff 5%,transparent 8%) 17px 17px/34px 34px,#2B3A75'},
+];
+const ALL=[...ITEMS,...THEMES], BY={}; ALL.forEach(x=>BY[x.id]=x);
+const TIER_W={1:65,2:28,3:7}, TIER_EXP={1:5,2:10,3:25}, TIER_NAME={1:'普通',2:'少見',3:'稀有'};
+const CAP_COLORS=['#FF7FA3','#3E8EDE','#7ED6A7','#FF9F5A'];
+const iconHTML=it=>it.kind?`<span class="swatch" style="background:${it.bg}"></span>`:`<svg viewBox="0 0 100 100" aria-hidden="true">${it.svg}</svg>`;
+
+/* ===== puppy art (original) ===== */
+function pupSVG(stage){
+  const head=`<g transform="translate(84 40) scale(.52) translate(-150 -72)">
+    <path d="M112 62 L100 22 L134 44 Z" fill="#E8913A" stroke="#22305C" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M188 62 L200 22 L166 44 Z" fill="#E8913A" stroke="#22305C" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M110 58 L104 34 L124 46 Z" fill="#FFB9C9"/><path d="M190 58 L196 34 L176 46 Z" fill="#FFB9C9"/>
+    <ellipse cx="150" cy="72" rx="52" ry="42" fill="#F4A24C" stroke="#22305C" stroke-width="5"/>
+    <ellipse cx="150" cy="86" rx="30" ry="22" fill="#FFF3E2"/>
+    <circle cx="130" cy="66" r="7" fill="#22305C"/><circle cx="170" cy="66" r="7" fill="#22305C"/>
+    <circle cx="132" cy="63" r="2.5" fill="#fff"/><circle cx="172" cy="63" r="2.5" fill="#fff"/>
+    <ellipse cx="150" cy="80" rx="7" ry="5" fill="#22305C"/>
+    <path d="M142 90 Q150 97 158 90" fill="none" stroke="#22305C" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="116" cy="84" r="7" fill="#FF8FAB" opacity=".7"/><circle cx="184" cy="84" r="7" fill="#FF8FAB" opacity=".7"/>
+    ${stage>=3?`<path d="M122 34 L128 8 L142 24 L150 2 L158 24 L172 8 L178 34 Z" fill="#FFD24A" stroke="#22305C" stroke-width="5" stroke-linejoin="round"/><circle cx="150" cy="22" r="5" fill="#FF7FA3"/>`:''}
+  </g>`;
+  return `<svg viewBox="0 0 120 110" aria-hidden="true">
+    <g class="tail"><path d="M24 64q-16-10-10-26" fill="none" stroke="#22305C" stroke-width="10" stroke-linecap="round"/><path d="M24 64q-16-10-10-26" fill="none" stroke="#F4A24C" stroke-width="5" stroke-linecap="round"/></g>
+    <g class="legs">${[30,44,62,76].map(x=>`<rect x="${x-6}" y="80" width="12" height="24" rx="6" fill="#E8913A" stroke="#22305C" stroke-width="4"/>`).join('')}</g>
+    <ellipse cx="52" cy="72" rx="36" ry="24" fill="#F4A24C" stroke="#22305C" stroke-width="4"/>
+    <ellipse cx="56" cy="80" rx="20" ry="10" fill="#FFF3E2"/>
+    ${stage>=2?`<path d="M66 54 q16 14 34 2 l2 8 q-18 12 -36 -2z" fill="#E5486B" stroke="#22305C" stroke-width="3" stroke-linejoin="round"/><path d="M78 64 l-4 14 l9 -4z" fill="#E5486B" stroke="#22305C" stroke-width="3" stroke-linejoin="round"/>`:''}
+    ${head}
+  </svg>`;
+}
+const STAGES=[{min:1,name:'小狗寶寶',scale:.17},{min:4,name:'小狗',scale:.21},{min:8,name:'大狗狗',scale:.25}];
+const stageOf=lv=>STAGES.reduce((a,s,i)=>lv>=s.min?i+1:a,1);
+const need=lv=>15+lv*10;
+function levelInfo(exp){let lv=1,n=need(1);while(exp>=n){exp-=n;lv++;n=need(lv)}return{lv,cur:exp,need:n}}
+
+/* ===== state ===== */
+const DEFAULT=()=>({settings:{threshold:100,per:1,cost:1},exams:[],spent:0,
+  pet:{name:'小橘',exp:0,lastPet:''},owned:{},placed:[],wall:'',floor:'',log:[],
+  rewards:[{id:uid(),level:3,name:'小狗貼紙',claimed:false},{id:uid(),level:5,name:'大耳狗吊飾',claimed:false},{id:uid(),level:10,name:'大耳狗吊飾（第二個）',claimed:false}]});
+let S;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S){S=DEFAULT();try{const o=JSON.parse(localStorage.getItem(OLD_KEY));if(o){S.exams=(o.exams||[]).map(e=>({id:e.id,subject:e.subject,score:e.score,date:e.date}));S.settings=o.settings||S.settings;S.spent=o.spent||0}}catch(e){}}
+function normalize(x){const d=DEFAULT();x=x||{};
+  for(const k of Object.keys(d))if(x[k]===undefined||x[k]===null)x[k]=d[k];
+  x.pet={...d.pet,...x.pet};x.settings={...d.settings,...x.settings};return x}
+S=normalize(S);
+
+/* ===== device & log ===== */
+const DEV_KEY='exam-pet-device';
+function deviceName(){try{const n=localStorage.getItem(DEV_KEY);if(n)return n}catch(e){}
+  const u=navigator.userAgent;return /iPad/.test(u)?'iPad':/iPhone/.test(u)?'iPhone':/Android/.test(u)?'Android':'電腦'}
+function addLog(text){S.log.unshift({t:new Date().toISOString(),d:deviceName(),text});if(S.log.length>200)S.log.length=200}
+
+/* ===== Firebase 設定：把 Firebase 主控台給你的設定貼在這裡 ===== */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCMAZpomUJ2FRydpN-evbWVFuREOo3dRh8",
+  authDomain: "cyn01-a966b.firebaseapp.com",
+  projectId: "cyn01-a966b",
+  storageBucket: "cyn01-a966b.firebasestorage.app",
+  messagingSenderId: "872067785852",
+  appId: "1:872067785852:web:14082e676a38741198d5f9"
+};
+/* ================================================================ */
+const FB_VER='10.12.2', CODE_KEY='exam-pet-family';
+const configured=()=>!!FIREBASE_CONFIG.projectId&&!FIREBASE_CONFIG.apiKey.startsWith('請');
+let fs=null,dbDoc=null,unsub=null,familyCode=null;
+let pushing=false,dirty=false,pushT=null,lastRev=null,lastSync=null;
+function setSync(kind){const el=$('sync');el.className='sync '+(kind==='ok'?'ok':kind==='err'?'err':'');
+  el.textContent={ok:`☁️ 已同步（家庭 ${familyCode||''}）`,saving:'☁️ 同步中…',local:'📱 只存在這台裝置',
+    noconfig:'⚙️ 還沒設定 Firebase，只存在這台裝置',denied:'⚠️ 雲端拒絕存檔，請檢查 Firestore 規則',err:'⚠️ 同步失敗，稍後自動重試'}[kind]}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('儲存失敗，瀏覽器空間可能不夠')}
+  if(dbDoc){dirty=true;setSync('saving');clearTimeout(pushT);pushT=setTimeout(push,500)}
+}
+async function push(){
+  if(pushing||!dirty||!dbDoc)return;
+  pushing=true;dirty=false;const rev=uid();lastRev=rev;
+  try{
+    await fs.setDoc(dbDoc,{state:JSON.parse(JSON.stringify(S)),rev,updatedAt:new Date().toISOString(),device:deviceName()});
+    lastSync={at:new Date().toISOString(),device:deviceName()};setSync(dirty?'saving':'ok');renderSyncInfo();
+  }catch(e){
+    if(e&&e.code==='permission-denied')setSync('denied');
+    else{dirty=true;setSync('err');pushT=setTimeout(push,4000+Math.random()*2000)}
+  }finally{pushing=false;if(dirty&&dbDoc){clearTimeout(pushT);pushT=setTimeout(push,400)}}
+}
+async function loadFirebase(){
+  if(fs)return fs;
+  const A=await import(`https://www.gstatic.com/firebasejs/${FB_VER}/firebase-app.js`);
+  const F=await import(`https://www.gstatic.com/firebasejs/${FB_VER}/firebase-firestore.js`);
+  const app=A.initializeApp(FIREBASE_CONFIG);
+  let db;try{db=F.initializeFirestore(app,{localCache:F.persistentLocalCache()})}catch(e){db=F.getFirestore(app)}
+  fs={db,doc:F.doc,getDoc:F.getDoc,setDoc:F.setDoc,onSnapshot:F.onSnapshot};return fs;
+}
+function listen(){
+  if(unsub)unsub();
+  let first=true;
+  unsub=fs.onSnapshot(dbDoc,snap=>{
+    if(snap.metadata.hasPendingWrites)return;
+    if(!snap.exists()){
+      if(first&&!snap.metadata.fromCache){first=false;dirty=true;push()}
+      return}
+    first=false;const d=snap.data();
+    lastSync={at:d.updatedAt,device:d.device};
+    if(d.rev===lastRev){if(!dirty&&!pushing)setSync('ok');renderSyncInfo();return}
+    if(dirty||pushing)return;
+    lastRev=d.rev;S=normalize(structuredClone(d.state));
+    try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+    renderAll();setSync('ok');
+  },e=>{setSync(e&&e.code==='permission-denied'?'denied':'err')});
+}
+function connect(code){
+  familyCode=code;try{localStorage.setItem(CODE_KEY,code)}catch(e){}
+  dbDoc=fs.doc(fs.db,'families',code);setSync('saving');listen();renderAll();
+}
+async function initSync(){
+  if(!configured()){setSync('noconfig');return}
+  const h=decodeURIComponent(location.hash.slice(1)).toUpperCase();
+  if(/^[A-Z2-9]{8}$/.test(h)){try{localStorage.setItem(CODE_KEY,h)}catch(e){}history.replaceState(null,'',location.pathname+location.search)}
+  let code=null;try{code=localStorage.getItem(CODE_KEY)}catch(e){}
+  try{await loadFirebase()}catch(e){setSync('err');toast('連不上 Firebase，先存在這台裝置');return}
+  if(code)connect(code);else showGate();
+}
+/* family gate */
+function newCode(){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',r=crypto.getRandomValues(new Uint8Array(8));return [...r].map(x=>A[x%32]).join('')}
+function showGate(){$('gatePup').innerHTML=pupSVG(1);$('gateCode').value='';$('gateMsg').textContent='';$('gate').hidden=false}
+$('gateNew').onclick=async()=>{
+  $('gateNew').disabled=true;const code=newCode();
+  connect(code);addLog('建立了新的家庭');dirty=true;await push();
+  $('gateNew').disabled=false;$('gate').hidden=true;
+  document.querySelector('.tab[data-tab="parent"]').click();toast(`家庭代碼：${code}，在家長設定可以複製邀請連結`);
+};
+$('gateJoin').onclick=async()=>{
+  const code=$('gateCode').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(!/^[A-Z2-9]{8}$/.test(code)){$('gateMsg').textContent='代碼是 8 個英文字母和數字';return}
+  $('gateMsg').textContent='尋找中…';
+  try{const snap=await fs.getDoc(fs.doc(fs.db,'families',code));
+    if(!snap.exists()){$('gateMsg').textContent='找不到這個家庭，請確認代碼';return}
+    lastRev=null;connect(code);$('gate').hidden=true;toast('已加入家庭，進度同步中');
+  }catch(e){$('gateMsg').textContent='連線失敗，請稍後再試'}
+};
+$('gateSkip').onclick=()=>{$('gate').hidden=true;setSync('local')};
+$('famCopy').onclick=async()=>{
+  if(!familyCode){showGate();return}
+  const link=location.origin+location.pathname+'#'+familyCode;
+  try{await navigator.clipboard.writeText(link);toast('已複製邀請連結')}catch(e){prompt('複製這個連結到其他裝置打開：',link)}
+};
+$('famSwitch').onclick=()=>{
+  if(familyCode&&!confirm('要換成別的家庭嗎？這台裝置會改用新家庭的進度。'))return;
+  if(unsub)unsub();unsub=null;dbDoc=null;familyCode=null;try{localStorage.removeItem(CODE_KEY)}catch(e){}
+  if(configured()&&fs)showGate();else toast('請先在 index.html 設定 Firebase');renderAll();
+};
+function fmtTime(iso){const d=new Date(iso);const p=n=>String(n).padStart(2,'0');
+  return `${d.getMonth()+1}/${d.getDate()} ${p(d.getHours())}:${p(d.getMinutes())}`}
+function renderSyncInfo(){$('syncInfo').textContent=lastSync?`最後同步：${fmtTime(lastSync.at)}（${lastSync.device||'某台裝置'}）`:dbDoc?'':'這台裝置沒有連上雲端，紀錄只存在這裡';
+  $('famCode').textContent=familyCode||'尚未連結';$('famCopy').textContent=familyCode?'複製邀請連結':'連結家庭'}
+let logShow=30;
+
+const totalScore=(ex=S.exams)=>ex.reduce((a,e)=>a+e.score,0);
+const earnedFor=(t,st=S.settings)=>Math.floor(t/st.threshold)*st.per;
+const earned=()=>earnedFor(totalScore());
+const tickets=()=>Math.max(0,earned()-S.spent);
+let toastT;function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600)}
+
+/* ===== room ===== */
+let selected=null;
+function renderRoom(){
+  $('wall').style.background=S.wall?BY[S.wall].bg:'#FFF1D6';
+  $('floor').style.background=S.floor?BY[S.floor].bg:'#E8C49A';
+  $('roomEmpty').hidden=S.placed.length>0;
+  $('things').innerHTML=S.placed.map(p=>{const it=BY[p.id];
+    const z=it.flat?1:it.top?2:Math.round(p.y*10);
+    return `<div class="thing${p.flip?' flip':''}${selected===p.uid?' sel':''}" data-u="${p.uid}" style="left:${p.x}%;top:${p.y}%;width:${it.w}%;z-index:${z}"><svg viewBox="0 0 100 100">${it.svg}</svg></div>`}).join('');
+  const sp=S.placed.find(p=>p.uid===selected);
+  $('selbar').hidden=!sp; if(sp)$('selName').textContent=BY[sp.id].name;
+}
+function placeItem(id){
+  const it=BY[id], n=S.placed.filter(p=>p.id===id).length;
+  if(n>=(S.owned[id]||0)){toast(`${it.name}已經全部擺出來了`);return}
+  const x=15+Math.random()*70, y=it.top?32:it.wall?36+Math.random()*10:76+Math.random()*18;
+  const p={uid:uid(),id,x:+x.toFixed(1),y:+y.toFixed(1),flip:false};
+  S.placed.push(p);selected=p.uid;save();renderAll();
+  $('room').scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});
+}
+let drag=null;
+$('things').addEventListener('pointerdown',e=>{
+  const el=e.target.closest('.thing');if(!el)return;
+  const r=$('room').getBoundingClientRect(), p=S.placed.find(q=>q.uid===el.dataset.u);
+  drag={el,p,r,sx:e.clientX,sy:e.clientY,ox:p.x,oy:p.y,moved:false};
+  el.setPointerCapture(e.pointerId);el.classList.add('dragging');e.preventDefault();
+});
+$('things').addEventListener('pointermove',e=>{
+  if(!drag)return;const dx=e.clientX-drag.sx,dy=e.clientY-drag.sy;
+  if(Math.hypot(dx,dy)>5)drag.moved=true;
+  const it=BY[drag.p.id];
+  drag.p.x=Math.max(3,Math.min(97,drag.ox+dx/drag.r.width*100));
+  drag.p.y=Math.max(it.top?14:12,Math.min(100,drag.oy+dy/drag.r.height*100));
+  drag.el.style.left=drag.p.x+'%';drag.el.style.top=drag.p.y+'%';
+  if(!it.flat&&!it.top)drag.el.style.zIndex=Math.round(drag.p.y*10);
+});
+const endDrag=()=>{if(!drag)return;const{p,moved}=drag;drag.el.classList.remove('dragging');drag=null;
+  p.x=+p.x.toFixed(1);p.y=+p.y.toFixed(1);
+  if(!moved)selected=selected===p.uid?null:p.uid; else selected=p.uid;
+  save();renderRoom()};
+$('things').addEventListener('pointerup',endDrag);$('things').addEventListener('pointercancel',endDrag);
+$('selFlip').onclick=()=>{const p=S.placed.find(q=>q.uid===selected);if(p){p.flip=!p.flip;save();renderRoom()}};
+$('selBack').onclick=()=>{S.placed=S.placed.filter(q=>q.uid!==selected);selected=null;save();renderAll()};
+$('selDone').onclick=()=>{selected=null;renderRoom()};
+
+/* puppy */
+let pupX=50, pupStage=0;
+function renderPup(){
+  const {lv}=levelInfo(S.pet.exp), st=stageOf(lv);
+  if(st!==pupStage){$('pupSvg').innerHTML=pupSVG(st);pupStage=st}
+  const pup=$('pup');pup.style.width=STAGES[st-1].scale*100+'%';pup.style.top='93%';pup.style.left=pupX+'%';pup.style.zIndex=930;
+}
+function wander(){
+  if(reduced)return;
+  const pup=$('pup');
+  const nx=8+Math.random()*84, dist=Math.abs(nx-pupX);
+  pup.classList.toggle('left',nx<pupX);pup.classList.add('walking');
+  pup.style.transitionDuration=(dist*0.08)+'s';pupX=nx;pup.style.left=nx+'%';
+  setTimeout(()=>pup.classList.remove('walking'),dist*80);
+  setTimeout(wander,dist*80+1500+Math.random()*3000);
+}
+$('pup').onclick=()=>{
+  const pup=$('pup'),i2=pup.querySelector('.inner2');
+  i2.style.animation='none';void i2.offsetWidth;i2.style.animation='';pup.classList.remove('jump');void pup.offsetWidth;pup.classList.add('jump');
+  const h=document.createElement('span');h.className='heart';h.textContent='❤️';
+  h.style.left=pupX+'%';h.style.top='60%';$('room').appendChild(h);setTimeout(()=>h.remove(),1000);
+  if(S.pet.lastPet!==today()){S.pet.lastPet=today();addLog(`摸摸${S.pet.name}（經驗 +3）`);gainExp(3);toast(`摸摸${S.pet.name}，經驗 +3（每天一次）`)}
+};
+
+/* exp & level up */
+let lvQueue=null;
+function gainExp(n){
+  const before=levelInfo(S.pet.exp).lv;S.pet.exp+=n;save();
+  const after=levelInfo(S.pet.exp).lv;
+  if(after>before){lvQueue={from:before,to:after};
+    const rw=S.rewards.filter(r=>r.level>before&&r.level<=after&&!r.claimed).map(r=>r.name);
+    addLog(`🎉 升到 Lv ${after}${rw.length?`，可以領：${rw.join('、')}`:''}`);save()}
+  renderAll();
+}
+function showLevelUp(){
+  if(!lvQueue)return;const{from,to}=lvQueue;lvQueue=null;
+  const grew=stageOf(to)>stageOf(from);
+  $('lvPup').innerHTML=pupSVG(stageOf(to));
+  $('lvTitle').textContent=`${S.pet.name}升到 Lv ${to}！`;
+  $('lvSub').textContent=grew?`長大了，變成${STAGES[stageOf(to)-1].name}！`:'繼續加油，下一級快到了';
+  const rw=S.rewards.filter(r=>r.level>from&&r.level<=to&&!r.claimed);
+  $('lvReward').innerHTML=rw.map(r=>`<div class="reward-card">🎁 可以跟爸媽領：${esc(r.name)}</div>`).join('');
+  $('lvModal').hidden=false;burst(80);$('lvClose').focus();
+}
+$('lvClose').onclick=()=>{$('lvModal').hidden=true};
+
+/* ===== main render ===== */
+function renderAll(){
+  const st=S.settings,t=tickets(),total=totalScore(),li=levelInfo(S.pet.exp);
+  $('petName').textContent=S.pet.name;$('pup').setAttribute('aria-label','摸摸'+S.pet.name);
+  $('lvNum').textContent=li.lv;$('stageName').textContent=STAGES[stageOf(li.lv)-1].name;
+  $('expText').textContent=`經驗 ${li.cur} / ${li.need}`;$('expFill').style.width=li.cur/li.need*100+'%';
+  $('ticketCount').textContent=t;
+  const rem=total%st.threshold;
+  $('barFill').style.width=rem/st.threshold*100+'%';
+  $('barText').textContent=`每 ${st.threshold} 分換 ${st.per} 張 · 下一張：${rem} / ${st.threshold} 分`;
+  document.querySelectorAll('.draw-btn').forEach(b=>{const n=+b.dataset.n;b.disabled=t<n*st.cost;$('c'+n).textContent=`用 ${n*st.cost} 張`});
+  $('drawHint').textContent=t<st.cost?`再累積 ${st.threshold-rem} 分就能抽扭蛋`:`現在可以抽 ${Math.floor(t/st.cost)} 次`;
+
+  // bag
+  const ownedKinds=ALL.filter(x=>S.owned[x.id]).length;
+  $('collectText').textContent=`收集 ${ownedKinds} / ${ALL.length}`;
+  const slot=it=>{const n=S.owned[it.id]||0;
+    if(!n)return `<div class="slot locked t${it.tier}"><div class="ic">${iconHTML(it)}</div><div class="nm">？？？</div></div>`;
+    const using=it.kind&&S[it.kind]===it.id, placed=S.placed.filter(p=>p.id===it.id).length;
+    return `<button class="slot t${it.tier}${using?' using':''}" data-id="${it.id}"><span class="cnt">${it.kind?(using?'使用中':''):`${placed}/${n}`}</span><div class="ic">${iconHTML(it)}</div><div class="nm">${esc(it.name)}</div></button>`};
+  $('bagItems').innerHTML=[...ITEMS].sort((a,b)=>a.tier-b.tier).map(slot).join('');
+  $('bagThemes').innerHTML=THEMES.map(slot).join('');
+
+  // exams
+  $('totalLine').innerHTML=`<span>共 ${S.exams.length} 張考卷</span><span>累積 ${total} 分 · 換到 ${earned()} 張</span>`;
+  $('examList').innerHTML=S.exams.length?S.exams.slice().reverse().map(e=>`
+    <li><span class="score ${e.score>=100?'full':''}">${e.score}</span>
+    <div class="grow"><div>${esc(e.subject||'考卷')}</div><div class="meta">${e.date}</div></div>
+    <button class="btn small danger" data-del-exam="${e.id}" aria-label="刪除這張考卷">刪除</button></li>`).join('')
+    :'<li class="empty">還沒有考卷，在上面登記第一張</li>';
+
+  // parent
+  $('setThreshold').value=st.threshold;$('setPer').value=st.per;$('setCost').value=st.cost;
+  if(document.activeElement!==$('setName'))$('setName').value=S.pet.name;
+  $('rewardList').innerHTML=S.rewards.length?S.rewards.slice().sort((a,b)=>a.level-b.level).map(r=>{
+    const ready=li.lv>=r.level;
+    return `<li><span class="rw-lv">Lv ${r.level}</span><span class="grow">${esc(r.name)}</span>
+      ${r.claimed?`<button class="btn small ghost" data-claim="${r.id}">已領取 ✓</button>`:ready?`<button class="btn small" data-claim="${r.id}">按這裡標記已領</button>`:'<span class="rw-state">還沒到</span>'}
+      <button class="btn small danger" data-del-rw="${r.id}" aria-label="刪除這個獎勵">×</button></li>`}).join('')
+    :'<li class="empty">還沒有設定升級獎勵</li>';
+
+  $('logList').innerHTML=S.log.length?S.log.slice(0,logShow).map(l=>`<li><time>${fmtTime(l.t)}</time><span>${l.d?`<span class="dev">${esc(l.d)}</span>`:''}${esc(l.text)}</span></li>`).join(''):'<li><span></span><span class="meta">還沒有紀錄</span></li>';
+  $('logMore').hidden=S.log.length<=logShow;
+  if(document.activeElement!==$('setDevice'))$('setDevice').value=deviceName();
+  renderSyncInfo();
+  renderRoom();renderPup();
+}
+$('logMore').onclick=()=>{logShow+=50;renderAll()};
+$('setDevice').onchange=()=>{const v=$('setDevice').value.trim();try{v?localStorage.setItem(DEV_KEY,v):localStorage.removeItem(DEV_KEY)}catch(e){}renderAll()};
+
+/* bag click */
+$('tab-bag').onclick=e=>{
+  const b=e.target.closest('.slot[data-id]');if(!b)return;const it=BY[b.dataset.id];
+  if(it.kind){S[it.kind]=S[it.kind]===it.id?'':it.id;save();renderAll();toast(S[it.kind]?`換上${it.name}`:'換回原本的');}
+  else placeItem(it.id);
+};
+
+/* tabs */
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!=='tab-'+b.dataset.tab);
+});
+
+/* ===== exams ===== */
+$('exDate').value=today();
+function addRow(subject=''){
+  const d=document.createElement('div');d.className='batch-row';
+  d.innerHTML=`<input type="text" placeholder="科目" list="subjects" aria-label="科目" value="${esc(subject)}">
+    <input type="number" min="0" max="100" inputmode="numeric" placeholder="分數" aria-label="分數">
+    <button class="x" aria-label="移除這一列">×</button>`;
+  d.querySelector('.x').onclick=()=>{d.remove();if(!$('batchRows').children.length)addRow();updatePreview()};
+  d.querySelector('input[type=number]').oninput=updatePreview;
+  $('batchRows').appendChild(d);return d;
+}
+const resetRows=()=>{$('batchRows').innerHTML='';['國語','數學','英文'].forEach(addRow)};
+resetRows();
+$('addRow').onclick=()=>addRow().querySelector('input').focus();
+function readRows(){const out=[],bad=[];
+  [...$('batchRows').children].forEach(r=>{const[s,n]=r.querySelectorAll('input');if(n.value==='')return;
+    const v=Number(n.value);if(!(v>=0&&v<=100))bad.push(n);else out.push({subject:s.value.trim(),score:Math.round(v)})});
+  return{out,bad}}
+function updatePreview(){const{out}=readRows();
+  if(!out.length){$('batchPreview').textContent='';return}
+  const add=out.reduce((a,e)=>a+e.score,0),gain=earnedFor(totalScore()+add)-earned();
+  $('batchPreview').textContent=`這 ${out.length} 張共 ${add} 分，可以換到 ${gain} 張扭蛋券`}
+function registerExams(list){
+  if(!list.length){toast('請先輸入至少一個分數');return false}
+  const before=earned(),date=$('exDate').value||today();
+  list.forEach(e=>S.exams.push({id:uid(),subject:e.subject,score:e.score,date}));
+  const gain=earned()-before,add=list.reduce((a,e)=>a+e.score,0);
+  addLog(`📝 登記 ${list.length} 張考卷：${list.map(e=>(e.subject?e.subject+' ':'')+e.score).join('、')}（+${gain} 張券）`);
+  save();renderAll();
+  toast(gain?`登記 ${list.length} 張，累積 ${add} 分，拿到 ${gain} 張扭蛋券！`:`登記 ${list.length} 張，累積 ${add} 分`);
+  if(gain){const b=$('ticketBox');b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump');burst(25+gain*10);
+    $('ticketBox').scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'})}
+  return true}
+$('submitBatch').onclick=()=>{const{out,bad}=readRows();
+  if(bad.length){bad[0].focus();toast('分數要在 0 到 100 之間');return}
+  if(registerExams(out)){resetRows();updatePreview()}};
+$('quickSubmit').onclick=()=>{const nums=$('quickText').value.split(/[\s,，、]+/).filter(Boolean).map(Number);
+  if(nums.some(n=>!(n>=0&&n<=100))){toast('只能輸入 0 到 100 的數字');return}
+  if(registerExams(nums.map(n=>({subject:'',score:Math.round(n)}))))$('quickText').value=''};
+$('examList').onclick=e=>{const id=e.target.dataset.delExam;if(!id)return;
+  const rest=S.exams.filter(x=>x.id!==id);
+  if(earnedFor(totalScore(rest))<S.spent){toast('這張考卷換到的券已經用掉了，不能刪除');return}
+  if(confirm('刪除這張考卷？')){const ex=S.exams.find(x=>x.id===id);S.exams=rest;addLog(`刪除考卷：${ex.subject||'考卷'} ${ex.score}`);save();renderAll()}};
+
+/* ===== parent ===== */
+$('setName').onchange=()=>{S.pet.name=$('setName').value.trim()||'小橘';save();renderAll()};
+['setThreshold','setPer','setCost'].forEach(id=>$(id).onchange=()=>{
+  const key={setThreshold:'threshold',setPer:'per',setCost:'cost'}[id];
+  const v=Math.max(+$(id).min,Math.min(+$(id).max,Math.round(+$(id).value)||+$(id).min));
+  const next={...S.settings,[key]:v};
+  if(earnedFor(totalScore(),next)<S.spent){toast('這樣改會讓已經用掉的券不夠，先不改');renderAll();return}
+  S.settings=next;save();renderAll()});
+$('rwAdd').onclick=()=>{const lv=Math.round(+$('rwLv').value),nm=$('rwName').value.trim();
+  if(!(lv>=2)||!nm){toast('請填等級（2 以上）和禮物名稱');return}
+  S.rewards.push({id:uid(),level:lv,name:nm,claimed:false});$('rwLv').value='';$('rwName').value='';save();renderAll()};
+$('rewardList').onclick=e=>{const c=e.target.dataset.claim,d=e.target.dataset.delRw;
+  if(c){const r=S.rewards.find(x=>x.id===c);r.claimed=!r.claimed;addLog(r.claimed?`🎁 已領取 Lv ${r.level} 禮物：${r.name}`:`取消領取：${r.name}`);save();renderAll()}
+  if(d&&confirm('刪除這個升級獎勵？')){S.rewards=S.rewards.filter(x=>x.id!==d);save();renderAll()}};
+$('resetAll').onclick=()=>{if(confirm('確定清除全部進度？考卷、等級、背包和房間都會清空。')){
+  const rw=S.rewards.map(r=>({...r,claimed:false}));S=DEFAULT();S.rewards=rw;selected=null;addLog('清除全部進度，重新開始');save();renderAll()}};
+
+/* ===== gacha ===== */
+function drawOne(){
+  let r=Math.random()*100,tier=3;for(const t of [1,2,3]){if((r-=TIER_W[t])<0){tier=t;break}}
+  const pool=ALL.filter(x=>x.tier===tier),it=pool[Math.floor(Math.random()*pool.length)];
+  const isNew=!S.owned[it.id];S.owned[it.id]=(S.owned[it.id]||0)+1;
+  return{it,isNew,exp:TIER_EXP[tier]};
+}
+let results=[],opened=0,pendingExp=0;
+document.querySelectorAll('.draw-btn').forEach(b=>b.onclick=()=>{
+  const n=+b.dataset.n;if(tickets()<n*S.settings.cost)return;
+  document.querySelectorAll('.draw-btn').forEach(x=>x.disabled=true);
+  S.spent+=n*S.settings.cost;results=[];for(let k=0;k<n;k++)results.push(drawOne());
+  pendingExp=results.reduce((a,r)=>a+r.exp,0);
+  addLog(`🎰 ${n===1?'單抽':n+' 連抽'}：${results.map(r=>r.it.name+(r.it.tier===3?'★':'')).join('、')}`);
+  save();showStage(n);
+});
+function showStage(n){
+  opened=0;const best=Math.max(...results.map(r=>r.it.tier));
+  $('stage').classList.toggle('gold',best===3);
+  $('stageTitle').textContent=n===1?'扭蛋掉出來了！':`${n} 連抽！`;
+  $('stageSub').textContent=best===3?'有扭蛋在發金光…！':best===2?'好像有紫色的扭蛋喔':'點扭蛋打開看看';
+  const g=$('capGrid');g.className='cap-grid'+(n===1?' n1':'');
+  g.innerHTML=results.map((r,i)=>`
+    <button class="cell r${r.it.tier}" data-i="${i}" style="--d:${(i*.12).toFixed(2)}s" aria-label="打開第 ${i+1} 顆扭蛋">
+      <span class="cap" style="${r.it.tier===1?`--c:${CAP_COLORS[i%4]}`:''}">
+        <span class="prize">${iconHTML(r.it)}</span><span class="top"></span><span class="bot"></span>
+      </span>
+      <span class="name">${r.isNew?'<span class="new">NEW</span><br>':''}${esc(r.it.name)}</span>
+    </button>`).join('');
+  $('summary').hidden=true;$('openAll').hidden=false;$('stageDone').hidden=true;
+  $('openAll').textContent=n===1?'打開扭蛋':'全部打開';
+  $('stage').hidden=false;
+  g.querySelectorAll('.cell').forEach(c=>c.onclick=()=>openCap(c));
+}
+function openCap(cell){
+  if(cell.classList.contains('open'))return;
+  cell.classList.add('open');opened++;
+  const r=results[+cell.dataset.i];sparkle(cell.querySelector('.cap'),r.it.tier);
+  if(r.it.tier===3){const f=$('flash');f.classList.remove('on');void f.offsetWidth;f.classList.add('on');burst(60)}
+  if(opened===results.length)finish();
+}
+$('openAll').onclick=async()=>{
+  $('openAll').hidden=true;
+  const cells=[...$('capGrid').querySelectorAll('.cell:not(.open)')];
+  cells.sort((a,b)=>results[a.dataset.i].it.tier-results[b.dataset.i].it.tier);
+  for(const c of cells){const t=results[c.dataset.i].it.tier;
+    if(t===3&&cells.length>1)await wait(600);
+    openCap(c);await wait(t>1?450:160)}
+};
+function finish(){
+  $('openAll').hidden=true;$('stageDone').hidden=false;
+  const nNew=results.filter(r=>r.isNew).length;
+  $('stageSub').textContent=results.some(r=>r.it.tier===3)?'抽到稀有道具了！':'全部打開了！';
+  $('summary').innerHTML=`${S.pet.name}經驗 +${pendingExp}${nNew?`　·　新道具 ${nNew} 個`:''}`;
+  $('summary').hidden=false;burst(results.length>1?50:35);$('stageDone').focus();
+}
+$('stageDone').onclick=()=>{$('stage').hidden=true;gainExp(pendingExp);pendingExp=0;
+  document.querySelector('.tab[data-tab="bag"]').click();showLevelUp()};
+
+function sparkle(el,t){if(reduced)return;
+  const cs=t===3?['#FFD24A','#FFF3B0','#fff']:t===2?['#B79CFF','#E2D8FF','#fff']:['#fff','#FFC83D','#FF7FA3'];
+  const n=t===3?16:t===2?12:8;
+  for(let k=0;k<n;k++){const s=document.createElement('span');s.className='burst-star';
+    const a=k/n*Math.PI*2,d=40+Math.random()*30*t;
+    s.style.setProperty('--tx',Math.cos(a)*d+'px');s.style.setProperty('--ty',Math.sin(a)*d+'px');s.style.setProperty('--sc',cs[k%3]);
+    el.appendChild(s);setTimeout(()=>s.remove(),800)}}
+function burst(n){if(reduced)return;const box=$('confetti'),cs=['#FF7FA3','#FFC83D','#3E8EDE','#7ED6A7','#B79CFF'];
+  for(let k=0;k<n;k++){const i=document.createElement('i');i.style.left=Math.random()*100+'vw';i.style.background=cs[k%5];
+    i.style.animationDelay=Math.random()*.5+'s';i.style.animationDuration=1.4+Math.random()+'s';box.appendChild(i);setTimeout(()=>i.remove(),2800)}}
+
+renderAll();setTimeout(wander,1200);initSync();
+</script>
+</body>
+</html>
