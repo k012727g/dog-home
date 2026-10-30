@@ -3,30 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>小狗的家</title>
+<title>小狗的家 ♡</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --sky:#EAF6FF; --blue:#3E8EDE; --sun:#FFC83D; --pink:#FF7FA3; --ink:#22305C; --card:#FFFFFF;
-  --muted:#6B7899; --line:#CFE3F5; --ok:#2FB57C; --danger:#E5486B; --gold:#E0A800; --purple:#8F6BFF;
+  --sky:#FFF2F7; --blue:#F27BA6; --sun:#FFE38F; --pink:#FF9EC4; --ink:#5A3E4B; --card:#FFFFFF;
+  --muted:#A07C8C; --line:#F8D3E2; --ok:#6CCBA8; --danger:#E0567F; --gold:#F2B33D; --purple:#B79AEB;
+  --dot:#FFD6E7; --mint:#C9EFE0; --lav:#EADFFC;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --sky:#141C33; --blue:#6FB2F2; --sun:#FFCF5A; --pink:#FF94B3; --ink:#EEF3FF; --card:#1F2946;
-    --muted:#A3B0CF; --line:#34416A; --ok:#4FD39A; --danger:#FF7091; --gold:#FFD24A; --purple:#B59EFF;
+    --sky:#2B1F29; --blue:#FF8DB7; --sun:#FFE38F; --pink:#FFAFCF; --ink:#FCEAF2; --card:#3B2A38;
+    --muted:#CDA9BA; --line:#5C4256; --ok:#7FDCB8; --danger:#FF7EA3; --gold:#FFD36B; --purple:#CDB5F5;
+    --dot:#3A2936; --mint:#2F4A41; --lav:#3D3350;
   }
 }
 :root[data-theme="dark"]{
-  --sky:#141C33; --blue:#6FB2F2; --sun:#FFCF5A; --pink:#FF94B3; --ink:#EEF3FF; --card:#1F2946;
-  --muted:#A3B0CF; --line:#34416A; --ok:#4FD39A; --danger:#FF7091; --gold:#FFD24A; --purple:#B59EFF;
+  --sky:#2B1F29; --blue:#FF8DB7; --sun:#FFE38F; --pink:#FFAFCF; --ink:#FCEAF2; --card:#3B2A38;
+  --muted:#CDA9BA; --line:#5C4256; --ok:#7FDCB8; --danger:#FF7EA3; --gold:#FFD36B; --purple:#CDB5F5;
+  --dot:#3A2936; --mint:#2F4A41; --lav:#3D3350;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--sky);color:var(--ink);
+body{margin:0;background:radial-gradient(circle,var(--dot) 2.6px,transparent 3.2px) 0 0/22px 22px,radial-gradient(circle,var(--dot) 2.6px,transparent 3.2px) 11px 11px/22px 22px,var(--sky);color:var(--ink);
   font-family:"Zen Maru Gothic","Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
   line-height:1.6;-webkit-tap-highlight-color:transparent}
 svg{max-width:100%}
@@ -45,14 +48,14 @@ svg{max-width:100%}
 .bar.score-bar i{background:repeating-linear-gradient(45deg,var(--pink) 0 10px,#FF9DB8 10px 20px)}
 
 /* room */
-.room{position:relative;isolation:isolate;width:100%;aspect-ratio:4/3;border:4px solid #22305C;border-radius:22px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:pan-y}
-.wall{position:absolute;inset:0 0 38% 0;background:#FFF1D6;transition:background .4s}
-.floor{position:absolute;inset:62% 0 0 0;background:#E8C49A;border-top:4px solid #22305C;transition:background .4s}
-.baseboard{position:absolute;left:0;right:0;top:calc(62% - 10px);height:10px;background:rgba(34,48,92,.15)}
+.room{position:relative;isolation:isolate;width:100%;aspect-ratio:4/3;border:4px solid #5A3E4B;border-radius:22px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.wall{position:absolute;inset:0 0 38% 0;background:linear-gradient(90deg,rgba(255,158,196,.16) 50%,transparent 0) 0 0/26px 26px,linear-gradient(rgba(255,158,196,.16) 50%,transparent 0) 0 0/26px 26px,#FFF8F2;transition:background .4s}
+.floor{position:absolute;inset:62% 0 0 0;background:repeating-linear-gradient(90deg,#F4D7BC 0 38px,#EFCBAA 38px 40px);border-top:4px solid #5A3E4B;transition:background .4s}
+.baseboard{position:absolute;left:0;right:0;top:calc(62% - 10px);height:10px;background:rgba(90,62,75,.12)}
 .thing{position:absolute;transform:translate(-50%,-100%);touch-action:none;cursor:grab}
 .thing svg{display:block;width:100%;height:auto;overflow:visible}
 .thing.flip svg{transform:scaleX(-1)}
-.thing.sel{filter:drop-shadow(0 0 0 #fff) drop-shadow(0 0 6px #FFC83D) drop-shadow(0 0 2px #FFC83D)}
+.thing.sel{filter:drop-shadow(0 0 0 #fff) drop-shadow(0 0 6px #FFD86B) drop-shadow(0 0 2px #FFD86B)}
 .thing.dragging{cursor:grabbing;filter:drop-shadow(0 8px 6px rgba(0,0,0,.25))}
 .pup{position:absolute;top:0;transform:translate(-50%,-100%);cursor:pointer;transition-property:left;transition-timing-function:linear}
 .pup .inner{transition:transform .3s}
@@ -79,11 +82,11 @@ svg{max-width:100%}
 @keyframes bump{40%{transform:scale(1.18)}}
 .progress{max-width:320px;margin:8px auto 12px}
 .draws{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;max-width:400px;margin:0 auto}
-.draw-btn{font:inherit;font-weight:900;color:#22305C;background:var(--sun);border:3px solid var(--ink);border-radius:18px;
+.draw-btn{font:inherit;font-weight:900;color:#5A3E4B;background:var(--sun);border:3px solid var(--ink);border-radius:18px;
   padding:10px 0 8px;box-shadow:0 5px 0 var(--ink);cursor:pointer;line-height:1.2;transition:transform .08s,box-shadow .08s}
 .draw-btn span{display:block;font-size:1.2rem}
 .draw-btn small{font-size:.75rem;font-weight:700}
-.draw-btn.d5{background:#FF9DB8}.draw-btn.d10{background:#B9A4FF}
+.draw-btn.d5{background:#FFC6DD}.draw-btn.d10{background:#DCCBFF}
 .draw-btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
 .draw-btn:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
 .hint{color:var(--muted);font-size:.88rem;margin:10px 0 0}
@@ -117,9 +120,16 @@ input:focus-visible,button:focus-visible,textarea:focus-visible,summary:focus-vi
 .slot .nm{font-size:.72rem;font-weight:700;line-height:1.2;min-height:2.4em;display:flex;align-items:center;justify-content:center}
 .slot .cnt{position:absolute;right:4px;top:3px;font-size:.7rem;font-weight:900;color:var(--muted)}
 .slot.t2{border-color:var(--purple)}.slot.t3{border-color:var(--gold);box-shadow:inset 0 0 0 2px var(--gold)}
+.slot.t4{border-color:#FF9EC4;border-style:dashed;cursor:default}
+.slot.t4.gone .ic{filter:grayscale(1);opacity:.35}
+.prize-note{background:linear-gradient(90deg,#FFE3EF,#FFF6D6,#E2F7EE,#E3F1FC,#EEE5FC);color:#5A3E4B;border-radius:12px;padding:8px 12px;font-size:.85rem;font-weight:700;margin:0 0 8px}
+.pz-row{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center}
+.pz-ic{width:44px;height:44px;background:var(--sky);border-radius:10px;display:flex;align-items:center;justify-content:center}.pz-ic svg{width:38px;height:38px}
+.stepper{display:flex;align-items:center;gap:4px}.stepper b{min-width:2.2em;text-align:center}
+.prize-add{display:grid;grid-template-columns:1fr 64px 90px 40px;gap:6px;margin-top:10px}
 .slot.locked{cursor:default}.slot.locked .ic{filter:brightness(0);opacity:.15}
-.slot.using{background:var(--sun);color:#22305C}
-.swatch{display:block;width:78%;aspect-ratio:1;border-radius:50%;border:3px solid #22305C}
+.slot.using{background:var(--sun);color:#5A3E4B}
+.swatch{display:block;width:78%;aspect-ratio:1;border-radius:50%;border:3px solid #5A3E4B}
 .legend{display:flex;gap:12px;font-size:.8rem;font-weight:700;margin:4px 0 10px;flex-wrap:wrap}
 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
 
@@ -149,7 +159,7 @@ details.quick summary{font-weight:700;cursor:pointer}
 /* draw stage */
 .stage,.modal{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;
   padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
-  background:radial-gradient(circle at 50% 40%,#3B4C8A 0%,#1A2246 70%);overflow-y:auto}
+  background:radial-gradient(circle,rgba(255,255,255,.18) 2.5px,transparent 3px) 0 0/24px 24px,radial-gradient(circle at 50% 40%,#F7A9C8 0%,#B48AD8 75%);overflow-y:auto}
 .stage[hidden],.modal[hidden]{display:none}
 .rays{position:fixed;inset:-50%;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.07) 0 10deg,transparent 10deg 20deg);animation:rot 24s linear infinite;pointer-events:none}
 @keyframes rot{to{transform:rotate(360deg)}}
@@ -163,17 +173,23 @@ details.quick summary{font-weight:700;cursor:pointer}
 .cell{--s:62px;display:flex;flex-direction:column;align-items:center;width:100%;background:none;border:0;padding:0;font:inherit;color:#fff;cursor:pointer}
 .cap{position:relative;width:var(--s);height:var(--s);opacity:0;animation:drop .7s cubic-bezier(.3,1.5,.5,1) forwards;animation-delay:var(--d)}
 @keyframes drop{0%{transform:translateY(-120vh) rotate(-200deg);opacity:1}70%{transform:translateY(0) rotate(10deg);opacity:1}100%{transform:none;opacity:1}}
-.cap .top,.cap .bot{position:absolute;left:0;width:100%;height:50%;border:3px solid #22305C;transition:transform .45s cubic-bezier(.3,1.4,.5,1),opacity .45s}
-.cap .top{top:0;border-radius:999px 999px 0 0;background:var(--c,#FF7FA3);border-bottom-width:1.5px}
+.cap .top,.cap .bot{position:absolute;left:0;width:100%;height:50%;border:3px solid #5A3E4B;transition:transform .45s cubic-bezier(.3,1.4,.5,1),opacity .45s}
+.cap .top{top:0;border-radius:999px 999px 0 0;background:var(--c,#FF9EC4);border-bottom-width:1.5px}
 .cap .top::after{content:"";position:absolute;left:18%;top:20%;width:24%;height:30%;border-radius:50%;background:rgba(255,255,255,.6)}
 .cap .bot{bottom:0;border-radius:0 0 999px 999px;background:#fff;border-top-width:1.5px}
-.cap .prize{position:absolute;inset:6%;border-radius:22%;overflow:hidden;background:#fff;border:3px solid #22305C;transform:scale(0);transition:transform .5s cubic-bezier(.3,1.7,.5,1) .12s;display:flex;align-items:center;justify-content:center}
+.cap .prize{position:absolute;inset:6%;border-radius:22%;overflow:hidden;background:#fff;border:3px solid #5A3E4B;transform:scale(0);transition:transform .5s cubic-bezier(.3,1.7,.5,1) .12s;display:flex;align-items:center;justify-content:center}
 .cap .prize svg{width:88%;height:88%}
 .cap .prize .swatch{width:80%}
 .cell .name{font-size:.72rem;font-weight:700;line-height:1.25;margin-top:6px;min-height:2.5em;opacity:0;transition:opacity .3s .35s}
 .cell .new{display:inline-block;background:var(--pink);color:#fff;border-radius:6px;padding:0 4px;font-size:.65rem;margin-bottom:1px}
 .cap-grid.n1 .cell .name{font-size:1.25rem}
-.cell.r3 .cap{--c:#FFD24A}.cell.r2 .cap{--c:#B79CFF}
+.cell.r3 .cap{--c:#FFD24A}.cell.r2 .cap{--c:#C9B3F5}
+.cell.r4 .cap{--c:linear-gradient(90deg,#FF9EC4,#FFD86B,#8FDCC0,#8CC8F0,#C9B3F5)}
+.cell.r4 .cap::before{content:"";position:absolute;inset:-14px;border-radius:50%;opacity:0;background:conic-gradient(#FF9EC4,#FFD86B,#8FDCC0,#8CC8F0,#C9B3F5,#FF9EC4);filter:blur(10px);animation:aura 1s ease-in-out infinite;animation-delay:calc(var(--d) + .7s)}
+.cell.r4:not(.open) .cap .top,.cell.r4:not(.open) .cap .bot{animation:wobble .4s ease-in-out infinite;animation-delay:calc(var(--d) + .7s)}
+.cell.open.r4 .cap .prize{border-color:#FF9EC4;box-shadow:0 0 0 3px #5A3E4B,0 0 26px 8px rgba(255,158,196,.9)}
+.cell.r4 .name{color:#FFF3B0}
+.gift-tag{display:inline-block;background:#FF9EC4;color:#5A3E4B;border:2px solid #5A3E4B;border-radius:999px;font-size:.7rem;font-weight:900;padding:0 6px;margin-bottom:2px}
 .cell.r3 .cap::before,.cell.r2 .cap::before{content:"";position:absolute;inset:-12px;border-radius:50%;opacity:0;animation:aura 1.2s ease-in-out infinite;animation-delay:calc(var(--d) + .7s)}
 .cell.r3 .cap::before{background:radial-gradient(circle,rgba(255,210,74,.9),transparent 70%)}
 .cell.r2 .cap::before{background:radial-gradient(circle,rgba(183,156,255,.8),transparent 70%)}
@@ -184,16 +200,16 @@ details.quick summary{font-weight:700;cursor:pointer}
 .cell.open .cap .bot{transform:translateY(60%) rotate(20deg);opacity:0}
 .cell.open .cap .prize{transform:scale(1)}
 .cell.open .name{opacity:1}
-.cell.open.r3 .cap .prize{border-color:#FFD24A;box-shadow:0 0 0 3px #22305C,0 0 24px 6px rgba(255,210,74,.9)}
-.cell.open.r2 .cap .prize{border-color:#B79CFF;box-shadow:0 0 0 3px #22305C,0 0 16px 4px rgba(183,156,255,.8)}
+.cell.open.r3 .cap .prize{border-color:#FFD24A;box-shadow:0 0 0 3px #5A3E4B,0 0 24px 6px rgba(255,210,74,.9)}
+.cell.open.r2 .cap .prize{border-color:#C9B3F5;box-shadow:0 0 0 3px #5A3E4B,0 0 16px 4px rgba(183,156,255,.8)}
 .burst-star{position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px;background:var(--sc);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:star .7s ease-out forwards;pointer-events:none}
 @keyframes star{to{transform:translate(var(--tx),var(--ty)) scale(1.6);opacity:0}}
 .stage-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.stage-actions .btn{min-width:130px;background:var(--sun);color:#22305C;border-color:#22305C;font-weight:900}
+.stage-actions .btn{min-width:130px;background:var(--sun);color:#5A3E4B;border-color:#5A3E4B;font-weight:900}
 .summary{background:rgba(255,255,255,.12);border-radius:14px;padding:10px 14px;margin:0 0 16px;font-weight:700}
 .summary[hidden]{display:none}
 .lvup-pup{width:180px;margin:0 auto;animation:hop .8s cubic-bezier(.3,1.6,.5,1) infinite}
-.reward-card{background:#fff;color:#22305C;border-radius:16px;border:3px solid #22305C;padding:10px 14px;margin:12px 0 16px;font-weight:700}
+.reward-card{background:#fff;color:#5A3E4B;border-radius:16px;border:3px solid #5A3E4B;padding:10px 14px;margin:12px 0 16px;font-weight:700}
 
 .flash{position:fixed;inset:0;background:#fff;z-index:30;pointer-events:none;opacity:0}
 .flash.on{animation:flash .5s ease-out}
@@ -207,14 +223,112 @@ details.quick summary{font-weight:700;cursor:pointer}
 .log li{padding:7px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:82px 1fr;gap:8px}
 .log time{color:var(--muted);font-size:.78rem;line-height:1.5}
 .log .dev{display:inline-block;font-size:.7rem;font-weight:700;color:var(--blue);border:1.5px solid currentColor;border-radius:6px;padding:0 4px;margin-right:4px}
-.gate-card{background:#fff;color:#22305C;border:3px solid #22305C;border-radius:20px;padding:16px;text-align:center}
-.gate-card .meta{color:#6B7899}.gate-card input{background:#EAF6FF;color:#22305C;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
-.gate-card .btn.ghost{color:#22305C;border-color:#22305C}
+.gate-card{background:#fff;color:#5A3E4B;border:3px solid #5A3E4B;border-radius:20px;padding:16px;text-align:center}
+.gate-card .meta{color:#A07C8C}.gate-card input{background:#FFF2F7;color:#5A3E4B;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.gate-card .btn.ghost{color:#5A3E4B;border-color:#5A3E4B}
 .family{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sky);border-radius:12px;padding:10px 14px}
 .family b{font-size:1.3rem;letter-spacing:.12em}
+.panel,.selbar,.tickets{box-shadow:0 4px 0 rgba(90,62,75,.12)}
+h2::before{content:"♡ ";color:var(--pink)}
+h3::before{content:"✿ ";color:var(--pink)}
+.tabs{border-bottom-style:dashed}
+.tab[aria-selected="true"]{background:linear-gradient(var(--card),var(--card)) padding-box;box-shadow:inset 0 4px 0 var(--pink)}
+.lv{background:var(--pink);color:#5A3E4B}
+.bar.score-bar i{background:repeating-linear-gradient(45deg,#FF9EC4 0 10px,#FFC6DD 10px 20px)}
+.bar.exp-bar i{background:repeating-linear-gradient(45deg,#8FDCC0 0 10px,#BDEEDC 10px 20px)}
+.room{border-radius:28px}
+.ribbon{display:flex;justify-content:center;gap:10px;color:var(--pink);font-size:1rem;letter-spacing:.3em;margin:-2px 0 4px;user-select:none}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,40px);opacity:0;background:var(--ink);color:var(--card);font-weight:700;padding:10px 18px;border-radius:999px;z-index:40;transition:.3s;max-width:90vw;text-align:center;pointer-events:none}
 .toast.show{transform:translate(-50%,0);opacity:1}
+/* helper: 雲寶 (original cloud sprite) */
+.helper{position:fixed;left:calc(6px + env(safe-area-inset-left,0px));bottom:calc(6px + env(safe-area-inset-bottom,0px));width:100px;z-index:25;pointer-events:none}
+.helper svg{display:block;width:100%;height:auto;overflow:visible}
+.helper .hb{animation:hbounce .55s ease-in-out infinite alternate}
+@keyframes hbounce{from{transform:translateY(0)}to{transform:translateY(-7px)}}
+.helper .pl{transform-origin:34px 66px;animation:wl .28s ease-in-out infinite alternate}
+.helper .pr{transform-origin:86px 66px;animation:wr .28s ease-in-out infinite alternate .14s}
+@keyframes wl{from{transform:rotate(10deg)}to{transform:rotate(-30deg)}}
+@keyframes wr{from{transform:rotate(-10deg)}to{transform:rotate(30deg)}}
+.helper.hop .hw{animation:hhop .4s cubic-bezier(.3,1.6,.5,1)}
+@keyframes hhop{40%{transform:translateY(-22px)}}
+.helper.spin .hw{transform-origin:60px 70px;animation:hspin .9s cubic-bezier(.3,1.3,.5,1)}
+@keyframes hspin{50%{transform:translateY(-26px) rotate(180deg) scale(1.15)}to{transform:rotate(360deg)}}
+.helper.clap .pl{animation:cl .2s ease-in-out infinite alternate}.helper.clap .pr{animation:cr .2s ease-in-out infinite alternate}
+@keyframes cl{to{transform:translate(14px,-6px)}}@keyframes cr{to{transform:translate(-14px,-6px)}}
+.h-spark{position:absolute;left:50%;top:45%}
+.h-bubble{position:absolute;left:76px;bottom:82px;background:#fff;color:#5A3E4B;border:3px solid #5A3E4B;border-radius:16px;padding:4px 12px;font-weight:900;font-size:.92rem;white-space:nowrap;opacity:0;transform:scale(.6);transform-origin:0 100%;transition:opacity .2s,transform .25s cubic-bezier(.3,1.6,.5,1)}
+.h-bubble::after{content:"";position:absolute;left:8px;bottom:-11px;border:7px solid transparent;border-top-color:#5A3E4B;border-left-color:#5A3E4B}
+.h-bubble.pop{opacity:1;transform:scale(1)}
+.stage .stage-inner{padding-bottom:120px}
+/* parent fab + sheet */
+.parent-fab{position:fixed;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:12;
+  font:inherit;font-weight:900;font-size:.78rem;color:#5A3E4B;background:var(--card);border:3px solid #5A3E4B;border-radius:999px;padding:5px 10px;opacity:.93;box-shadow:0 3px 0 #5A3E4B;cursor:pointer}
+.parent-fab:active{transform:translateY(2px);box-shadow:0 1px 0 #5A3E4B}
+.wrap{padding-bottom:84px}
+#tab-parent.sheet{position:fixed;inset:0;z-index:16;overflow-y:auto;border:0;border-radius:0;box-shadow:none;
+  padding:calc(12px + env(safe-area-inset-top,0px)) 16px calc(40px + env(safe-area-inset-bottom,0px))}
+#tab-parent.sheet>*{max-width:560px;margin-left:auto;margin-right:auto}
+.sheet-head{position:sticky;top:calc(-12px - env(safe-area-inset-top,0px));z-index:2;display:flex;align-items:center;justify-content:space-between;
+  background:var(--card);padding:10px 0;margin-bottom:6px;border-bottom:2px dashed var(--line)}
+.sheet-head h2{margin:0}
+.pin-card{max-width:300px;width:100%}
+.pin-card input{text-align:center;font-size:1.6rem;letter-spacing:.4em;font-weight:900}
+.pin-card .row{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.pin-card.shake{animation:pshake .4s}
+@keyframes pshake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+/* photos */
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 8px}
+.photo-grid figure{margin:0;text-align:center;font-size:.72rem;font-weight:700;color:var(--muted)}
+.photo-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:2px solid var(--line);display:block;background:var(--sky)}
+.pz-photo{font:inherit;font-size:.8rem;padding:4px 6px;border-radius:8px;border:2px solid var(--line);background:var(--card);color:var(--ink);margin-top:4px;max-width:100%}
+.pz-ic img{width:40px;height:40px;object-fit:cover;border-radius:8px}
+.pz-pick{border:2px dashed var(--line);padding:0;cursor:pointer;font:inherit}
+.win-sum{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px}
+.win-sum span,.st{display:inline-block;border-radius:999px;padding:1px 9px;font-size:.75rem;font-weight:900;border:2px solid #5A3E4B;color:#5A3E4B}
+.st-won{background:#FFE38F}.st-ready{background:#FFC6DD}.st-given{background:#C9EFE0}
+.win-btns{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.win-btns .linkish{font-size:.72rem;color:var(--muted)}
+.fab-dot{display:inline-block;min-width:1.4em;margin-left:4px;background:#E0567F;color:#fff;border-radius:999px;font-size:.7rem;padding:0 5px}
+.my-wins{margin-top:10px}.my-wins li{padding:6px 0}
+.linkish{background:none;border:0;padding:2px 0;font:inherit;font-size:.8rem;font-weight:700;color:var(--blue);cursor:pointer;text-align:left}
+.ph-miss{font-size:.62rem;color:var(--muted);display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:1;background:var(--sky);border-radius:8px}
+.picker-card{max-width:420px;width:100%;max-height:82vh;overflow-y:auto}
+.pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pick{border:3px solid #F8D3E2;border-radius:12px;background:#FFF2F7;padding:4px;cursor:pointer;font:inherit;color:#5A3E4B;font-size:.68rem;font-weight:700;word-break:break-all}
+.pick img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;display:block;margin-bottom:2px}
+.pick.on{border-color:#F27BA6;box-shadow:0 0 0 2px #F27BA6}
+/* prize reveal */
+.reveal{position:fixed;inset:0;z-index:28;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;
+  padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  background:radial-gradient(circle,rgba(255,255,255,.22) 2.5px,transparent 3px) 0 0/24px 24px,conic-gradient(from 0deg at 50% 45%,#FFC6DD,#FFF0B8,#C9EFE0,#CDE8FA,#E5D9FB,#FFC6DD)}
+.reveal[hidden]{display:none}
+.rv-inner{width:100%;max-width:380px;text-align:center;position:relative}
+.rv-box{width:170px;margin:0 auto}
+.rv-box svg{width:100%;height:auto;overflow:visible;display:block}
+.rv-box.shake{animation:boxshake .5s ease-in-out infinite}
+@keyframes boxshake{0%,100%{transform:rotate(0)}20%{transform:rotate(-7deg) translateY(-4px)}40%{transform:rotate(6deg)}60%{transform:rotate(-4deg) translateY(-2px)}80%{transform:rotate(3deg)}}
+.rv-box .lid{transition:transform .6s cubic-bezier(.3,1.4,.5,1),opacity .6s;transform-origin:85px 60px}
+.rv-box.open .lid{transform:translate(30px,-120px) rotate(35deg);opacity:0}
+.rv-box.gone{animation:boxgone .4s ease-in forwards}
+@keyframes boxgone{to{transform:scale(.3);opacity:0}}
+.rv-card{background:#fff;color:#5A3E4B;border:3px solid #5A3E4B;border-radius:24px;padding:16px;box-shadow:0 6px 0 #5A3E4B;animation:cardpop .6s cubic-bezier(.3,1.5,.5,1)}
+.rv-card[hidden]{display:none}
+@keyframes cardpop{from{transform:scale(.2) rotate(-8deg);opacity:0}}
+.rv-media{position:relative;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+.rv-media img{max-width:100%;max-height:44vh;border-radius:16px;border:3px solid #5A3E4B;display:block;animation:photoin .7s cubic-bezier(.3,1.5,.5,1)}
+@keyframes photoin{from{transform:scale(.4);opacity:0}}
+.rv-default{width:180px;height:180px;position:relative}
+.rv-default .halo{position:absolute;inset:0;border-radius:50%;background:conic-gradient(#FF9EC4,#FFD86B,#8FDCC0,#8CC8F0,#C9B3F5,#FF9EC4);animation:rot 3s linear infinite;filter:blur(2px)}
+.rv-default .disc{position:absolute;inset:14px;border-radius:50%;background:#fff;border:3px solid #5A3E4B;display:flex;align-items:center;justify-content:center}
+.rv-default svg{width:72%;height:72%;animation:iconbob 1s ease-in-out infinite alternate}
+@keyframes iconbob{to{transform:translateY(-8px) rotate(4deg)}}
+.rv-tag{display:inline-block;margin:0;background:#FF9EC4;border:2px solid #5A3E4B;border-radius:999px;padding:2px 12px;font-weight:900;font-size:.85rem}
+.rv-card h2{margin:8px 0 4px;font-size:1.5rem}
+.rv-note{margin:0 0 12px;font-weight:700;color:#A07C8C}
+.rv-hint{color:#5A3E4B;font-weight:900;font-size:1.2rem;margin:14px 0 0}
 @media (prefers-reduced-motion: reduce){
+  .reveal *,.pin-card{animation:none!important;transition:none!important}
+  .helper *{animation:none!important;transition:none!important}
   .rays,.confetti i,.cap,.cap::before,.cap .top,.cap .bot,.tickets.bump,.pup .tail,.pup .legs,.lvup-pup,.heart{animation:none!important}
   .cap{opacity:1}.pup{transition:none!important}
 }
@@ -225,6 +339,7 @@ details.quick summary{font-weight:700;cursor:pointer}
 <div class="wrap">
 
   <div class="sync" id="sync">📱 只存在這台裝置</div>
+  <div class="ribbon" aria-hidden="true">♡ ✿ ☆ ✿ ♡</div>
   <div class="pet-head">
     <span class="nm" id="petName">小橘</span>
     <span class="lv">Lv <span id="lvNum">1</span></span>
@@ -265,7 +380,6 @@ details.quick summary{font-weight:700;cursor:pointer}
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-tab="bag">背包圖鑑</button>
     <button class="tab" role="tab" aria-selected="false" data-tab="exam">登記考卷</button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="parent">家長設定</button>
   </div>
 
   <section class="panel" id="tab-bag" role="tabpanel">
@@ -281,6 +395,10 @@ details.quick summary{font-weight:700;cursor:pointer}
     <h3>壁紙和地板</h3>
     <p class="meta" style="margin:-4px 0 8px">點一下換上，再點一次換回原本的</p>
     <div class="bag" id="bagThemes"></div>
+    <h3>實體大獎 🎁</h3>
+    <p class="prize-note" id="prizeNote"></p>
+    <div class="bag" id="bagPrizes"></div>
+    <ul class="list my-wins" id="myWins"></ul>
   </section>
 
   <section class="panel" id="tab-exam" role="tabpanel" hidden>
@@ -304,8 +422,8 @@ details.quick summary{font-weight:700;cursor:pointer}
     <ul class="list" id="examList"></ul>
   </section>
 
-  <section class="panel" id="tab-parent" role="tabpanel" hidden>
-    <h2>家長設定</h2>
+  <section class="panel sheet" id="tab-parent" role="dialog" aria-modal="true" aria-labelledby="parentTitle" hidden>
+    <div class="sheet-head"><h2 id="parentTitle">家長設定</h2><button class="btn small" id="parentClose">關閉</button></div>
     <label for="setName">小狗的名字</label>
     <input id="setName" type="text" maxlength="8">
 
@@ -316,6 +434,39 @@ details.quick summary{font-weight:700;cursor:pointer}
       <div><label for="setCost">抽一次要</label><input id="setCost" type="number" min="1" max="20"></div>
     </div>
     <p class="meta">分數會一直累加，沒滿也會留著。改規則會用全部分數重新計算。</p>
+
+    <h3>家長密碼</h3>
+    <div class="reward-row" style="grid-template-columns:1fr 70px">
+      <input id="pinNew" type="password" inputmode="numeric" maxlength="8" placeholder="輸入新密碼（4～8 位數字）" aria-label="新的家長密碼" autocomplete="new-password">
+      <button class="btn small" id="pinSave">更改</button>
+    </div>
+    <p class="meta" style="margin-top:-2px">打開家長設定時要輸入。5 分鐘內再打開不用重輸。</p>
+
+    <h3>實體照片</h3>
+    <p class="meta" style="margin-top:-4px">把照片上傳到 GitHub 的 dog-home 裡的 <b>photos</b> 資料夾（檔名不限，jpg、png、gif、webp 都可以），再到下面「獎品清單」點每個獎品的 📷 選照片。抽中時有照片就顯示照片，沒有就播預設動畫。</p>
+    <p class="meta" id="photoStatus" style="font-weight:700"></p>
+    <div class="photo-grid" id="photoGrid"></div>
+    <button class="btn small ghost" id="photoRescan">重新整理照片清單</button>
+
+    <h3>扭蛋實體大獎</h3>
+    <p class="meta" style="margin-top:-4px">抽到彩虹扭蛋就是實體大獎，抽中後數量減 1，抽完就不會再出現。</p>
+    <div class="settings-grid" style="grid-template-columns:1fr 1fr">
+      <div><label for="setPity">連續幾顆沒中，下一顆保證中</label><input id="setPity" type="number" min="0" max="50"></div>
+      <div><label for="setRate">平常抽中機率（%）</label><input id="setRate" type="number" min="0" max="100"></div>
+    </div>
+    <p class="meta" id="pityLine"></p>
+    <h3 style="font-size:1rem">抽中的大獎（準備進度）</h3>
+    <p class="meta" style="margin-top:-4px">抽中 → 🛒 還沒買 → 按「已買好」→ 🎁 準備好了 → 真的交給孩子後按「已送出」才算完成。</p>
+    <p class="win-sum" id="winSum"></p>
+    <ul class="list" id="prizeWins"></ul>
+    <h3 style="font-size:1rem">獎品清單</h3>
+    <ul class="list" id="prizeList"></ul>
+    <div class="prize-add">
+      <input id="pzName" type="text" maxlength="12" placeholder="獎品名稱" aria-label="獎品名稱">
+      <input id="pzQty" type="number" min="1" max="99" value="1" aria-label="數量">
+      <select id="pzIcon" aria-label="圖示"></select>
+      <button class="btn small" id="pzAdd" aria-label="新增獎品">＋</button>
+    </div>
 
     <h3>升級獎勵（實體禮物）</h3>
     <p class="meta" style="margin-top:-4px">小狗升到這個等級時，會跳出「可以跟爸媽領禮物」。孩子領到後按「已領取」。</p>
@@ -358,8 +509,65 @@ details.quick summary{font-weight:700;cursor:pointer}
       <button class="btn" id="stageDone" hidden>放進背包</button>
     </div>
   </div>
+  <div class="helper" id="helper" aria-hidden="true">
+    <div class="h-bubble" id="hBubble"></div>
+    <span class="h-spark" id="hSpark"></span>
+    <svg viewBox="0 0 120 112"><g class="hw"><g class="hb">
+      <ellipse cx="60" cy="106" rx="26" ry="4" fill="rgba(90,62,75,.18)"/>
+      <path d="M60 28V14" stroke="#5A3E4B" stroke-width="3" stroke-linecap="round"/>
+      <path d="M60 2l3.5 7 7.5 1-5.5 5 1.5 7.5L60 19l-7 3.5 1.5-7.5-5.5-5 7.5-1z" fill="#FFD86B" stroke="#5A3E4B" stroke-width="2.5" stroke-linejoin="round"/>
+      <g fill="#5A3E4B"><circle cx="40" cy="60" r="24"/><circle cx="60" cy="48" r="30"/><circle cx="82" cy="60" r="24"/><circle cx="60" cy="72" r="28"/><ellipse cx="48" cy="98" rx="10" ry="7"/><ellipse cx="72" cy="98" rx="10" ry="7"/></g>
+      <g fill="#fff"><circle cx="40" cy="60" r="21"/><circle cx="60" cy="48" r="27"/><circle cx="82" cy="60" r="21"/><circle cx="60" cy="72" r="25"/><ellipse cx="48" cy="98" rx="7.5" ry="4.5"/><ellipse cx="72" cy="98" rx="7.5" ry="4.5"/></g>
+      <ellipse cx="60" cy="86" rx="24" ry="8" fill="#EADFFC" opacity=".7"/>
+      <ellipse cx="51" cy="62" rx="3.6" ry="5.2" fill="#5A3E4B"/><ellipse cx="69" cy="62" rx="3.6" ry="5.2" fill="#5A3E4B"/>
+      <circle cx="52.2" cy="59.8" r="1.3" fill="#fff"/><circle cx="70.2" cy="59.8" r="1.3" fill="#fff"/>
+      <ellipse cx="42" cy="71" rx="6" ry="3.6" fill="#FF9EC4" opacity=".8"/><ellipse cx="78" cy="71" rx="6" ry="3.6" fill="#FF9EC4" opacity=".8"/>
+      <path d="M55 70q2.5 3 5 0q2.5 3 5 0" fill="none" stroke="#5A3E4B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <g class="pl"><circle cx="20" cy="58" r="11" fill="#FF9EC4" stroke="#5A3E4B" stroke-width="3"/><circle cx="16" cy="54" r="3" fill="#FFC6DD"/><circle cx="24" cy="60" r="2.5" fill="#FFC6DD"/><circle cx="31" cy="64" r="5" fill="#fff" stroke="#5A3E4B" stroke-width="2.5"/></g>
+      <g class="pr"><circle cx="100" cy="58" r="11" fill="#FFD86B" stroke="#5A3E4B" stroke-width="3"/><circle cx="104" cy="54" r="3" fill="#FFF0B8"/><circle cx="96" cy="60" r="2.5" fill="#FFF0B8"/><circle cx="89" cy="64" r="5" fill="#fff" stroke="#5A3E4B" stroke-width="2.5"/></g>
+    </g></g></svg>
+  </div>
 </div>
 
+<button class="parent-fab" id="parentFab" aria-label="家長設定，需要密碼">⚙️ 家長</button>
+<div class="modal" id="pinModal" hidden role="dialog" aria-modal="true" aria-labelledby="pinTitle">
+  <div class="gate-card pin-card" id="pinCard">
+    <p class="stage-title" id="pinTitle" style="color:#5A3E4B;text-shadow:none;font-size:1.3rem">家長密碼</p>
+    <input id="pinInput" type="password" inputmode="numeric" maxlength="8" autocomplete="off" aria-label="家長密碼">
+    <p class="meta" id="pinMsg" style="min-height:1.4em;margin:6px 0 0"></p>
+    <div class="row"><button class="btn ghost small" id="pinCancel">取消</button><button class="btn" id="pinOk">打開</button></div>
+  </div>
+</div>
+<div class="modal" id="picker" hidden role="dialog" aria-modal="true" aria-labelledby="pickTitle">
+  <div class="gate-card picker-card">
+    <p id="pickTitle" style="font-weight:900;margin:0 0 10px"></p>
+    <div class="pick-grid" id="pickGrid"></div>
+    <div class="row" style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+      <button class="btn small ghost" id="pickNone">不用照片</button><button class="btn small" id="pickCancel">取消</button>
+    </div>
+  </div>
+</div>
+<div class="reveal" id="reveal" hidden role="dialog" aria-modal="true" aria-labelledby="rvTitle">
+  <div class="rv-inner">
+    <div class="rv-box" id="rvBox">
+      <svg viewBox="0 0 170 160" aria-hidden="true">
+        <rect x="22" y="66" width="126" height="86" rx="10" fill="#FFD6E7" stroke="#5A3E4B" stroke-width="5"/>
+        <rect x="74" y="66" width="22" height="86" fill="#FFD86B" stroke="#5A3E4B" stroke-width="5"/>
+        <g class="lid"><rect x="12" y="44" width="146" height="28" rx="8" fill="#FF9EC4" stroke="#5A3E4B" stroke-width="5"/>
+          <rect x="74" y="44" width="22" height="28" fill="#FFD86B" stroke="#5A3E4B" stroke-width="5"/>
+          <path d="M85 44c-14-26-46-22-32-4 7 7 32 4 32 4zM85 44c14-26 46-22 32-4-7 7-32 4-32 4z" fill="#FFD86B" stroke="#5A3E4B" stroke-width="5" stroke-linejoin="round"/></g>
+      </svg>
+    </div>
+    <p class="rv-hint" id="rvHint">是什麼禮物呢…？</p>
+    <div class="rv-card" id="rvCard" hidden>
+      <div class="rv-media" id="rvMedia"></div>
+      <p class="rv-tag">🎁 實體大獎兌換券</p>
+      <h2 id="rvTitle"></h2>
+      <p class="rv-note">告訴爸爸媽媽，他們會幫你準備真的禮物！</p>
+      <button class="btn" id="rvOk">好！</button>
+    </div>
+  </div>
+</div>
 <div class="modal" id="lvModal" hidden role="dialog" aria-modal="true" aria-labelledby="lvTitle">
   <div class="rays"></div>
   <div class="stage-inner">
@@ -402,64 +610,82 @@ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const wait=ms=>new Promise(r=>setTimeout(r,reduced?0:ms));
 
 /* ===== item catalog (original art) ===== */
-const L='stroke="#22305C" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
+const L='stroke="#5A3E4B" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
 function star(cx,cy,r,fill){let p='';for(let i=0;i<10;i++){const a=Math.PI/5*i-Math.PI/2,rr=i%2?r*.45:r;p+=`${(cx+Math.cos(a)*rr).toFixed(1)},${(cy+Math.sin(a)*rr).toFixed(1)} `}return `<polygon points="${p}" fill="${fill}" ${L}/>`}
 const ITEMS=[
- {id:'plant',name:'小盆栽',tier:1,w:14,svg:`<ellipse cx="38" cy="38" rx="10" ry="20" fill="#5CC27A" ${L} transform="rotate(-25 38 38)"/><ellipse cx="62" cy="38" rx="10" ry="20" fill="#5CC27A" ${L} transform="rotate(25 62 38)"/><ellipse cx="50" cy="30" rx="10" ry="24" fill="#7ED6A7" ${L}/><path d="M32 58h36l-6 34H38z" fill="#E8913A" ${L}/>`},
+ {id:'plant',name:'小盆栽',tier:1,w:14,svg:`<ellipse cx="38" cy="38" rx="10" ry="20" fill="#5CC27A" ${L} transform="rotate(-25 38 38)"/><ellipse cx="62" cy="38" rx="10" ry="20" fill="#5CC27A" ${L} transform="rotate(25 62 38)"/><ellipse cx="50" cy="30" rx="10" ry="24" fill="#7ED6A7" ${L}/><path d="M32 58h36l-6 34H38z" fill="#F2A773" ${L}/>`},
  {id:'rug',name:'圓圓地毯',tier:1,w:32,flat:1,svg:`<ellipse cx="50" cy="78" rx="47" ry="16" fill="#FF9DB8" ${L}/><ellipse cx="50" cy="78" rx="33" ry="10" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="6 5"/>`},
- {id:'stool',name:'小凳子',tier:1,w:13,svg:`<rect x="28" y="58" width="7" height="34" fill="#C98B55" ${L}/><rect x="65" y="58" width="7" height="34" fill="#C98B55" ${L}/><ellipse cx="50" cy="56" rx="28" ry="10" fill="#FFC83D" ${L}/>`},
- {id:'bowl',name:'狗狗飯碗',tier:1,w:12,svg:`<circle cx="38" cy="68" r="7" fill="#B5763F" ${L}/><circle cx="52" cy="65" r="7" fill="#B5763F" ${L}/><circle cx="64" cy="69" r="7" fill="#B5763F" ${L}/><path d="M16 72h68l-8 20H24z" fill="#3E8EDE" ${L}/>`},
- {id:'ball',name:'彈力球',tier:1,w:9,svg:`<circle cx="50" cy="72" r="20" fill="#FF7FA3" ${L}/><path d="M32 64q18 12 36 0" fill="none" stroke="#fff" stroke-width="5"/>`},
- {id:'cushion',name:'黃色抱枕',tier:1,w:13,svg:`<rect x="20" y="58" width="60" height="34" rx="14" fill="#FFC83D" ${L}/><circle cx="50" cy="75" r="4" fill="#22305C"/>`},
- {id:'clock',name:'掛鐘',tier:1,w:13,wall:1,svg:`<circle cx="50" cy="56" r="34" fill="#fff" ${L}/><path d="M50 56V36M50 56l14 8" ${L} stroke-width="4"/><circle cx="50" cy="56" r="4" fill="#22305C"/>`},
- {id:'frame',name:'風景畫',tier:1,w:18,wall:1,svg:`<rect x="12" y="30" width="76" height="60" rx="4" fill="#E8913A" ${L}/><rect x="20" y="38" width="60" height="44" fill="#BDE6FF"/><path d="M20 82l18-22 12 12 12-12 18 22z" fill="#5CC27A"/><circle cx="68" cy="48" r="5" fill="#FFC83D"/>`},
- {id:'lamp',name:'檯燈',tier:2,w:15,svg:`<path d="M50 40v46" ${L} stroke-width="5"/><path d="M30 40h40L60 12H40z" fill="#FFC83D" ${L}/><ellipse cx="50" cy="88" rx="16" ry="5" fill="#3E8EDE" ${L}/>`},
- {id:'shelf',name:'書櫃',tier:2,w:22,svg:`<rect x="20" y="8" width="60" height="86" rx="3" fill="#C98B55" ${L}/><rect x="26" y="14" width="7" height="24" fill="#FF7FA3"/><rect x="35" y="18" width="7" height="20" fill="#3E8EDE"/><rect x="44" y="14" width="7" height="24" fill="#FFC83D"/><rect x="58" y="44" width="7" height="22" fill="#7ED6A7"/><rect x="67" y="42" width="7" height="24" fill="#B79CFF"/><rect x="28" y="70" width="7" height="22" fill="#3E8EDE"/><rect x="37" y="74" width="16" height="18" fill="#FF9F5A"/><path d="M20 38h60M20 66h60" ${L}/>`},
- {id:'sofa',name:'藍色沙發',tier:2,w:32,svg:`<rect x="14" y="40" width="72" height="36" rx="10" fill="#3E8EDE" ${L}/><rect x="22" y="62" width="56" height="20" rx="6" fill="#6FB2F2" ${L}/><rect x="6" y="54" width="18" height="32" rx="7" fill="#3E8EDE" ${L}/><rect x="76" y="54" width="18" height="32" rx="7" fill="#3E8EDE" ${L}/><path d="M22 86v6M78 86v6" ${L} stroke-width="5"/>`},
- {id:'bed',name:'狗狗睡墊',tier:2,w:26,flat:1,svg:`<ellipse cx="50" cy="74" rx="44" ry="18" fill="#FF7FA3" ${L}/><ellipse cx="50" cy="72" rx="32" ry="10" fill="#FFE4EC" ${L}/>`},
+ {id:'stool',name:'小凳子',tier:1,w:13,svg:`<rect x="28" y="58" width="7" height="34" fill="#E2B48C" ${L}/><rect x="65" y="58" width="7" height="34" fill="#E2B48C" ${L}/><ellipse cx="50" cy="56" rx="28" ry="10" fill="#FFD86B" ${L}/>`},
+ {id:'bowl',name:'狗狗飯碗',tier:1,w:12,svg:`<circle cx="38" cy="68" r="7" fill="#D49A6A" ${L}/><circle cx="52" cy="65" r="7" fill="#D49A6A" ${L}/><circle cx="64" cy="69" r="7" fill="#D49A6A" ${L}/><path d="M16 72h68l-8 20H24z" fill="#8CC8F0" ${L}/>`},
+ {id:'ball',name:'彈力球',tier:1,w:9,svg:`<circle cx="50" cy="72" r="20" fill="#FF9EC4" ${L}/><path d="M32 64q18 12 36 0" fill="none" stroke="#fff" stroke-width="5"/>`},
+ {id:'cushion',name:'黃色抱枕',tier:1,w:13,svg:`<rect x="20" y="58" width="60" height="34" rx="14" fill="#FFD86B" ${L}/><circle cx="50" cy="75" r="4" fill="#5A3E4B"/>`},
+ {id:'clock',name:'掛鐘',tier:1,w:13,wall:1,svg:`<circle cx="50" cy="56" r="34" fill="#fff" ${L}/><path d="M50 56V36M50 56l14 8" ${L} stroke-width="4"/><circle cx="50" cy="56" r="4" fill="#5A3E4B"/>`},
+ {id:'frame',name:'風景畫',tier:1,w:18,wall:1,svg:`<rect x="12" y="30" width="76" height="60" rx="4" fill="#F2A773" ${L}/><rect x="20" y="38" width="60" height="44" fill="#BDE6FF"/><path d="M20 82l18-22 12 12 12-12 18 22z" fill="#5CC27A"/><circle cx="68" cy="48" r="5" fill="#FFD86B"/>`},
+ {id:'lamp',name:'檯燈',tier:2,w:15,svg:`<path d="M50 40v46" ${L} stroke-width="5"/><path d="M30 40h40L60 12H40z" fill="#FFD86B" ${L}/><ellipse cx="50" cy="88" rx="16" ry="5" fill="#8CC8F0" ${L}/>`},
+ {id:'shelf',name:'書櫃',tier:2,w:22,svg:`<rect x="20" y="8" width="60" height="86" rx="3" fill="#E2B48C" ${L}/><rect x="26" y="14" width="7" height="24" fill="#FF9EC4"/><rect x="35" y="18" width="7" height="20" fill="#8CC8F0"/><rect x="44" y="14" width="7" height="24" fill="#FFD86B"/><rect x="58" y="44" width="7" height="22" fill="#7ED6A7"/><rect x="67" y="42" width="7" height="24" fill="#C9B3F5"/><rect x="28" y="70" width="7" height="22" fill="#8CC8F0"/><rect x="37" y="74" width="16" height="18" fill="#FF9F5A"/><path d="M20 38h60M20 66h60" ${L}/>`},
+ {id:'sofa',name:'藍色沙發',tier:2,w:32,svg:`<rect x="14" y="40" width="72" height="36" rx="10" fill="#8CC8F0" ${L}/><rect x="22" y="62" width="56" height="20" rx="6" fill="#BBE1F8" ${L}/><rect x="6" y="54" width="18" height="32" rx="7" fill="#8CC8F0" ${L}/><rect x="76" y="54" width="18" height="32" rx="7" fill="#8CC8F0" ${L}/><path d="M22 86v6M78 86v6" ${L} stroke-width="5"/>`},
+ {id:'bed',name:'狗狗睡墊',tier:2,w:26,flat:1,svg:`<ellipse cx="50" cy="74" rx="44" ry="18" fill="#FF9EC4" ${L}/><ellipse cx="50" cy="72" rx="32" ry="10" fill="#FFE4EC" ${L}/>`},
  {id:'window',name:'窗戶',tier:2,w:22,wall:1,svg:`<rect x="18" y="14" width="64" height="66" rx="4" fill="#BDE6FF" ${L}/><circle cx="34" cy="30" r="7" fill="#fff"/><path d="M50 14v66M18 47h64" ${L}/><path d="M12 82h76" ${L} stroke-width="6"/>`},
- {id:'fish',name:'金魚缸',tier:2,w:15,svg:`<circle cx="50" cy="58" r="28" fill="#BDE6FF" ${L}/><path d="M42 60q8-9 15 0q-7 9-15 0zM57 60l7-6v12z" fill="#FF9F5A" stroke="#22305C" stroke-width="2"/><rect x="32" y="84" width="36" height="8" rx="2" fill="#C98B55" ${L}/>`},
- {id:'vase',name:'花瓶',tier:2,w:13,svg:`<path d="M50 52V22M43 52L34 26M57 52l9-26" stroke="#3FA765" stroke-width="3"/><circle cx="50" cy="18" r="8" fill="#FF7FA3" ${L}/><circle cx="33" cy="23" r="7" fill="#FFC83D" ${L}/><circle cx="67" cy="23" r="7" fill="#B79CFF" ${L}/><path d="M38 50h24q7 16 0 42H38q-7-26 0-42z" fill="#3E8EDE" ${L}/>`},
- {id:'castle',name:'城堡狗屋',tier:3,w:30,svg:`<rect x="18" y="40" width="64" height="52" fill="#FFE4EC" ${L}/><rect x="8" y="30" width="18" height="62" fill="#FFB3C8" ${L}/><rect x="74" y="30" width="18" height="62" fill="#FFB3C8" ${L}/><path d="M6 30l11-15 11 15zM72 30l11-15 11 15z" fill="#B79CFF" ${L}/><path d="M32 40l18-24 18 24z" fill="#B79CFF" ${L}/><path d="M50 16V4l11 4-11 4" fill="#FFC83D" ${L}/><path d="M37 92V72a13 13 0 0126 0v20z" fill="#22305C"/>`},
- {id:'rainbow',name:'彩虹夜燈',tier:3,w:24,svg:`<path d="M10 80a40 40 0 0180 0" fill="none" stroke="#FF7FA3" stroke-width="8"/><path d="M18 80a32 32 0 0164 0" fill="none" stroke="#FFC83D" stroke-width="8"/><path d="M26 80a24 24 0 0148 0" fill="none" stroke="#7ED6A7" stroke-width="8"/><path d="M34 80a16 16 0 0132 0" fill="none" stroke="#3E8EDE" stroke-width="8"/><rect x="6" y="80" width="88" height="12" rx="6" fill="#fff" ${L}/>`},
- {id:'piano',name:'小鋼琴',tier:3,w:30,svg:`<rect x="12" y="28" width="76" height="42" rx="4" fill="#3A3A52" ${L}/><rect x="16" y="54" width="68" height="14" fill="#fff" stroke="#22305C" stroke-width="2"/><path d="M27 54v8M37 54v8M51 54v8M61 54v8M71 54v8" stroke="#22305C" stroke-width="4"/><path d="M20 70v22M80 70v22" ${L} stroke-width="5"/>${star(70,40,7,'#FFC83D')}`},
+ {id:'fish',name:'金魚缸',tier:2,w:15,svg:`<circle cx="50" cy="58" r="28" fill="#BDE6FF" ${L}/><path d="M42 60q8-9 15 0q-7 9-15 0zM57 60l7-6v12z" fill="#FF9F5A" stroke="#5A3E4B" stroke-width="2"/><rect x="32" y="84" width="36" height="8" rx="2" fill="#E2B48C" ${L}/>`},
+ {id:'vase',name:'花瓶',tier:2,w:13,svg:`<path d="M50 52V22M43 52L34 26M57 52l9-26" stroke="#3FA765" stroke-width="3"/><circle cx="50" cy="18" r="8" fill="#FF9EC4" ${L}/><circle cx="33" cy="23" r="7" fill="#FFD86B" ${L}/><circle cx="67" cy="23" r="7" fill="#C9B3F5" ${L}/><path d="M38 50h24q7 16 0 42H38q-7-26 0-42z" fill="#8CC8F0" ${L}/>`},
+ {id:'castle',name:'城堡狗屋',tier:3,w:30,svg:`<rect x="18" y="40" width="64" height="52" fill="#FFE4EC" ${L}/><rect x="8" y="30" width="18" height="62" fill="#FFB3C8" ${L}/><rect x="74" y="30" width="18" height="62" fill="#FFB3C8" ${L}/><path d="M6 30l11-15 11 15zM72 30l11-15 11 15z" fill="#C9B3F5" ${L}/><path d="M32 40l18-24 18 24z" fill="#C9B3F5" ${L}/><path d="M50 16V4l11 4-11 4" fill="#FFD86B" ${L}/><path d="M37 92V72a13 13 0 0126 0v20z" fill="#5A3E4B"/>`},
+ {id:'rainbow',name:'彩虹夜燈',tier:3,w:24,svg:`<path d="M10 80a40 40 0 0180 0" fill="none" stroke="#FF9EC4" stroke-width="8"/><path d="M18 80a32 32 0 0164 0" fill="none" stroke="#FFD86B" stroke-width="8"/><path d="M26 80a24 24 0 0148 0" fill="none" stroke="#7ED6A7" stroke-width="8"/><path d="M34 80a16 16 0 0132 0" fill="none" stroke="#8CC8F0" stroke-width="8"/><rect x="6" y="80" width="88" height="12" rx="6" fill="#fff" ${L}/>`},
+ {id:'piano',name:'小鋼琴',tier:3,w:30,svg:`<rect x="12" y="28" width="76" height="42" rx="4" fill="#7A5C6E" ${L}/><rect x="16" y="54" width="68" height="14" fill="#fff" stroke="#5A3E4B" stroke-width="2"/><path d="M27 54v8M37 54v8M51 54v8M61 54v8M71 54v8" stroke="#5A3E4B" stroke-width="4"/><path d="M20 70v22M80 70v22" ${L} stroke-width="5"/>${star(70,40,7,'#FFD86B')}`},
  {id:'stars',name:'星星吊燈',tier:3,w:18,wall:1,top:1,svg:`<path d="M50 0v26M28 26h44M28 26v14M50 26v22M72 26v14" ${L}/>${star(28,50,11,'#FFD24A')}${star(50,60,13,'#FFE680')}${star(72,50,11,'#FFD24A')}`},
- {id:'tree',name:'閃亮小樹',tier:3,w:22,svg:`<rect x="44" y="78" width="12" height="14" fill="#C98B55" ${L}/><path d="M50 12L76 46H62L82 78H18L38 46H24z" fill="#3FA765" ${L}/><circle cx="40" cy="62" r="4.5" fill="#FF7FA3"/><circle cx="62" cy="68" r="4.5" fill="#FFC83D"/><circle cx="52" cy="42" r="4.5" fill="#6FB2F2"/>${star(50,12,10,'#FFD24A')}`},
+ {id:'tree',name:'閃亮小樹',tier:3,w:22,svg:`<rect x="44" y="78" width="12" height="14" fill="#E2B48C" ${L}/><path d="M50 12L76 46H62L82 78H18L38 46H24z" fill="#3FA765" ${L}/><circle cx="40" cy="62" r="4.5" fill="#FF9EC4"/><circle cx="62" cy="68" r="4.5" fill="#FFD86B"/><circle cx="52" cy="42" r="4.5" fill="#BBE1F8"/>${star(50,12,10,'#FFD24A')}`},
 ];
 const THEMES=[
- {id:'f_wood',name:'木頭地板',tier:1,kind:'floor',bg:'repeating-linear-gradient(90deg,#C98B55 0 38px,#B97A47 38px 41px)'},
+ {id:'f_wood',name:'木頭地板',tier:1,kind:'floor',bg:'repeating-linear-gradient(90deg,#E2B48C 0 38px,#B97A47 38px 41px)'},
  {id:'f_tile',name:'格子地板',tier:1,kind:'floor',bg:'repeating-conic-gradient(#fff 0 25%,#BFE3FF 0 50%) 0 0/36px 36px'},
  {id:'w_sky',name:'藍天壁紙',tier:2,kind:'wall',bg:'radial-gradient(ellipse 40px 16px at 30% 30%,#fff 98%,transparent) ,radial-gradient(ellipse 50px 18px at 75% 55%,#fff 98%,transparent),linear-gradient(#9FD8FF,#E3F4FF)'},
  {id:'w_dots',name:'粉紅點點壁紙',tier:2,kind:'wall',bg:'radial-gradient(circle,#FFB3C8 18%,transparent 21%) 0 0/28px 28px,#FFE4EC'},
  {id:'f_grass',name:'草地地板',tier:2,kind:'floor',bg:'repeating-linear-gradient(90deg,#8ED38B 0 20px,#7CC679 20px 40px)'},
  {id:'w_stars',name:'星空壁紙',tier:3,kind:'wall',bg:'radial-gradient(circle,#FFE680 9%,transparent 12%) 0 0/34px 34px,radial-gradient(circle,#fff 5%,transparent 8%) 17px 17px/34px 34px,#2B3A75'},
 ];
+const PRIZE_ICONS={
+ spoon:{label:'湯匙',svg:`<g transform="rotate(-35 50 50)"><ellipse cx="50" cy="30" rx="17" ry="23" fill="#E6EDF5" ${L}/><ellipse cx="45" cy="25" rx="5" ry="10" fill="#fff"/><path d="M45 51h10l2 36a7 7 0 0 1-14 0z" fill="#E6EDF5" ${L}/><path d="M50 70l2.5 5 5.5.8-4 3.9 1 5.5-5-2.6-5 2.6 1-5.5-4-3.9 5.5-.8z" fill="#FFD86B" stroke="#5A3E4B" stroke-width="1.5" stroke-linejoin="round"/></g>`},
+ strap:{label:'掛繩',svg:`<rect x="26" y="8" width="16" height="84" rx="5" fill="#BBE1F8" ${L}/><rect x="58" y="8" width="16" height="84" rx="5" fill="#BBE1F8" ${L}/>${[26,58].map(x=>[24,66,82].map(y=>`<circle cx="${x+8}" cy="${y}" r="5" fill="#FFD6E7" ${L}/>`).join('')).join('')}<path d="M34 44c-3-4-8-1-5 3l5 4 5-4c3-4-2-7-5-3zM66 44c-3-4-8-1-5 3l5 4 5-4c3-4-2-7-5-3z" fill="#FF9EC4"/>`},
+ nail:{label:'貼紙',svg:`<rect x="16" y="8" width="68" height="84" rx="10" fill="#BBE1F8" ${L}/><rect x="40" y="14" width="20" height="7" rx="3.5" fill="#fff" ${L}/><rect x="24" y="34" width="52" height="50" rx="8" fill="#fff" ${L}/>${[[34,48],[50,46],[66,48],[38,70],[56,70]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="5" ry="7" fill="#FFD6E7"/>`).join('')}<path d="M44 60l1.5 3 3.3.5-2.4 2.3.6 3.3-3-1.6-3 1.6.6-3.3-2.4-2.3 3.3-.5zM66 64l1.2 2.4 2.6.4-1.9 1.8.5 2.6-2.4-1.3-2.4 1.3.5-2.6-1.9-1.8 2.6-.4z" fill="#FFD86B"/>`},
+ pens:{label:'彩虹筆',svg:`${[[30,-12],[58,12]].map(([x,r])=>`<g transform="rotate(${r} ${x+7} 50)"><rect x="${x}" y="10" width="14" height="66" rx="4" fill="#fff" ${L}/>${['#FF9EC4','#FFD86B','#8FDCC0','#8CC8F0','#C9B3F5'].map((c,i)=>`<rect x="${x+2}" y="${14+i*12}" width="10" height="11" fill="${c}"/>`).join('')}<rect x="${x}" y="10" width="14" height="66" rx="4" fill="none" ${L}/><path d="M${x+2} 76l5 14 5-14z" fill="#FF8FB8" ${L}/></g>`).join('')}`},
+ comb:{label:'梳子',svg:`<g transform="rotate(-30 50 50)"><rect x="10" y="34" width="80" height="16" rx="7" fill="#BBE1F8" ${L}/>${Array.from({length:11},(_,i)=>`<rect x="${15+i*6.6}" y="50" width="3.4" height="18" rx="1.7" fill="#DDEFFB" stroke="#5A3E4B" stroke-width="1.6"/>`).join('')}<path d="M28 39l1.5 3 3.3.5-2.4 2.3.6 3.3-3-1.6-3 1.6.6-3.3-2.4-2.3 3.3-.5zM70 39l1.5 3 3.3.5-2.4 2.3.6 3.3-3-1.6-3 1.6.6-3.3-2.4-2.3 3.3-.5z" fill="#FF9EC4"/></g>`},
+ pencil:{label:'自動筆',svg:`<g transform="rotate(35 50 50)"><rect x="42" y="4" width="16" height="12" rx="4" fill="#8CC8F0" ${L}/><rect x="40" y="14" width="20" height="56" rx="5" fill="#fff" ${L}/><path d="M57 18h8v26l-4 4" fill="none" ${L}/><circle cx="50" cy="32" r="4" fill="#FFD6E7"/><path d="M50 46l1.5 3 3.3.5-2.4 2.3.6 3.3-3-1.6-3 1.6.6-3.3-2.4-2.3 3.3-.5z" fill="#FFD86B"/><path d="M40 68h20l-6 18h-8z" fill="#8CC8F0" ${L}/><path d="M49 86h2v8h-2z" fill="#5A3E4B"/></g>`},
+ gift:{label:'禮物盒',svg:`<rect x="16" y="40" width="68" height="50" rx="6" fill="#FFD6E7" ${L}/><rect x="12" y="30" width="76" height="16" rx="5" fill="#FF9EC4" ${L}/><rect x="45" y="30" width="10" height="60" fill="#FFD86B" ${L}/><path d="M50 30c-8-14-26-12-18-2 4 4 18 2 18 2zM50 30c8-14 26-12 18-2-4 4-18 2-18 2z" fill="#FFD86B" ${L}/>`},
+};
+const prizeItem=p=>({id:'prize_'+p.id,name:p.name,tier:4,svg:(PRIZE_ICONS[p.icon]||PRIZE_ICONS.gift).svg});
+const SEED_PRIZES=()=>[
+ {id:'spoon',name:'星星湯匙',icon:'spoon',total:3,left:3},
+ {id:'strap',name:'口罩掛繩',icon:'strap',total:1,left:1},
+ {id:'nail',name:'指甲貼紙',icon:'nail',total:1,left:1},
+ {id:'pens',name:'彩虹筆',icon:'pens',total:1,left:1},
+ {id:'comb',name:'星星梳子',icon:'comb',total:1,left:1},
+ {id:'pencil',name:'自動鉛筆',icon:'pencil',total:1,left:1}];
 const ALL=[...ITEMS,...THEMES], BY={}; ALL.forEach(x=>BY[x.id]=x);
 const TIER_W={1:65,2:28,3:7}, TIER_EXP={1:5,2:10,3:25}, TIER_NAME={1:'普通',2:'少見',3:'稀有'};
-const CAP_COLORS=['#FF7FA3','#3E8EDE','#7ED6A7','#FF9F5A'];
+const CAP_COLORS=['#FF9EC4','#8CC8F0','#7ED6A7','#FF9F5A'];
 const iconHTML=it=>it.kind?`<span class="swatch" style="background:${it.bg}"></span>`:`<svg viewBox="0 0 100 100" aria-hidden="true">${it.svg}</svg>`;
 
 /* ===== puppy art (original) ===== */
 function pupSVG(stage){
   const head=`<g transform="translate(84 40) scale(.52) translate(-150 -72)">
-    <path d="M112 62 L100 22 L134 44 Z" fill="#E8913A" stroke="#22305C" stroke-width="5" stroke-linejoin="round"/>
-    <path d="M188 62 L200 22 L166 44 Z" fill="#E8913A" stroke="#22305C" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M112 62 L100 22 L134 44 Z" fill="#F2A773" stroke="#5A3E4B" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M188 62 L200 22 L166 44 Z" fill="#F2A773" stroke="#5A3E4B" stroke-width="5" stroke-linejoin="round"/>
     <path d="M110 58 L104 34 L124 46 Z" fill="#FFB9C9"/><path d="M190 58 L196 34 L176 46 Z" fill="#FFB9C9"/>
-    <ellipse cx="150" cy="72" rx="52" ry="42" fill="#F4A24C" stroke="#22305C" stroke-width="5"/>
+    <ellipse cx="150" cy="72" rx="52" ry="42" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="5"/>
     <ellipse cx="150" cy="86" rx="30" ry="22" fill="#FFF3E2"/>
-    <circle cx="130" cy="66" r="7" fill="#22305C"/><circle cx="170" cy="66" r="7" fill="#22305C"/>
-    <circle cx="132" cy="63" r="2.5" fill="#fff"/><circle cx="172" cy="63" r="2.5" fill="#fff"/>
-    <ellipse cx="150" cy="80" rx="7" ry="5" fill="#22305C"/>
-    <path d="M142 90 Q150 97 158 90" fill="none" stroke="#22305C" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="116" cy="84" r="7" fill="#FF8FAB" opacity=".7"/><circle cx="184" cy="84" r="7" fill="#FF8FAB" opacity=".7"/>
-    ${stage>=3?`<path d="M122 34 L128 8 L142 24 L150 2 L158 24 L172 8 L178 34 Z" fill="#FFD24A" stroke="#22305C" stroke-width="5" stroke-linejoin="round"/><circle cx="150" cy="22" r="5" fill="#FF7FA3"/>`:''}
+    <ellipse cx="130" cy="68" rx="5" ry="7.5" fill="#5A3E4B"/><ellipse cx="170" cy="68" rx="5" ry="7.5" fill="#5A3E4B"/>
+    <circle cx="131.5" cy="64.5" r="1.8" fill="#fff"/><circle cx="171.5" cy="64.5" r="1.8" fill="#fff"/>
+    <ellipse cx="150" cy="80" rx="5" ry="3.6" fill="#5A3E4B"/>
+    <path d="M142 90 Q150 97 158 90" fill="none" stroke="#5A3E4B" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="116" cy="84" rx="10" ry="6" fill="#FF9EC4" opacity=".75"/><ellipse cx="184" cy="84" rx="10" ry="6" fill="#FF9EC4" opacity=".75"/>
+    <path d="M178 36c-4-8-16-4-11 5l11 10 11-10c5-9-7-13-11-5z" fill="#FF9EC4" stroke="#5A3E4B" stroke-width="4" stroke-linejoin="round"/>
+    ${stage>=3?`<path d="M122 34 L128 8 L142 24 L150 2 L158 24 L172 8 L178 34 Z" fill="#FFD24A" stroke="#5A3E4B" stroke-width="5" stroke-linejoin="round"/><circle cx="150" cy="22" r="5" fill="#FF9EC4"/>`:''}
   </g>`;
   return `<svg viewBox="0 0 120 110" aria-hidden="true">
-    <g class="tail"><path d="M24 64q-16-10-10-26" fill="none" stroke="#22305C" stroke-width="10" stroke-linecap="round"/><path d="M24 64q-16-10-10-26" fill="none" stroke="#F4A24C" stroke-width="5" stroke-linecap="round"/></g>
-    <g class="legs">${[30,44,62,76].map(x=>`<rect x="${x-6}" y="80" width="12" height="24" rx="6" fill="#E8913A" stroke="#22305C" stroke-width="4"/>`).join('')}</g>
-    <ellipse cx="52" cy="72" rx="36" ry="24" fill="#F4A24C" stroke="#22305C" stroke-width="4"/>
+    <g class="tail"><path d="M24 64q-16-10-10-26" fill="none" stroke="#5A3E4B" stroke-width="10" stroke-linecap="round"/><path d="M24 64q-16-10-10-26" fill="none" stroke="#F9BF8C" stroke-width="5" stroke-linecap="round"/></g>
+    <g class="legs">${[30,44,62,76].map(x=>`<rect x="${x-6}" y="80" width="12" height="24" rx="6" fill="#F2A773" stroke="#5A3E4B" stroke-width="4"/>`).join('')}</g>
+    <ellipse cx="52" cy="72" rx="36" ry="24" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="4"/>
     <ellipse cx="56" cy="80" rx="20" ry="10" fill="#FFF3E2"/>
-    ${stage>=2?`<path d="M66 54 q16 14 34 2 l2 8 q-18 12 -36 -2z" fill="#E5486B" stroke="#22305C" stroke-width="3" stroke-linejoin="round"/><path d="M78 64 l-4 14 l9 -4z" fill="#E5486B" stroke="#22305C" stroke-width="3" stroke-linejoin="round"/>`:''}
+    ${stage>=2?`<path d="M66 54 q16 14 34 2 l2 8 q-18 12 -36 -2z" fill="#FF8FB8" stroke="#5A3E4B" stroke-width="3" stroke-linejoin="round"/><path d="M78 64 l-4 14 l9 -4z" fill="#FF8FB8" stroke="#5A3E4B" stroke-width="3" stroke-linejoin="round"/>`:''}
     ${head}
   </svg>`;
 }
@@ -469,7 +695,7 @@ const need=lv=>15+lv*10;
 function levelInfo(exp){let lv=1,n=need(1);while(exp>=n){exp-=n;lv++;n=need(lv)}return{lv,cur:exp,need:n}}
 
 /* ===== state ===== */
-const DEFAULT=()=>({settings:{threshold:100,per:1,cost:1},exams:[],spent:0,
+const DEFAULT=()=>({settings:{threshold:100,per:1,cost:1,pityN:3,prizeRate:10,pin:'0127'},exams:[],spent:0,prizes:SEED_PRIZES(),prizeWins:[],pity:0,
   pet:{name:'小橘',exp:0,lastPet:''},owned:{},placed:[],wall:'',floor:'',log:[],
   rewards:[{id:uid(),level:3,name:'小狗貼紙',claimed:false},{id:uid(),level:5,name:'大耳狗吊飾',claimed:false},{id:uid(),level:10,name:'大耳狗吊飾（第二個）',claimed:false}]});
 let S;
@@ -477,7 +703,9 @@ try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!S){S=DEFAULT();try{const o=JSON.parse(localStorage.getItem(OLD_KEY));if(o){S.exams=(o.exams||[]).map(e=>({id:e.id,subject:e.subject,score:e.score,date:e.date}));S.settings=o.settings||S.settings;S.spent=o.spent||0}}catch(e){}}
 function normalize(x){const d=DEFAULT();x=x||{};
   for(const k of Object.keys(d))if(x[k]===undefined||x[k]===null)x[k]=d[k];
-  x.pet={...d.pet,...x.pet};x.settings={...d.settings,...x.settings};return x}
+  x.pet={...d.pet,...x.pet};x.settings={...d.settings,...x.settings};
+  x.prizes.forEach(p=>{if(typeof p.photo!=='string')p.photo=''});
+  x.prizeWins.forEach(w=>{if(typeof w.photo!=='string')w.photo='';if(!w.status)w.status=w.claimed?'given':'won'});return x}
 S=normalize(S);
 
 /* ===== device & log ===== */
@@ -562,7 +790,7 @@ $('gateNew').onclick=async()=>{
   $('gateNew').disabled=true;const code=newCode();
   connect(code);addLog('建立了新的家庭');dirty=true;await push();
   $('gateNew').disabled=false;$('gate').hidden=true;
-  document.querySelector('.tab[data-tab="parent"]').click();toast(`家庭代碼：${code}，在家長設定可以複製邀請連結`);
+  openParent(true);toast(`家庭代碼：${code}，在家長設定可以複製邀請連結`);
 };
 $('gateJoin').onclick=async()=>{
   const code=$('gateCode').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
@@ -599,8 +827,8 @@ let toastT;function toast(m){const t=$('toast');t.textContent=m;t.classList.add(
 /* ===== room ===== */
 let selected=null;
 function renderRoom(){
-  $('wall').style.background=S.wall?BY[S.wall].bg:'#FFF1D6';
-  $('floor').style.background=S.floor?BY[S.floor].bg:'#E8C49A';
+  $('wall').style.background=S.wall?BY[S.wall].bg:'';
+  $('floor').style.background=S.floor?BY[S.floor].bg:'';
   $('roomEmpty').hidden=S.placed.length>0;
   $('things').innerHTML=S.placed.map(p=>{const it=BY[p.id];
     const z=it.flat?1:it.top?2:Math.round(p.y*10);
@@ -660,7 +888,7 @@ function wander(){
 $('pup').onclick=()=>{
   const pup=$('pup'),i2=pup.querySelector('.inner2');
   i2.style.animation='none';void i2.offsetWidth;i2.style.animation='';pup.classList.remove('jump');void pup.offsetWidth;pup.classList.add('jump');
-  const h=document.createElement('span');h.className='heart';h.textContent='❤️';
+  const h=document.createElement('span');h.className='heart';h.textContent=['💗','💕','🎀','✨'][Math.floor(Math.random()*4)];
   h.style.left=pupX+'%';h.style.top='60%';$('room').appendChild(h);setTimeout(()=>h.remove(),1000);
   if(S.pet.lastPet!==today()){S.pet.lastPet=today();addLog(`摸摸${S.pet.name}（經驗 +3）`);gainExp(3);toast(`摸摸${S.pet.name}，經驗 +3（每天一次）`)}
 };
@@ -709,6 +937,16 @@ function renderAll(){
     return `<button class="slot t${it.tier}${using?' using':''}" data-id="${it.id}"><span class="cnt">${it.kind?(using?'使用中':''):`${placed}/${n}`}</span><div class="ic">${iconHTML(it)}</div><div class="nm">${esc(it.name)}</div></button>`};
   $('bagItems').innerHTML=[...ITEMS].sort((a,b)=>a.tier-b.tier).map(slot).join('');
   $('bagThemes').innerHTML=THEMES.map(slot).join('');
+  const stockN=S.prizes.reduce((a,p)=>a+p.left,0), toGo=Math.max(0,S.settings.pityN-S.pity);
+  $('prizeNote').textContent=!stockN?'大獎都被抽完了！等爸爸媽媽補新的吧':
+    S.pity>=S.settings.pityN?'下一顆扭蛋保證是彩虹大獎！🌈':`抽到彩虹扭蛋就能拿到真的禮物！最多再 ${toGo+1} 顆一定會中`;
+  $('bagPrizes').innerHTML=S.prizes.map(p=>`<div class="slot t4${p.left?'':' gone'}"><span class="cnt">${p.left?`剩 ${p.left}`:'抽完了'}</span><div class="ic">${iconHTML(prizeItem(p))}</div><div class="nm">${esc(p.name)}</div></div>`).join('')
+    ||'<p class="meta">還沒有設定實體大獎</p>';
+  const open=S.prizeWins.filter(w=>w.status!=='given');
+  $('myWins').innerHTML=open.map(w=>`<li><span class="pz-ic">${iconHTML(prizeItem(w))}</span><div class="grow"><b>${esc(w.name)}</b>
+    <div class="meta">${w.status==='ready'?'🎁 爸爸媽媽準備好了，可以去領囉！':'🛒 爸爸媽媽準備中，再等一下下～'}</div></div></li>`).join('');
+  const nTodo=S.prizeWins.filter(w=>w.status==='won').length;
+  $('parentFab').innerHTML=`⚙️ 家長${nTodo?`<span class="fab-dot" aria-label="${nTodo} 個大獎還沒買">${nTodo}</span>`:''}`;
 
   // exams
   $('totalLine').innerHTML=`<span>共 ${S.exams.length} 張考卷</span><span>累積 ${total} 分 · 換到 ${earned()} 張</span>`;
@@ -721,6 +959,10 @@ function renderAll(){
   // parent
   $('setThreshold').value=st.threshold;$('setPer').value=st.per;$('setCost').value=st.cost;
   if(document.activeElement!==$('setName'))$('setName').value=S.pet.name;
+  if(document.activeElement!==$('setPity'))$('setPity').value=st.pityN;
+  if(document.activeElement!==$('setRate'))$('setRate').value=st.prizeRate;
+  $('pityLine').textContent=stockN?`目前連續 ${S.pity} 顆沒中大獎${S.pity>=st.pityN?'，下一顆保證中':''}　·　剩 ${stockN} 個大獎`:'大獎已全部抽完';
+  renderPrizeParent();
   $('rewardList').innerHTML=S.rewards.length?S.rewards.slice().sort((a,b)=>a.level-b.level).map(r=>{
     const ready=li.lv>=r.level;
     return `<li><span class="rw-lv">Lv ${r.level}</span><span class="grow">${esc(r.name)}</span>
@@ -811,8 +1053,169 @@ $('rewardList').onclick=e=>{const c=e.target.dataset.claim,d=e.target.dataset.de
 $('resetAll').onclick=()=>{if(confirm('確定清除全部進度？考卷、等級、背包和房間都會清空。')){
   const rw=S.rewards.map(r=>({...r,claimed:false}));S=DEFAULT();S.rewards=rw;selected=null;addLog('清除全部進度，重新開始');save();renderAll()}};
 
+/* ===== photos: list GitHub repo's photos/ folder, parent picks per prize ===== */
+const PHOTO_DIR='photos/',PHOTO_RE=/\.(jpe?g|png|gif|webp)$/i,PHOTO_CACHE='exam-pet-photos';
+const GH=(()=>{const h=location.hostname.match(/^([^.]+)\.github\.io$/i);if(!h)return null;
+  const seg=location.pathname.split('/').filter(Boolean)[0];
+  return{owner:h[1],repo:seg&&!/\.html?$/i.test(seg)?seg:h[1]+'.github.io'}})();
+let photoList=[],photoState='idle',photoMsg='',photoLoad=null;
+try{const c=JSON.parse(localStorage.getItem(PHOTO_CACHE));if(c&&Array.isArray(c.list)){photoList=c.list;photoState='ok'}}catch(e){}
+const photoURL=n=>PHOTO_DIR+encodeURIComponent(n);
+function probe(url,ms=6000){return new Promise(res=>{const im=new Image();let done=false;
+  const end=ok=>{if(done)return;done=true;clearTimeout(t);im.onload=im.onerror=null;res(ok&&im.naturalWidth>0&&im.naturalHeight>0?url:null)};
+  const t=setTimeout(()=>end(false),ms);im.onload=()=>end(true);im.onerror=()=>end(false);
+  try{im.src=url}catch(e){end(false)}})}
+function loadPhotoList(force){
+  if(photoLoad&&!force)return photoLoad;
+  if(!GH){photoState='nogh';photoMsg='只有在 GitHub 網址打開時才能讀取照片清單';renderPhotoParts();return Promise.resolve(photoList)}
+  photoState='loading';renderPhotoParts();
+  photoLoad=(async()=>{
+    try{const r=await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/photos`,{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
+      if(r.status===404){photoList=[];photoState='ok';photoMsg='還沒有 photos 資料夾'}
+      else if(!r.ok){photoState='err';photoMsg=r.status===403?'GitHub 暫時查不到清單（查太多次了），過一陣子再按重新整理':'讀取照片清單失敗（'+r.status+'）'}
+      else{const j=await r.json();photoList=(Array.isArray(j)?j:[]).filter(f=>f&&f.type==='file'&&PHOTO_RE.test(f.name)).map(f=>f.name).sort();
+        photoState='ok';photoMsg='';try{localStorage.setItem(PHOTO_CACHE,JSON.stringify({at:Date.now(),list:photoList}))}catch(e){}}
+    }catch(e){photoState='err';photoMsg='連不上 GitHub，請確認網路後再試'}
+    photoLoad=null;renderPhotoParts();return photoList})();
+  return photoLoad}
+async function photoFor(name){if(!name)return null;return await probe(photoURL(name),3500)}
+const thumb=(name,fallback)=>name?`<img class="ph" src="${esc(photoURL(name))}" alt="" loading="lazy">`:fallback;
+document.addEventListener('error',e=>{const t=e.target;if(t&&t.tagName==='IMG'&&t.classList.contains('ph')){
+  const sp=document.createElement('span');sp.className='ph-miss';sp.textContent='沒有照片';t.replaceWith(sp)}},true);
+function renderPhotoParts(){
+  const g=$('photoGrid');if(!g)return;
+  const head=photoState==='loading'?'讀取照片清單中…':photoMsg||(photoList.length?`photos 資料夾裡有 ${photoList.length} 張照片`:'photos 資料夾裡還沒有照片');
+  $('photoStatus').textContent=head;
+  g.innerHTML=photoList.map(n=>`<figure><img class="ph" src="${esc(photoURL(n))}" alt="${esc(n)}" loading="lazy"><figcaption>${esc(n.replace(PHOTO_RE,''))}</figcaption></figure>`).join('');
+  renderPrizeParent();
+}
+$('photoRescan').onclick=()=>loadPhotoList(true);
+function renderPrizeParent(){
+  const cnt={won:0,ready:0,given:0};S.prizeWins.forEach(w=>cnt[w.status]++);
+  $('winSum').innerHTML=S.prizeWins.length?`<span class="st-won">🛒 還沒買 ${cnt.won}</span><span class="st-ready">🎁 準備好 ${cnt.ready}</span><span class="st-given">✅ 已送出 ${cnt.given}</span>`:'';
+  const order={won:0,ready:1,given:2};
+  $('prizeWins').innerHTML=S.prizeWins.length?S.prizeWins.slice().sort((a,b)=>order[a.status]-order[b.status]||(b.at>a.at?1:-1)).map(w=>{
+    const st=w.status==='won'?'<span class="st st-won">🛒 還沒買</span>':w.status==='ready'?'<span class="st st-ready">🎁 準備好了</span>':'<span class="st st-given">✅ 已送出</span>';
+    const when=w.status==='given'&&w.givenAt?`送出：${fmtTime(w.givenAt)}`:w.status==='ready'&&w.readyAt?`買好：${fmtTime(w.readyAt)}`:`抽中：${fmtTime(w.at)}`;
+    const btn=w.status==='won'?`<button class="btn small" data-win-ready="${w.id}">已買好</button>`:
+      w.status==='ready'?`<button class="btn small" data-win-give="${w.id}">已送出</button><button class="linkish" data-win-back="${w.id}">還沒買</button>`:
+      `<button class="linkish" data-win-back="${w.id}">改回準備好</button>`;
+    return `<li><span class="pz-ic">${thumb(w.photo,iconHTML(prizeItem(w)))}</span>
+    <div class="grow"><div>${esc(w.name)}</div><div>${st}</div><div class="meta">${when}</div></div>
+    <div class="win-btns">${btn}</div></li>`}).join('')
+    :'<li class="empty">還沒有人抽中大獎</li>';
+  $('prizeList').innerHTML=S.prizes.length?S.prizes.map(p=>{
+    const missing=p.photo&&photoState==='ok'&&!photoList.includes(p.photo);
+    return `<li class="pz-row"><button class="pz-ic pz-pick" data-pz-pick="${p.id}" aria-label="幫${esc(p.name)}選照片">${thumb(p.photo,iconHTML(prizeItem(p)))}</button>
+    <div><div>${esc(p.name)}</div><div class="meta">剩 ${p.left} 個</div>
+      <button class="linkish" data-pz-pick="${p.id}">${p.photo?(missing?'⚠️ 照片不見了，重選':'📷 換照片'):'📷 選照片'}</button></div>
+    <div class="stepper"><button class="btn small ghost" data-pz-dec="${p.id}" aria-label="減少">−</button><b>${p.left}</b><button class="btn small ghost" data-pz-inc="${p.id}" aria-label="增加">＋</button>
+    <button class="btn small danger" data-pz-del="${p.id}" aria-label="刪除獎品">×</button></div></li>`}).join('')
+    :'<li class="empty">還沒有獎品</li>';
+}
+/* photo picker */
+let pickFor=null;
+function openPicker(id){const p=S.prizes.find(x=>x.id===id);if(!p)return;pickFor=id;
+  $('pickTitle').textContent=`「${p.name}」要用哪張照片？`;
+  const draw=()=>{$('pickGrid').innerHTML=photoState==='loading'?'<p class="meta" style="grid-column:1/-1">讀取照片清單中…</p>':
+    photoList.length?photoList.map(n=>`<button class="pick${p.photo===n?' on':''}" data-name="${esc(n)}"><img class="ph" src="${esc(photoURL(n))}" alt="${esc(n)}" loading="lazy"><span>${esc(n.replace(PHOTO_RE,''))}</span></button>`).join(''):
+    `<p class="meta" style="grid-column:1/-1">${esc(photoMsg||'photos 資料夾裡還沒有照片')}</p>`};
+  draw();$('picker').hidden=false;$('pickCancel').focus();
+  if(!photoList.length&&photoState!=='nogh')loadPhotoList(true).then(()=>{if(!$('picker').hidden&&pickFor===id)draw()})}
+function setPhoto(name){const p=S.prizes.find(x=>x.id===pickFor);$('picker').hidden=true;if(!p)return;
+  p.photo=name;addLog(name?`設定「${p.name}」的照片`:`取消「${p.name}」的照片`);save();renderAll()}
+$('pickGrid').onclick=e=>{const b=e.target.closest('.pick');if(b)setPhoto(b.dataset.name)};
+$('pickNone').onclick=()=>setPhoto('');
+$('pickCancel').onclick=()=>{$('picker').hidden=true};
+$('prizeList').addEventListener('click',e=>{const b=e.target.closest('[data-pz-pick]');if(b)openPicker(b.dataset.pzPick)});
+
+/* ===== parent sheet with PIN ===== */
+let unlockUntil=0,parentReturn=null;
+function openParent(skipPin){
+  if(skipPin||Date.now()<unlockUntil){showParent();return}
+  $('pinInput').value='';$('pinMsg').textContent='';$('pinModal').hidden=false;setTimeout(()=>$('pinInput').focus(),50)}
+function showParent(){parentReturn=document.activeElement;$('pinModal').hidden=true;$('tab-parent').hidden=false;$('tab-parent').scrollTop=0;
+  document.body.style.overflow='hidden';renderAll();renderPhotoParts();$('parentClose').focus();
+  let age=1e12;try{age=Date.now()-(JSON.parse(localStorage.getItem(PHOTO_CACHE))||{}).at}catch(e){}
+  if(!(age<10*60e3))loadPhotoList()}
+function closeParent(){$('tab-parent').hidden=true;document.body.style.overflow='';if(parentReturn&&parentReturn.focus)parentReturn.focus()}
+function checkPin(){
+  if($('pinInput').value===String(S.settings.pin||'0127')){unlockUntil=Date.now()+5*60e3;showParent()}
+  else{$('pinMsg').textContent='密碼不對喔';const c=$('pinCard');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');$('pinInput').value='';$('pinInput').focus()}}
+$('parentFab').onclick=()=>openParent(false);
+$('pinOk').onclick=checkPin;
+$('pinInput').onkeydown=e=>{if(e.key==='Enter')checkPin()};
+$('pinCancel').onclick=()=>{$('pinModal').hidden=true;$('parentFab').focus()};
+$('parentClose').onclick=closeParent;
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;
+  if(!$('picker').hidden){$('picker').hidden=true}else if(!$('pinModal').hidden){$('pinModal').hidden=true}else if(!$('tab-parent').hidden)closeParent()});
+$('pinSave').onclick=()=>{const v=$('pinNew').value.trim();
+  if(!/^\d{4,8}$/.test(v)){toast('密碼要 4～8 位數字');return}
+  S.settings.pin=v;$('pinNew').value='';addLog('更改了家長密碼');save();toast('家長密碼已更改')};
+
+/* ===== prize reveal ===== */
+function showPrizeReveal(r){return new Promise(async done=>{
+  const box=$('rvBox'),card=$('rvCard'),media=$('rvMedia');
+  box.className='rv-box';card.hidden=true;$('rvHint').hidden=false;$('rvHint').textContent='是什麼禮物呢…？';
+  media.innerHTML='';$('rvTitle').textContent=r.it.name;$('reveal').hidden=false;
+  const photoP=photoFor(r.photo);
+  box.classList.add('shake');await wait(1300);
+  const url=await photoP;
+  box.classList.remove('shake');box.classList.add('open');burst(80);
+  const f=$('flash');f.classList.remove('on');void f.offsetWidth;f.classList.add('on');
+  await wait(500);box.classList.add('gone');$('rvHint').hidden=true;await wait(300);
+  const fallback=()=>{media.innerHTML=`<div class="rv-default"><div class="halo"></div><div class="disc">${iconHTML(r.it)}</div></div>`};
+  if(url){const im=new Image();im.alt=r.it.name;im.onerror=fallback;im.src=url;
+    try{await im.decode()}catch(e){}
+    if(im.naturalWidth>0)media.replaceChildren(im);else fallback()}
+  else fallback();
+  card.hidden=false;burst(60);$('rvOk').focus();
+  $('rvOk').onclick=()=>{$('reveal').hidden=true;done()};
+})}
+
+/* ===== prize settings ===== */
+$('pzIcon').innerHTML=Object.entries(PRIZE_ICONS).map(([k,v])=>`<option value="${k}"${k==='gift'?' selected':''}>${v.label}</option>`).join('');
+$('setPity').onchange=()=>{const v=Math.round(+$('setPity').value);if(v>=0&&v<=50){S.settings.pityN=v;save()}renderAll()};
+$('setRate').onchange=()=>{const v=+$('setRate').value;if(v>=0&&v<=100){S.settings.prizeRate=v;save()}renderAll()};
+$('pzAdd').onclick=()=>{const nm=$('pzName').value.trim(),q=Math.round(+$('pzQty').value);
+  if(!nm||!(q>=1)){toast('請填獎品名稱和數量');return}
+  S.prizes.push({id:uid(),name:nm,icon:$('pzIcon').value,total:q,left:q,photo:''});addLog(`新增實體大獎：${nm} ×${q}`);
+  $('pzName').value='';$('pzQty').value=1;save();renderAll()};
+$('prizeList').onclick=e=>{const d=e.target.dataset,id=d.pzDec||d.pzInc||d.pzDel;if(!id)return;
+  const p=S.prizes.find(x=>x.id===id);if(!p)return;
+  if(d.pzInc){p.left++;p.total++}
+  else if(d.pzDec){if(p.left>0)p.left--}
+  else if(confirm(`刪除「${p.name}」？`)){S.prizes=S.prizes.filter(x=>x.id!==id);addLog(`刪除實體大獎：${p.name}`)}
+  save();renderAll()};
+$('prizeWins').onclick=e=>{const d=e.target.dataset,id=d.winReady||d.winGive||d.winBack;if(!id)return;
+  const w=S.prizeWins.find(x=>x.id===id);if(!w)return;const now=new Date().toISOString();
+  if(d.winReady){w.status='ready';w.readyAt=now;addLog(`🛒 已買好大獎：${w.name}`)}
+  else if(d.winGive){if(!confirm(`確定已經把「${w.name}」交給孩子了嗎？`))return;w.status='given';w.givenAt=now;addLog(`✅ 已送出大獎：${w.name}`)}
+  else if(w.status==='given'){w.status='ready';delete w.givenAt;addLog(`改回準備好：${w.name}`)}
+  else{w.status='won';delete w.readyAt;addLog(`改回還沒買：${w.name}`)}
+  save();renderAll()};
+
+/* ===== helper 雲寶 ===== */
+const pickOne=a=>a[Math.floor(Math.random()*a.length)];
+let hSayT=null;
+function helperSay(t){const b=$('hBubble');b.textContent=t;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');
+  clearTimeout(hSayT);hSayT=setTimeout(()=>b.classList.remove('pop'),2600)}
+function helperAct(c,ms=700){const h=$('helper');h.classList.remove('hop','spin','clap');void h.offsetWidth;h.classList.add(c);
+  setTimeout(()=>h.classList.remove(c),ms)}
+
 /* ===== gacha ===== */
 function drawOne(){
+  const stock=S.prizes.filter(p=>p.left>0);
+  if(stock.length){
+    if(S.pity>=S.settings.pityN||Math.random()*100<S.settings.prizeRate){
+      let w=Math.random()*stock.reduce((a,p)=>a+p.left,0),p=stock[0];
+      for(const q of stock){if((w-=q.left)<0){p=q;break}}
+      p.left--;S.pity=0;
+      S.prizeWins.unshift({id:uid(),name:p.name,icon:p.icon,photo:p.photo||'',at:new Date().toISOString(),status:'won'});
+      return{it:prizeItem(p),isNew:false,exp:30,prize:true,photo:p.photo||''};
+    }
+    S.pity++;
+  }
   let r=Math.random()*100,tier=3;for(const t of [1,2,3]){if((r-=TIER_W[t])<0){tier=t;break}}
   const pool=ALL.filter(x=>x.tier===tier),it=pool[Math.floor(Math.random()*pool.length)];
   const isNew=!S.owned[it.id];S.owned[it.id]=(S.owned[it.id]||0)+1;
@@ -824,32 +1227,37 @@ document.querySelectorAll('.draw-btn').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.draw-btn').forEach(x=>x.disabled=true);
   S.spent+=n*S.settings.cost;results=[];for(let k=0;k<n;k++)results.push(drawOne());
   pendingExp=results.reduce((a,r)=>a+r.exp,0);
-  addLog(`🎰 ${n===1?'單抽':n+' 連抽'}：${results.map(r=>r.it.name+(r.it.tier===3?'★':'')).join('、')}`);
+  addLog(`🎰 ${n===1?'單抽':n+' 連抽'}：${results.map(r=>r.it.name+(r.it.tier===4?'🎁':r.it.tier===3?'★':'')).join('、')}`);
   save();showStage(n);
 });
 function showStage(n){
   opened=0;const best=Math.max(...results.map(r=>r.it.tier));
-  $('stage').classList.toggle('gold',best===3);
+  $('stage').classList.toggle('gold',best>=3);
   $('stageTitle').textContent=n===1?'扭蛋掉出來了！':`${n} 連抽！`;
-  $('stageSub').textContent=best===3?'有扭蛋在發金光…！':best===2?'好像有紫色的扭蛋喔':'點扭蛋打開看看';
+  $('stageSub').textContent=best===4?'出現彩虹扭蛋了…！':best===3?'有扭蛋在發金光…！':best===2?'好像有紫色的扭蛋喔':'點扭蛋打開看看';
   const g=$('capGrid');g.className='cap-grid'+(n===1?' n1':'');
   g.innerHTML=results.map((r,i)=>`
     <button class="cell r${r.it.tier}" data-i="${i}" style="--d:${(i*.12).toFixed(2)}s" aria-label="打開第 ${i+1} 顆扭蛋">
       <span class="cap" style="${r.it.tier===1?`--c:${CAP_COLORS[i%4]}`:''}">
         <span class="prize">${iconHTML(r.it)}</span><span class="top"></span><span class="bot"></span>
       </span>
-      <span class="name">${r.isNew?'<span class="new">NEW</span><br>':''}${esc(r.it.name)}</span>
+      <span class="name">${r.prize?'<span class="gift-tag">實體大獎</span><br>':r.isNew?'<span class="new">NEW</span><br>':''}${esc(r.it.name)}</span>
     </button>`).join('');
   $('summary').hidden=true;$('openAll').hidden=false;$('stageDone').hidden=true;
   $('openAll').textContent=n===1?'打開扭蛋':'全部打開';
   $('stage').hidden=false;
   g.querySelectorAll('.cell').forEach(c=>c.onclick=()=>openCap(c));
+  setTimeout(()=>{helperAct('hop',400);helperSay(best===3?'我感覺到金光了！':best===2?'有紫色的耶～':pickOne(['加油加油！','會抽到什麼呢？','一起打開吧！']))},350);
 }
-function openCap(cell){
+async function openCap(cell){
   if(cell.classList.contains('open'))return;
   cell.classList.add('open');opened++;
   const r=results[+cell.dataset.i];sparkle(cell.querySelector('.cap'),r.it.tier);
-  if(r.it.tier===3){const f=$('flash');f.classList.remove('on');void f.offsetWidth;f.classList.add('on');burst(60)}
+  if(r.it.tier>=3){const f=$('flash');f.classList.remove('on');void f.offsetWidth;f.classList.add('on');burst(r.prize?90:60);
+    helperAct('spin',900);sparkle($('hSpark'),3);helperSay(r.prize?'是真的禮物耶！🎁':'哇！是稀有的！')}
+  else if(r.it.tier===2){helperAct('hop',400);helperSay('紫色的～好棒！')}
+  else helperAct('hop',400);
+  if(r.prize){await wait(700);await showPrizeReveal(r)}
   if(opened===results.length)finish();
 }
 $('openAll').onclick=async()=>{
@@ -857,31 +1265,36 @@ $('openAll').onclick=async()=>{
   const cells=[...$('capGrid').querySelectorAll('.cell:not(.open)')];
   cells.sort((a,b)=>results[a.dataset.i].it.tier-results[b.dataset.i].it.tier);
   for(const c of cells){const t=results[c.dataset.i].it.tier;
-    if(t===3&&cells.length>1)await wait(600);
-    openCap(c);await wait(t>1?450:160)}
+    if(t>=3&&cells.length>1)await wait(t===4?900:600);
+    await openCap(c);await wait(t>1?450:160)}
 };
 function finish(){
   $('openAll').hidden=true;$('stageDone').hidden=false;
   const nNew=results.filter(r=>r.isNew).length;
-  $('stageSub').textContent=results.some(r=>r.it.tier===3)?'抽到稀有道具了！':'全部打開了！';
-  $('summary').innerHTML=`${S.pet.name}經驗 +${pendingExp}${nNew?`　·　新道具 ${nNew} 個`:''}`;
+  const nPrize=results.filter(r=>r.prize).length;
+  $('stageSub').textContent=nPrize?'抽到實體大獎！去找爸爸媽媽領吧！':results.some(r=>r.it.tier===3)?'抽到稀有道具了！':'全部打開了！';
+  $('summary').innerHTML=`${S.pet.name}經驗 +${pendingExp}${nNew?`　·　新道具 ${nNew} 個`:''}${nPrize?`　·　🎁 實體大獎 ${nPrize} 個`:''}`;
   $('summary').hidden=false;burst(results.length>1?50:35);$('stageDone').focus();
+  setTimeout(()=>{if(nPrize){helperAct('spin',900);sparkle($('hSpark'),3);helperSay('快去找爸爸媽媽領禮物！')}
+    else if(results.some(r=>r.it.tier===3)){helperAct('spin',900);sparkle($('hSpark'),3);helperSay('今天運氣超好！')}
+    else{helperAct('clap',1600);helperSay(nNew?pickOne(['有新道具耶！','收集又變多了！']):pickOne(['下次一定會中！','再接再厲！']))}},500);
 }
 $('stageDone').onclick=()=>{$('stage').hidden=true;gainExp(pendingExp);pendingExp=0;
   document.querySelector('.tab[data-tab="bag"]').click();showLevelUp()};
 
 function sparkle(el,t){if(reduced)return;
-  const cs=t===3?['#FFD24A','#FFF3B0','#fff']:t===2?['#B79CFF','#E2D8FF','#fff']:['#fff','#FFC83D','#FF7FA3'];
+  const cs=t===3?['#FFD24A','#FFF3B0','#fff']:t===2?['#C9B3F5','#E2D8FF','#fff']:['#fff','#FFD86B','#FF9EC4'];
   const n=t===3?16:t===2?12:8;
   for(let k=0;k<n;k++){const s=document.createElement('span');s.className='burst-star';
     const a=k/n*Math.PI*2,d=40+Math.random()*30*t;
     s.style.setProperty('--tx',Math.cos(a)*d+'px');s.style.setProperty('--ty',Math.sin(a)*d+'px');s.style.setProperty('--sc',cs[k%3]);
     el.appendChild(s);setTimeout(()=>s.remove(),800)}}
-function burst(n){if(reduced)return;const box=$('confetti'),cs=['#FF7FA3','#FFC83D','#3E8EDE','#7ED6A7','#B79CFF'];
+function burst(n){if(reduced)return;const box=$('confetti'),cs=['#FF9EC4','#FFD86B','#8CC8F0','#7ED6A7','#C9B3F5'];
   for(let k=0;k<n;k++){const i=document.createElement('i');i.style.left=Math.random()*100+'vw';i.style.background=cs[k%5];
     i.style.animationDelay=Math.random()*.5+'s';i.style.animationDuration=1.4+Math.random()+'s';box.appendChild(i);setTimeout(()=>i.remove(),2800)}}
 
 renderAll();setTimeout(wander,1200);initSync();
+
 </script>
 </body>
 </html>
