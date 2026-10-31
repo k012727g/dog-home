@@ -382,6 +382,14 @@ h3::before{content:"✿ ";color:var(--pink)}
 @keyframes shakeoff{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
 .drop{position:absolute;width:8px;height:12px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#8CC8F0;z-index:1000;pointer-events:none;animation:dropfly .7s ease-out forwards}
 @keyframes dropfly{to{transform:translate(var(--dx),var(--dy));opacity:0}}
+.nap-ring{position:absolute;right:17.5%;top:6.5%;width:17%;aspect-ratio:1;overflow:visible}
+.nap-ring[hidden]{display:none}
+.rest-sign{position:absolute;left:50%;top:9%;font-size:1rem;transform:translateX(-50%);background:rgba(255,255,255,.92);color:#5A3E4B;font-weight:900;font-size:1.15rem;border-radius:999px;padding:6px 16px;white-space:nowrap;border:3px solid #5A3E4B}
+.rest-sign[hidden]{display:none}
+.need.charging svg{animation:needpulse .8s ease-in-out infinite}
+.need.charging .nb i{background:repeating-linear-gradient(45deg,#FFD86B 0 8px,#FFF0B8 8px 16px)!important;animation:chargeslide 1s linear infinite;background-size:22px 22px}
+@keyframes chargeslide{to{background-position:22px 0}}
+.rest-row{display:flex;align-items:center;gap:8px;margin:6px 0}.rest-row select,.rest-row input[type=time]{font:inherit;padding:6px 8px;border-radius:10px;border:2px solid var(--line);background:var(--sky);color:var(--ink)}
 .fab-dot{display:inline-block;min-width:1.4em;margin-left:4px;background:#E0567F;color:#fff;border-radius:999px;font-size:.7rem;padding:0 5px}
 .my-wins{margin-top:10px}.my-wins li{padding:6px 0}
 .linkish{background:none;border:0;padding:2px 0;font:inherit;font-size:.8rem;font-weight:700;color:var(--blue);cursor:pointer;text-align:left}
@@ -618,7 +626,7 @@ h3::before{content:"✿ ";color:var(--pink)}
     <div id="things"></div>
     <div class="pup" id="pup" role="button" aria-label="摸摸小狗"><button class="bubble" id="bubble" hidden></button><div class="inner2"><div class="inner" id="pupSvg"></div></div></div>
     <div class="floor-food" id="floorFood" hidden></div>
-    <div class="room-dark" id="roomDark" hidden aria-hidden="true"><div class="moon"></div>
+    <div class="room-dark" id="roomDark" hidden aria-hidden="true"><div class="moon"></div><svg class="nap-ring" id="napRing" viewBox="0 0 44 44" hidden><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,243,176,.25)" stroke-width="4"/><circle id="napArc" cx="22" cy="22" r="18" fill="none" stroke="#FFF3B0" stroke-width="4" stroke-linecap="round" transform="rotate(-90 22 22)" stroke-dasharray="113.1" stroke-dashoffset="113.1"/></svg><div class="rest-sign" id="restSign" hidden></div>
       <i style="left:12%;top:12%"></i><i style="left:30%;top:24%;animation-delay:.6s"></i><i style="left:48%;top:8%;animation-delay:1.1s"></i><i style="left:62%;top:30%;animation-delay:.3s"></i><i style="left:88%;top:40%;animation-delay:.9s"></i></div>
     <button class="light-sw" id="lightSw" aria-label="關燈睡覺"></button>
     <button class="go-map" id="goMap" data-ic="map" aria-label="出門去小鎮"></button>
@@ -731,6 +739,14 @@ h3::before{content:"✿ ";color:var(--pink)}
     <h3>科目</h3>
     <ul class="list subj-list" id="subjList"></ul>
     <div class="subj-add"><input id="subjName" type="text" maxlength="6" placeholder="新科目名稱" aria-label="新科目名稱"><button class="btn small" id="subjAdd">新增</button></div>
+
+    <h3>作息與遊玩時間</h3>
+    <div class="rest-row"><label for="setNap">關燈小睡</label><select id="setNap"><option value="0.5">30 秒</option><option value="1">1 分鐘</option><option value="2">2 分鐘</option><option value="3">3 分鐘</option><option value="5">5 分鐘</option></select></div>
+    <label class="switch-row"><input type="checkbox" id="bedOn"> 就寢時間（全家同步）</label>
+    <div class="rest-row"><input type="time" id="bedFrom" aria-label="開始"> ～ <input type="time" id="bedTo" aria-label="結束"></div>
+    <label class="switch-row"><input type="checkbox" id="quotaOn"> 每天遊玩上限（每台裝置分開算）</label>
+    <div class="rest-row"><input type="number" id="quotaMin" min="5" max="240" style="max-width:90px"> 分鐘 <button class="btn small ghost" id="quotaMore">今天多給 10 分鐘</button></div>
+    <p class="meta" id="quotaLine"></p>
 
     <h3>音效</h3>
     <label class="switch-row"><input type="checkbox" id="setSound"> 在這台裝置播放音效</label>
@@ -986,8 +1002,14 @@ h3::before{content:"✿ ";color:var(--pink)}
    【遊戲循環】考卷分數 → 扭蛋券 → 買零食／上課門票／抽扭蛋 → 小狗開心、學技能、房間變漂亮
      實體大獎：抽到彩虹扭蛋 → 家長「還沒買 → 準備好 → 已送出」才算完成。
 
-   【照顧數值】飽足 −2.2/小時、開心 −2/小時、乾淨 −1.5/小時、體力 +4/小時（關燈睡覺另外加成）
-     不會生病或死掉，最多皺眉。泡泡優先順序：餓 > 想睡（晚上 20–7 點）> 累 > 髒 > 無聊
+   【照顧數值】飽足 −2.2/小時、開心 −2/小時、乾淨 −1.5/小時、體力 +4/小時
+     不會生病或死掉，最多皺眉。泡泡優先順序：餓 > 累 > 髒 > 無聊
+   【睡覺＝充電小睡】關燈 → 小睡（預設 2 分鐘，家長可改）→ 體力條一格格往上漲、月亮進度圈轉一圈 → 睡飽自動醒、體力 100。
+     中途開燈：依睡了多久按比例補體力。小睡狀態存在各裝置自己（localStorage），重開網頁也會接著算。
+   【遊玩時間控制】（家長設定，預設關閉）
+     就寢時間：例 21:00～07:00，時間內遊戲是夜晚模式，小狗在睡、不能照顧／出門（全家同步）。
+     每日遊玩上限：例 30 分鐘，只算「畫面開著且 1 分鐘內有操作」的時間；每台裝置各自計算；
+       用完小狗去睡覺到隔天；家長可按「今天多給 10 分鐘」。剩 5 分鐘時提醒一次。
 
    【小鎮地點】家、公園（已開放）、圖書館、畫室、舞蹈教室、英文教室、活動中心、美容院（規劃中）
      圖書館：左右滑翻繪本，找藏起來的東西 → 閱讀星星
@@ -1032,7 +1054,7 @@ h3::before{content:"✿ ";color:var(--pink)}
 
    【版權原則】不畫任何既有角色（包含三麗鷗角色與其二創）；實體商品照片只由家長自行上傳到 photos/。
    ===================================================================================== */
-const DEV_VERSION='2026-11-01 · 測試版（新坐姿 A、新趴姿 C）';
+const DEV_VERSION='2026-11-01 · 測試版（充電小睡＋遊玩時間控制）';
 const DEV_TASKS=[
  {id:'CORE-01',phase:'基礎功能',status:'done',title:'考卷登記、分數累加換扭蛋券'},
  {id:'CORE-02',phase:'基礎功能',status:'done',title:'扭蛋單抽／5 連抽／10 連抽與動畫'},
@@ -1055,6 +1077,10 @@ const DEV_TASKS=[
  {id:'CARE-08',phase:'第 1 批：照顧與小鎮',status:'done',title:'小廚房：3 道菜、畫圈攪拌、有毒食材提醒'},
  {id:'CARE-09',phase:'第 1 批：照顧與小鎮',status:'done',title:'小狗會坐下、趴下'},
  {id:'CARE-10',phase:'第 1 批：照顧與小鎮',status:'done',title:'晚上關燈睡覺，睡越久體力越多'},
+ {id:'CARE-13',phase:'第 1 批：照顧與小鎮',status:'done',title:'睡覺改成充電小睡：預設 2 分鐘、體力條往上漲、月亮進度圈、睡飽自動醒',note:'修正「關燈後一直睡」與「晚上一直催睡」'},
+ {id:'CARE-14',phase:'第 1 批：照顧與小鎮',status:'done',title:'家長設定：就寢時間（預設關閉）',note:'時間內小狗在睡、不能照顧與出門；全家同步'},
+ {id:'CARE-15',phase:'第 1 批：照顧與小鎮',status:'done',title:'家長設定：每日遊玩上限（預設關閉）',note:'每台裝置各自計算；剩 5 分鐘提醒；可「今天多給 10 分鐘」'},
+ {id:'CARE-16',phase:'第 1 批：照顧與小鎮',status:'idea',title:'遊玩時間跨裝置合併計算、家長手機遠端加時間'},
  {id:'CARE-11',phase:'第 1 批：照顧與小鎮',status:'done',title:'音效（吃飯、洗澡、撿花、扭蛋、蓋章）',note:'Web Audio 合成，不用音檔；家長設定 → 音效 可以關（每台裝置各自設定）'},
  {id:'CARE-12',phase:'第 1 批：照顧與小鎮',status:'todo',title:'可愛大字體（jf open 粉圓體）',note:'字型檔放 GitHub repo，兒童畫面文字 20px 以上'},
  {id:'OPS-01',phase:'第 1 批：照顧與小鎮',status:'todo',title:'把測試版上傳到正式版 GitHub',note:'第 1 批、廚房、開發清單目前只在測試頁；確認後上傳 index.html 覆蓋'},
@@ -1224,7 +1250,7 @@ const need=lv=>15+lv*10;
 function levelInfo(exp){let lv=1,n=need(1);while(exp>=n){exp-=n;lv++;n=need(lv)}return{lv,cur:exp,need:n}}
 
 /* ===== state ===== */
-const DEFAULT=()=>({subjects:[{n:'國語',i:'📖'},{n:'數學',i:'🔢'},{n:'英文',i:'🔤'},{n:'生活',i:'🌱'},{n:'自然',i:'🔬'},{n:'社會',i:'🌏'}],pending:[],signs:[],dishes:{},floorFood:null,care:{food:80,fun:80,energy:80,clean:80,at:Date.now()},walk:{date:'',n:0},settings:{threshold:100,per:1,cost:1,pityN:3,prizeRate:10,pin:'0127'},exams:[],spent:0,prizes:SEED_PRIZES(),prizeWins:[],pity:0,
+const DEFAULT=()=>({subjects:[{n:'國語',i:'📖'},{n:'數學',i:'🔢'},{n:'英文',i:'🔤'},{n:'生活',i:'🌱'},{n:'自然',i:'🔬'},{n:'社會',i:'🌏'}],pending:[],signs:[],dishes:{},floorFood:null,care:{food:80,fun:80,energy:80,clean:80,at:Date.now()},walk:{date:'',n:0},settings:{threshold:100,per:1,cost:1,pityN:3,prizeRate:10,pin:'0127',napMin:2,bed:{on:false,from:'21:00',to:'07:00'},quota:{on:false,min:30}},exams:[],spent:0,prizes:SEED_PRIZES(),prizeWins:[],pity:0,
   pet:{name:'小橘',exp:0,lastPet:''},owned:{},placed:[],wall:'',floor:'',log:[],
   rewards:[{id:uid(),level:3,name:'小狗貼紙',claimed:false},{id:uid(),level:5,name:'大耳狗吊飾',claimed:false},{id:uid(),level:10,name:'大耳狗吊飾（第二個）',claimed:false}]});
 let S;
@@ -1526,7 +1552,7 @@ function renderAll(){
     <div class="grow"><div>${subjIcon(e.subject)} ${esc(e.subject||'考卷')}</div><div class="meta">${e.date}${e.how==='sign'?' · ✍️ 當場簽名':e.how==='review'?' · ✅ 家長確認':''}</div></div>
     ${e.sig?sigSVG(e.sig):''}<button class="btn small danger" data-del-exam="${e.id}" aria-label="刪除這張考卷">刪除</button></li>`).join('')
     :'<li class="empty">還沒有考卷，在上面登記第一張</li>';
-  renderExamParts();checkApproved();
+  renderExamParts();checkApproved();renderRest();
 
   // parent
   $('setThreshold').value=st.threshold;$('setPer').value=st.per;$('setCost').value=st.cost;
@@ -1884,10 +1910,11 @@ document.querySelectorAll('[data-ic]').forEach(el=>{el.innerHTML=icon(el.dataset
 /* ===== care system ===== */
 const RATE={food:-2.2,fun:-2,clean:-1.5,energy:4};
 function careNow(){const c=S.care,h=Math.max(0,(Date.now()-(c.at||Date.now()))/36e5),o={};
-  for(const k in RATE)o[k]=Math.max(0,Math.min(100,(+c[k]||0)+RATE[k]*h));return o}
+  for(const k in RATE)o[k]=Math.max(0,Math.min(100,(+c[k]||0)+RATE[k]*h));
+  if(typeof napGain==='function')o.energy=Math.min(100,o.energy+napGain(o.energy));return o}
 function careSet(fn){const o=careNow();fn(o);for(const k in o)o[k]=Math.round(Math.max(0,Math.min(100,o[k])));
   S.care={...o,at:Date.now()};save();renderCare()}
-function needType(c){if(isDark())return'';return c.food<40&&!S.floorFood?'bowl':(isNight()||c.energy<25)?'zzz':c.clean<40?'bath':c.fun<40?'ball':''}
+function needType(c){if(isDark())return'';return c.food<40&&!S.floorFood?'bowl':c.energy<25?'zzz':c.clean<40?'bath':c.fun<40?'ball':''}
 function renderCare(){
   const c=careNow();
   [['needFood','food',30],['needFun','fun',30],['needEnergy','energy',20]].forEach(([id,k,low])=>{
@@ -1956,23 +1983,62 @@ const dropFood=async e=>{if(!fd)return;const{k,g,moved}=fd;fd=null;const rr=$('r
   g.remove();placeFood(k,x)};
 $('tray').addEventListener('pointerup',dropFood);$('tray').addEventListener('pointercancel',()=>{if(fd){fd.g.remove();fd=null}});
 
-/* night: lights off, sleep */
-const DARK_KEY='exam-pet-dark';let darkAt=0;try{darkAt=+(localStorage.getItem(DARK_KEY)||0)||0}catch(e){}
-const isDark=()=>darkAt>0, isNight=()=>{const h=new Date().getHours();return h>=20||h<7};
-function setDark(on){
-  if(on===isDark())return;
-  if(on){if(sceneOpen())return;closeTray();darkAt=Date.now();sfx('yawn');addLog(`關燈，${S.pet.name}去睡覺了`)}
-  else{const h=(Date.now()-darkAt)/36e5;darkAt=0;if(h>0.02)careSet(o=>{o.energy+=Math.min(60,h*8)});addLog(`開燈，${S.pet.name}醒來了`);
-    setTimeout(()=>{setPose('stand');pupJump(2)},300)}
-  try{on?localStorage.setItem(DARK_KEY,String(darkAt)):localStorage.removeItem(DARK_KEY)}catch(e){}
+/* 睡覺＝充電小睡（CARE-13）＋ 就寢時間（CARE-14）＋ 每日遊玩上限（CARE-15）*/
+const DARK_KEY='exam-pet-nap',PLAY_KEY='exam-pet-play';
+let nap=null;try{nap=JSON.parse(localStorage.getItem(DARK_KEY))||null}catch(e){}
+const napMs=()=>Math.max(.5,+S.settings.napMin||2)*60000;
+function napGain(cur){if(!nap)return 0;const f=Math.min(1,(Date.now()-nap.at)/napMs());return Math.max(0,(100-nap.e0)*f-(cur-nap.e0>0?0:0))}
+const hm=t=>{const[h,m]=String(t||'0:0').split(':').map(Number);return h*60+(m||0)};
+function isBedtime(){const b=S.settings.bed;if(!b||!b.on)return false;const d=new Date(),n=d.getHours()*60+d.getMinutes(),f=hm(b.from),t=hm(b.to);
+  return f<=t?(n>=f&&n<t):(n>=f||n<t)}
+function playLog(){let v={};try{v=JSON.parse(localStorage.getItem(PLAY_KEY))||{}}catch(e){}if(v.date!==today())v={date:today(),sec:0,extra:0,warned:false};return v}
+function savePlay(v){try{localStorage.setItem(PLAY_KEY,JSON.stringify(v))}catch(e){}}
+function quotaOver(){const q=S.settings.quota;if(!q||!q.on)return false;const v=playLog();return v.sec>=(+q.min+v.extra)*60}
+const restMode=()=>isBedtime()?'bed':quotaOver()?'quota':'';
+const isDark=()=>!!nap||!!restMode(), isNight=()=>{const h=new Date().getHours();return h>=20||h<7};
+function setDark(on,auto){
+  if(restMode()){if(nap){nap=null;try{localStorage.removeItem(DARK_KEY)}catch(e){}}wakeHint();renderNight();return}
+  if(on===!!nap)return;
+  if(on){if(sceneOpen())return;closeTray();nap={at:Date.now(),e0:Math.round(careNow().energy)};sfx('yawn');addLog(`關燈，${S.pet.name}去小睡`)}
+  else{careSet(()=>{});const full=Date.now()-nap.at>=napMs();nap=null;
+    addLog(full?`${S.pet.name}睡飽了，體力充滿`:`開燈，${S.pet.name}醒來了`);
+    setTimeout(()=>{setPose('stand');pupJump(full?4:2);if(full){burst(30);sfx('fanfare');toast(`${S.pet.name}睡飽了！體力滿滿`)}},300)}
+  try{nap?localStorage.setItem(DARK_KEY,JSON.stringify(nap)):localStorage.removeItem(DARK_KEY)}catch(e){}
   renderNight();renderAll()}
-function renderNight(){const dk=isDark();$('roomDark').hidden=!dk;$('lightSw').innerHTML=icon(dk?'bulbOff':'bulbOn');
-  $('lightSw').setAttribute('aria-label',dk?'開燈':'關燈睡覺')}
-function wakeHint(){toast(`噓～${S.pet.name}在睡覺，先開燈`);const b=$('lightSw');b.classList.remove('pulse');void b.offsetWidth;b.classList.add('pulse')}
-$('lightSw').onclick=()=>setDark(!isDark());
+function renderNight(){const dk=isDark(),rm=restMode();$('roomDark').hidden=!dk;$('lightSw').innerHTML=icon(dk?'bulbOff':'bulbOn');
+  $('lightSw').setAttribute('aria-label',rm?'現在是休息時間':dk?'開燈':'關燈小睡');
+  $('napRing').toggleAttribute('hidden',!nap||!!rm);
+  if(nap){const f=Math.min(1,(Date.now()-nap.at)/napMs());$('napArc').setAttribute('stroke-dashoffset',(113.1*(1-f)).toFixed(1))}
+  $('restSign').hidden=!rm;if(rm)$('restSign').textContent=rm==='bed'?'🌙 睡覺時間，明天見':'⏰ 今天玩夠囉，明天見';
+  $('needEnergy').classList.toggle('charging',!!nap)}
+function wakeHint(){const rm=restMode();
+  toast(rm==='bed'?'現在是睡覺時間，明天再一起玩':rm==='quota'?'今天玩夠囉，明天再來找小狗':`噓～${S.pet.name}在小睡，等月亮轉完或先開燈`);
+  const b=$('lightSw');b.classList.remove('pulse');void b.offsetWidth;b.classList.add('pulse')}
+$('lightSw').onclick=()=>setDark(!nap);
+let lastAct=Date.now();['pointerdown','keydown'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now()},{passive:true}));
+setInterval(()=>{ // 每秒：小睡進度、自動醒來、遊玩時間
+  if(nap){if(Date.now()-nap.at>=napMs()){setDark(false,true);return}if(document.visibilityState==='visible')renderCare()}
+  const q=S.settings.quota;
+  if(q&&q.on&&document.visibilityState==='visible'&&Date.now()-lastAct<60000&&!restMode()){const v=playLog();v.sec++;
+    const left=(+q.min+v.extra)*60-v.sec;if(left<=300&&left>0&&!v.warned){v.warned=true;toast('再玩 5 分鐘就要讓小狗休息囉')}
+    savePlay(v);if(left<=0){addLog('今天的遊玩時間用完了');closeTray();renderNight();renderAll()}}
+},1000);
+let lastRest=restMode();setInterval(()=>{const r=restMode();if(r!==lastRest){lastRest=r;renderNight();renderAll()}},20000);
 setInterval(()=>{if(!isDark()||reduced||document.visibilityState!=='visible')return;
   const z=document.createElement('span');z.className='zz';z.textContent=Math.random()<.5?'Z':'z';
   z.style.left=(pupX+($('pup').classList.contains('left')?-4:6))+'%';z.style.top='70%';$('room').appendChild(z);setTimeout(()=>z.remove(),2400)},1400);
+// 家長設定：作息
+function renderRest(){const st=S.settings,b=st.bed||{},q=st.quota||{};
+  if(document.activeElement!==$('setNap'))$('setNap').value=String(st.napMin||2);
+  $('bedOn').checked=!!b.on;$('bedFrom').value=b.from||'21:00';$('bedTo').value=b.to||'07:00';
+  $('quotaOn').checked=!!q.on;if(document.activeElement!==$('quotaMin'))$('quotaMin').value=q.min||30;
+  const v=playLog();$('quotaLine').textContent=`這台今天玩了 ${Math.floor(v.sec/60)} 分鐘${q.on?`，上限 ${(+q.min||30)+v.extra} 分鐘`:''}`}
+$('setNap').onchange=()=>{S.settings.napMin=+$('setNap').value;save();renderAll()};
+['bedOn','bedFrom','bedTo'].forEach(id=>$(id).onchange=()=>{S.settings.bed={on:$('bedOn').checked,from:$('bedFrom').value||'21:00',to:$('bedTo').value||'07:00'};
+  addLog(S.settings.bed.on?`就寢時間：${S.settings.bed.from}～${S.settings.bed.to}`:'關閉就寢時間');save();renderNight();renderAll()});
+['quotaOn','quotaMin'].forEach(id=>$(id).onchange=()=>{const m=Math.max(5,Math.min(240,Math.round(+$('quotaMin').value)||30));
+  S.settings.quota={on:$('quotaOn').checked,min:m};addLog(S.settings.quota.on?`每日遊玩上限 ${m} 分鐘`:'關閉每日遊玩上限');save();renderNight();renderAll()});
+$('quotaMore').onclick=()=>{const v=playLog();v.extra+=10;v.warned=false;savePlay(v);addLog('今天多給 10 分鐘遊玩時間');toast('已經多給 10 分鐘');renderNight();renderAll()};
 
 /* kitchen */
 const RECIPES=[{id:'dRice',ic:'riceBowl',need:['rice','meat','carrot']},{id:'dSoup',ic:'soup',need:['pumpkin','carrot','milk']},{id:'dPancake',ic:'pancake',need:['egg','flour','strawberry']}];
