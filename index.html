@@ -61,12 +61,46 @@ svg{max-width:100%}
 .pup .inner{transition:transform .3s}
 .pup.left .inner{transform:scaleX(-1)}
 .pup svg{display:block;width:100%;height:auto;overflow:visible}
-.pup.walking .legs{animation:step .3s steps(2) infinite}
-@keyframes step{50%{transform:translateY(-3px)}}
+.pup.walking .legs,.pk-dog.walking .legs{animation:none}
+/* ANIM-01 眨眼、呼吸、耳朵抖 */
+.eyes{animation:blink 4.5s infinite}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+.ear{animation:earflick 8s ease-in-out infinite}
+@keyframes earflick{0%,88%,100%{transform:rotate(0)}91%{transform:rotate(-14deg)}94%{transform:rotate(7deg)}97%{transform:rotate(-3deg)}}
+.ear-r{animation-name:earflickR}
+@keyframes earflickR{0%,88%,100%{transform:rotate(0)}91%{transform:rotate(14deg)}94%{transform:rotate(-7deg)}97%{transform:rotate(3deg)}}
+.bodyg{transform-origin:52px 96px;animation:breath 2.8s ease-in-out infinite}
+@keyframes breath{50%{transform:scale(1.015,1.04)}}
+/* ANIM-02 走路：對角腳交錯、身體起伏、頭晚一拍 */
+.pup.walking .leg.a,.pk-dog.walking .leg.a{animation:legswing .34s ease-in-out infinite alternate}
+.pup.walking .leg.b,.pk-dog.walking .leg.b{animation:legswing .34s ease-in-out infinite alternate-reverse}
+@keyframes legswing{from{transform:rotate(22deg)}to{transform:rotate(-22deg)}}
+.pup.walking .bodyg,.pk-dog.walking .bodyg{animation:bob .17s ease-in-out infinite alternate}
+.pup.walking .head,.pk-dog.walking .head{animation:bob .17s ease-in-out .06s infinite alternate}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-3.5px)}}
+.pup.walking .tail,.pk-dog.walking .tail{animation-duration:.2s}
+/* ANIM-04 停下來：耳朵、尾巴再晃兩下 */
+.pup.settle .ear-l{animation:earflop .55s ease-out}
+.pup.settle .ear-r{animation:earflopR .55s ease-out}
+.pup.settle .head{animation:headsettle .5s ease-out}
+@keyframes earflop{30%{transform:rotate(-18deg)}60%{transform:rotate(8deg)}85%{transform:rotate(-3deg)}}
+@keyframes earflopR{30%{transform:rotate(18deg)}60%{transform:rotate(-8deg)}85%{transform:rotate(3deg)}}
+@keyframes headsettle{35%{transform:translate(3px,1px) rotate(4deg)}70%{transform:translate(-1px,0) rotate(-2deg)}}
 .pup .tail{transform-origin:22px 62px;animation:wag .5s ease-in-out infinite alternate}
 @keyframes wag{to{transform:rotate(18deg)}}
-.pup.jump .inner2{animation:hop .5s cubic-bezier(.3,1.6,.5,1)}
-@keyframes hop{40%{transform:translateY(-30%)}}
+.pup .inner2{transform-origin:50% 100%}
+/* ANIM-03 跳：先蹲（預備）→ 拉長往上 → 落地壓扁 → 彈回 */
+.pup.jump .inner2{animation:hop .72s linear}
+@keyframes hop{
+  0%{transform:none;animation-timing-function:ease-out}
+  18%{transform:scale(1.12,.86);animation-timing-function:cubic-bezier(.2,.6,.4,1)}
+  45%{transform:translateY(-34%) scale(.9,1.14);animation-timing-function:cubic-bezier(.6,0,.8,.4)}
+  70%{transform:scale(1.14,.86);animation-timing-function:ease-out}
+  84%{transform:scale(.94,1.06)}
+  100%{transform:none}}
+.pup.jump .ear-l{animation:earflop .72s ease-out .3s}
+.pup.jump .ear-r{animation:earflopR .72s ease-out .3s}
+.pup.jump .tail{animation:wag .1s 6 alternate}
 .heart{position:absolute;font-size:22px;pointer-events:none;animation:floatUp 1s ease-out forwards;z-index:999}
 @keyframes floatUp{to{transform:translateY(-60px);opacity:0}}
 .room-empty{position:absolute;left:50%;top:28%;transform:translateX(-50%);color:#8A6A43;font-weight:700;font-size:.9rem;text-align:center;width:80%;pointer-events:none}
@@ -101,7 +135,7 @@ svg{max-width:100%}
 h2{font-size:1.15rem;margin:0 0 10px}
 h3{font-size:1rem;margin:22px 0 8px}
 label{display:block;font-weight:700;font-size:.9rem;margin-bottom:4px}
-input[type=text],input[type=number],input[type=date],textarea{width:100%;font:inherit;color:var(--ink);background:var(--sky);border:2px solid var(--line);border-radius:12px;padding:9px 12px}
+input[type=text],input[type=number],input[type=date],input[type=password],input:not([type]),textarea{width:100%;font:inherit;color:var(--ink);background:var(--sky);border:2px solid var(--line);border-radius:12px;padding:9px 12px}
 textarea{min-height:70px;resize:vertical}
 input:focus-visible,button:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
 .btn{font:inherit;font-weight:700;border-radius:12px;padding:9px 16px;cursor:pointer;border:2px solid var(--ink);background:var(--blue);color:#fff}
@@ -306,6 +340,48 @@ h3::before{content:"✿ ";color:var(--pink)}
 .dev-st{flex:none}
 .dev-item.done .dev-t{color:#A07C8C;text-decoration:line-through}
 .dev-note{margin:4px 0 0 4.5em;color:#A07C8C;font-size:.8rem}
+.big-label{font-size:1.15rem;font-weight:900;margin:10px 0 6px}
+.big-select{font:inherit;font-size:1.5rem;font-weight:900;width:100%;padding:12px 14px;border:3px solid #5A3E4B;border-radius:16px;background:var(--card);color:var(--ink);appearance:none;-webkit-appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,#5A3E4B 50%),linear-gradient(135deg,#5A3E4B 50%,transparent 50%);background-position:calc(100% - 26px) 52%,calc(100% - 16px) 52%;background-size:10px 10px;background-repeat:no-repeat}
+.score-disp{font-size:3rem;font-weight:900;text-align:center;background:var(--card);border:3px solid #5A3E4B;border-radius:18px;padding:4px 0;margin-bottom:10px;letter-spacing:.05em}
+.score-disp.full{color:var(--pink)}.score-disp.bad{animation:nope .4s}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.numpad button{font:inherit;font-size:1.8rem;font-weight:900;height:64px;border-radius:18px;border:3px solid #5A3E4B;background:var(--card);color:var(--ink);box-shadow:0 4px 0 #5A3E4B;cursor:pointer}
+.numpad button:active{transform:translateY(3px);box-shadow:0 1px 0 #5A3E4B}
+.numpad .k100{background:#FFE38F;color:#5A3E4B}
+.ex-date{display:flex;align-items:center;gap:10px;margin:12px 0}.ex-date label{margin:0;font-size:1.05rem}.ex-date input{flex:1}
+.big-btn{font-size:1.25rem;padding:14px}
+.ex-cart{margin-top:14px}
+.cart-list li,.pend li{font-size:1.15rem}
+.cart-list .score,.pend .score{font-size:1.6rem}
+.sticon{font-size:1.4rem;flex:none}
+.review-box{background:#FFF8E0;border:3px dashed #F2B33D;border-radius:18px;padding:6px 12px 12px;margin-bottom:12px}
+.review-box li{flex-wrap:wrap}
+.rv-btns{display:flex;gap:6px;width:100%;justify-content:flex-end}
+.subj-list li{gap:6px}
+.subj-ic{font-size:1.4rem;width:44px;height:44px;border-radius:12px;border:2px solid var(--line);background:var(--sky);cursor:pointer;flex:none}
+.subj-list input{flex:1;min-width:0}
+.subj-add{display:flex;gap:8px;margin-top:8px}.subj-add input{flex:1}
+.switch-row{display:flex;align-items:center;gap:8px;font-weight:700}.switch-row input{width:22px;height:22px}
+.sig-card{max-width:420px;width:100%;text-align:center}
+.sig-title{font-size:1.4rem;font-weight:900;margin:0 0 4px}
+#sigPad{width:100%;aspect-ratio:5/2;background:#fff;border:3px dashed #C9B6BF;border-radius:14px;touch-action:none;display:block}
+.sig-pin{text-align:center;font-size:1.4rem;letter-spacing:.3em}
+.stamp{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%) rotate(-12deg);font-size:2.4rem;font-weight:900;color:#E0567F;border:6px solid #E0567F;border-radius:20px;padding:10px 22px;line-height:1.1;text-align:center;background:rgba(255,255,255,.85);animation:stampin .45s cubic-bezier(.3,1.6,.5,1)}
+.stamp[hidden]{display:none}
+@keyframes stampin{from{transform:translate(-50%,-50%) rotate(-12deg) scale(2.2);opacity:0}}
+.sigmini{height:22px;width:56px;flex:none}
+.envelope{position:fixed;z-index:1300;font-size:44px;pointer-events:none;transition:transform .9s cubic-bezier(.5,-.3,.6,1),opacity .9s}
+.pup{touch-action:none}
+.pup.wagfast .tail{animation-duration:.15s}
+.paw-mark{position:absolute;z-index:920;font-size:20px;opacity:.6;pointer-events:none;transform:translate(-50%,-50%);animation:pawfade 1.4s forwards}
+@keyframes pawfade{to{opacity:0}}
+.pup.spin .inner2{animation:pspin .7s ease-in-out}
+@keyframes pspin{50%{transform:translateY(-12%) rotate(180deg)}to{transform:rotate(360deg)}}
+.pup.shakeoff .inner2{animation:shakeoff .12s 8 alternate}
+@keyframes shakeoff{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+.drop{position:absolute;width:8px;height:12px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#8CC8F0;z-index:1000;pointer-events:none;animation:dropfly .7s ease-out forwards}
+@keyframes dropfly{to{transform:translate(var(--dx),var(--dy));opacity:0}}
 .fab-dot{display:inline-block;min-width:1.4em;margin-left:4px;background:#E0567F;color:#fff;border-radius:999px;font-size:.7rem;padding:0 5px}
 .my-wins{margin-top:10px}.my-wins li{padding:6px 0}
 .linkish{background:none;border:0;padding:2px 0;font:inherit;font-size:.8rem;font-weight:700;color:var(--blue);cursor:pointer;text-align:left}
@@ -498,7 +574,7 @@ h3::before{content:"✿ ";color:var(--pink)}
   .room-dark i,.zz,.stir-hint,.steam i,.pot-in svg,.pup.sleeping .inner2,.pup .head{animation:none!important}
   .reveal *,.pin-card{animation:none!important;transition:none!important}
   .helper *{animation:none!important;transition:none!important}
-  .rays,.confetti i,.cap,.cap::before,.cap .top,.cap .bot,.tickets.bump,.pup .tail,.pup .legs,.lvup-pup,.heart{animation:none!important}
+  .rays,.confetti i,.cap,.cap::before,.cap .top,.cap .bot,.tickets.bump,.pup .tail,.pup .legs,.lvup-pup,.heart,.eyes,.ear,.bodyg,.leg{animation:none!important}
   .cap{opacity:1}.pup{transition:none!important}
 }
 /* 平板橫放：左邊房間固定、右邊操作區；廚房改左右排 */
@@ -602,21 +678,32 @@ h3::before{content:"✿ ";color:var(--pink)}
   </section>
 
   <section class="panel" id="tab-exam" role="tabpanel" hidden>
-    <h2>一次登記多張考卷</h2>
-    <div style="margin-bottom:10px"><label for="exDate">考試日期</label><input id="exDate" type="date"></div>
-    <div class="batch-head"><span>科目</span><span>分數</span><span></span></div>
-    <div id="batchRows"></div>
-    <div class="batch-actions">
-      <button class="btn ghost" id="addRow">再加一張</button>
-      <button class="btn" id="submitBatch">登記全部考卷</button>
+    <h2>登記考卷</h2>
+    <div class="ex-form">
+      <label class="big-label" for="exSubject">科目</label>
+      <select id="exSubject" class="big-select"></select>
+      <label class="big-label">分數</label>
+      <div class="score-disp" id="scoreDisp" aria-live="polite">—</div>
+      <div class="numpad" id="numpad">
+        <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+        <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+        <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+        <button data-k="del" aria-label="刪掉一個數字">⌫</button><button data-k="0">0</button><button data-k="100" class="k100">100</button>
+      </div>
+      <div class="ex-date"><label for="exDate">日期</label><input id="exDate" type="date"></div>
+      <button class="btn wide big-btn" id="exAdd">＋ 放進這一疊</button>
     </div>
-    <p class="preview-line" id="batchPreview"></p>
-    <details class="quick">
-      <summary>快速輸入一串分數</summary>
-      <p class="meta" style="margin:6px 0">用空白、逗號或換行分開，例如：100 95 88 100</p>
-      <textarea id="quickText" aria-label="快速輸入分數"></textarea>
-      <button class="btn wide" id="quickSubmit" style="margin-top:8px">登記這些分數</button>
-    </details>
+    <div class="ex-cart" id="exCart" hidden>
+      <h3>這一疊考卷</h3>
+      <ul class="list cart-list" id="cartList"></ul>
+      <p class="preview-line" id="batchPreview"></p>
+      <button class="btn wide big-btn" id="exSend">✉️ 送給爸爸媽媽確認</button>
+      <button class="btn wide ghost big-btn" id="exSign" style="margin-top:8px">✍️ 爸爸媽媽在旁邊，現在簽名</button>
+    </div>
+    <div id="pendingWrap" hidden>
+      <h3>等爸爸媽媽確認</h3>
+      <ul class="list" id="pendingList"></ul>
+    </div>
     <h3>考卷紀錄</h3>
     <div class="total" id="totalLine"></div>
     <ul class="list" id="examList"></ul>
@@ -624,6 +711,12 @@ h3::before{content:"✿ ";color:var(--pink)}
 
   <section class="panel sheet" id="tab-parent" role="dialog" aria-modal="true" aria-labelledby="parentTitle" hidden>
     <div class="sheet-head"><h2 id="parentTitle">家長設定</h2><button class="btn small" id="parentClose">關閉</button></div>
+    <div id="reviewBox" class="review-box" hidden>
+      <h3 style="margin-top:4px">📝 待確認考卷</h3>
+      <p class="meta" style="margin-top:-4px">請確認紙本考卷上已經簽名，再按「已簽名，入帳」。分數打錯可以退回。</p>
+      <ul class="list" id="reviewList"></ul>
+      <button class="btn wide" id="reviewAll">全部都簽好了，一次入帳</button>
+    </div>
     <label for="setName">小狗的名字</label>
     <input id="setName" type="text" maxlength="8">
 
@@ -634,6 +727,13 @@ h3::before{content:"✿ ";color:var(--pink)}
       <div><label for="setCost">抽一次要</label><input id="setCost" type="number" min="1" max="20"></div>
     </div>
     <p class="meta">分數會一直累加，沒滿也會留著。改規則會用全部分數重新計算。</p>
+
+    <h3>科目</h3>
+    <ul class="list subj-list" id="subjList"></ul>
+    <div class="subj-add"><input id="subjName" type="text" maxlength="6" placeholder="新科目名稱" aria-label="新科目名稱"><button class="btn small" id="subjAdd">新增</button></div>
+
+    <h3>音效</h3>
+    <label class="switch-row"><input type="checkbox" id="setSound"> 在這台裝置播放音效</label>
 
     <h3>遊戲開發進度</h3>
     <button class="btn small" id="devOpen">打開開發清單</button>
@@ -782,6 +882,19 @@ h3::before{content:"✿ ";color:var(--pink)}
     <div class="row"><button class="btn ghost small" id="pinCancel">取消</button><button class="btn" id="pinOk">打開</button></div>
   </div>
 </div>
+<div class="modal" id="sigModal" hidden role="dialog" aria-modal="true" aria-labelledby="sigTitle">
+  <div class="gate-card sig-card">
+    <p id="sigTitle" class="sig-title">✍️ 爸爸媽媽簽名</p>
+    <p class="meta" id="sigSum" style="margin:0 0 6px"></p>
+    <canvas id="sigPad" width="600" height="240" aria-label="簽名框，用手指簽名"></canvas>
+    <div class="row" style="display:flex;justify-content:space-between;align-items:center;margin:6px 0 10px"><span class="meta">請在框裡簽名</span><button class="btn small ghost" id="sigClear">重簽</button></div>
+    <label for="sigPin" style="text-align:left">家長密碼</label>
+    <input id="sigPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" class="sig-pin">
+    <p class="meta" id="sigMsg" style="min-height:1.4em;margin:6px 0 0"></p>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:8px"><button class="btn ghost small" id="sigCancel">取消</button><button class="btn" id="sigOk">簽好了</button></div>
+  </div>
+  <div class="stamp" id="stamp" hidden>已簽名<br><small>✓</small></div>
+</div>
 <div class="modal" id="devModal" hidden role="dialog" aria-modal="true" aria-labelledby="devTitle">
   <div class="gate-card dev-card">
     <div class="dev-head"><b id="devTitle">🛠️ 遊戲開發清單</b><button class="btn small" id="devClose">關閉</button></div>
@@ -853,7 +966,7 @@ h3::before{content:"✿ ";color:var(--pink)}
 <div class="flash" id="flash"></div>
 <div class="confetti" id="confetti"></div>
 <div class="toast" id="toast" role="status"></div>
-<datalist id="subjects"><option>國語</option><option>數學</option><option>英文</option><option>自然</option><option>社會</option></datalist>
+
 
 <script>
 /* =====================================================================================
@@ -919,7 +1032,7 @@ h3::before{content:"✿ ";color:var(--pink)}
 
    【版權原則】不畫任何既有角色（包含三麗鷗角色與其二創）；實體商品照片只由家長自行上傳到 photos/。
    ===================================================================================== */
-const DEV_VERSION='2026-10-31 · 測試版（第 1 批＋廚房）';
+const DEV_VERSION='2026-11-01 · 測試版（新坐姿 A、新趴姿 C）';
 const DEV_TASKS=[
  {id:'CORE-01',phase:'基礎功能',status:'done',title:'考卷登記、分數累加換扭蛋券'},
  {id:'CORE-02',phase:'基礎功能',status:'done',title:'扭蛋單抽／5 連抽／10 連抽與動畫'},
@@ -942,10 +1055,17 @@ const DEV_TASKS=[
  {id:'CARE-08',phase:'第 1 批：照顧與小鎮',status:'done',title:'小廚房：3 道菜、畫圈攪拌、有毒食材提醒'},
  {id:'CARE-09',phase:'第 1 批：照顧與小鎮',status:'done',title:'小狗會坐下、趴下'},
  {id:'CARE-10',phase:'第 1 批：照顧與小鎮',status:'done',title:'晚上關燈睡覺，睡越久體力越多'},
- {id:'CARE-11',phase:'第 1 批：照顧與小鎮',status:'todo',title:'音效（吃飯、洗澡、撿花、扭蛋）',note:'用 Web Audio 自己合成，不用外部音檔；家長設定可關閉'},
+ {id:'CARE-11',phase:'第 1 批：照顧與小鎮',status:'done',title:'音效（吃飯、洗澡、撿花、扭蛋、蓋章）',note:'Web Audio 合成，不用音檔；家長設定 → 音效 可以關（每台裝置各自設定）'},
  {id:'CARE-12',phase:'第 1 批：照顧與小鎮',status:'todo',title:'可愛大字體（jf open 粉圓體）',note:'字型檔放 GitHub repo，兒童畫面文字 20px 以上'},
  {id:'OPS-01',phase:'第 1 批：照顧與小鎮',status:'todo',title:'把測試版上傳到正式版 GitHub',note:'第 1 批、廚房、開發清單目前只在測試頁；確認後上傳 index.html 覆蓋'},
  {id:'OPS-02',phase:'第 1 批：照顧與小鎮',status:'done',title:'平板版面（小米 Redmi Pad SE 8.7 直拿／橫拿）',note:'橫拿：房間固定在左、操作區在右；廚房鍋子和食材左右排'},
+ {id:'EXAM-01',phase:'登記考卷（A＋B）',status:'done',title:'科目改大字下拉選單'},
+ {id:'EXAM-02',phase:'登記考卷（A＋B）',status:'done',title:'家長設定：科目新增、改名、排序、刪除、換圖示'},
+ {id:'EXAM-03',phase:'登記考卷（A＋B）',status:'done',title:'大數字鍵盤輸入分數（含 100 快捷鍵），一次放好幾張'},
+ {id:'EXAM-04',phase:'登記考卷（A＋B）',status:'done',title:'A：送給家長手機確認，家長勾「已簽名，入帳」或退回',note:'確認前不給券；⚙️ 家長按鈕會顯示待處理數量'},
+ {id:'EXAM-05',phase:'登記考卷（A＋B）',status:'done',title:'B：家長當場在平板簽名＋密碼，馬上入帳',note:'簽名存成線條，考卷紀錄旁邊看得到'},
+ {id:'EXAM-06',phase:'登記考卷（A＋B）',status:'done',title:'家長確認後，小孩那台跳出「確認了！」並拿到券'},
+ {id:'EXAM-07',phase:'登記考卷（A＋B）',status:'idea',title:'C：拍下簽好名的考卷存證',note:'需要多改一次 Firestore 規則存照片'},
  {id:'LEARN-01',phase:'第 2 批：課程',status:'todo',title:'貼紙課表：一週 7 格，拖貼紙排課'},
  {id:'LEARN-02',phase:'第 2 批：課程',status:'todo',title:'技能星星：集滿 5 顆學會新動作'},
  {id:'LEARN-03',phase:'第 2 批：課程',status:'todo',title:'英文教室：聽發音三選一選圖'},
@@ -955,7 +1075,7 @@ const DEV_TASKS=[
  {id:'TOWN-02',phase:'第 3 批：更多地點',status:'todo',title:'圖書館：翻繪本找東西'},
  {id:'TOWN-03',phase:'第 3 批：更多地點',status:'todo',title:'活動中心：遇到原創朋友一起玩'},
  {id:'TOWN-04',phase:'第 3 批：更多地點',status:'todo',title:'美容院：換毛色、配件、犬種'},
- {id:'PET-01',phase:'自己捏一隻',status:'todo',title:'共用骨架：頭、身體、腳、尾巴、耳朵零件化'},
+ {id:'PET-01',phase:'自己捏一隻',status:'doing',title:'共用骨架：頭、身體、腳、尾巴、耳朵零件化',note:'站姿已拆成身體、頭、雙耳、眼睛、4 隻腳、尾巴；其他犬種待做'},
  {id:'PET-02',phase:'自己捏一隻',status:'todo',title:'捏狗畫面：犬種、毛色、花紋、眼睛、配件、名字'},
  {id:'PET-03',phase:'自己捏一隻',status:'todo',title:'第一批犬種：柴犬、柯基、貴賓、臘腸'},
  {id:'PET-04',phase:'自己捏一隻',status:'todo',title:'第二批犬種：哈士奇、黃金獵犬、博美、法鬥'},
@@ -964,13 +1084,21 @@ const DEV_TASKS=[
  {id:'PET-07',phase:'自己捏一隻',status:'todo',title:'每個犬種的招牌動作'},
  {id:'PET-08',phase:'自己捏一隻',status:'todo',title:'扭蛋可抽配件與特殊毛色'},
  {id:'PET-09',phase:'自己捏一隻',status:'todo',title:'舊存檔「小橘」自動轉成柴犬＋赤色'},
+ {id:'ANIM-01',phase:'動作改造',status:'doing',title:'眨眼、呼吸、耳朵抖動',note:'已做好，等 Kevin 確認方向'},
+ {id:'ANIM-02',phase:'動作改造',status:'doing',title:'走路：對角腳交錯、身體起伏、頭晚一拍、慢起慢停',note:'已做好，等確認方向'},
+ {id:'ANIM-03',phase:'動作改造',status:'doing',title:'跳：預備蹲 → 拉長 → 落地壓扁 → 彈回',note:'已做好，等確認方向'},
+ {id:'ANIM-04',phase:'動作改造',status:'doing',title:'停下來時耳朵、頭、尾巴的跟隨動作',note:'已做好，等確認方向'},
+ {id:'ANIM-08',phase:'動作改造',status:'done',title:'坐姿改成 A 側面正確坐、趴與睡改成 C 麻糬窩',note:'參考可愛線條狗：大頭、背斜、圓大腿、前腳筆直；趴時縮成一團只露前腳掌'},
+ {id:'ANIM-05',phase:'動作改造',status:'doing',title:'姿勢之間加過渡（坐下、趴下不再跳圖）',note:'已加：換姿勢時先壓扁再彈回；完整的中間姿勢待做'},
+ {id:'ANIM-06',phase:'動作改造',status:'todo',title:'邀玩鞠躬、歪頭、全身搖'},
+ {id:'ANIM-07',phase:'動作改造',status:'todo',title:'暴衝、追尾巴（開心值滿時隨機）'},
  {id:'ACT-01',phase:'動作',status:'doing',title:'閒置：呼吸、眨眼、東張西望、抓癢、打哈欠、伸懶腰',note:'已完成：搖尾巴、睡覺呼吸'},
- {id:'ACT-02',phase:'動作',status:'doing',title:'移動：跑、跳、轉身、追尾巴',note:'已完成：走路、跳'},
+ {id:'ACT-02',phase:'動作',status:'doing',title:'移動：跑、跳、轉身、追尾巴',note:'已完成：走路、跳、原地轉圈'},
  {id:'ACT-03',phase:'動作',status:'doing',title:'休息：下巴靠手、捲成一團睡',note:'已完成：坐下、趴下、閉眼睡'},
- {id:'ACT-04',phase:'動作',status:'todo',title:'手勢：連點轉圈、長按翻肚、滑動摸摸、點地板走過去'},
+ {id:'ACT-04',phase:'動作',status:'done',title:'手勢：連點轉圈、長按翻肚、滑動摸摸、點地板走過去'},
  {id:'ACT-05',phase:'動作',status:'todo',title:'需求動作：舔嘴巴、看碗、甩泥巴、嘆氣'},
- {id:'ACT-06',phase:'動作',status:'todo',title:'洗完澡甩水'},
- {id:'ACT-07',phase:'動作',status:'doing',title:'心情表情：垂耳、鼓臉、愛心眼',note:'已完成：難過皺眉'},
+ {id:'ACT-06',phase:'動作',status:'done',title:'洗完澡甩水'},
+ {id:'ACT-07',phase:'動作',status:'doing',title:'心情表情：垂耳、鼓臉、愛心眼',note:'已完成：難過皺眉、摸摸時瞇眼開心'},
  {id:'ACT-08',phase:'動作',status:'todo',title:'技能動作：握手、轉圈、跳舞、看書、畫畫（接課程）'},
  {id:'FOOD-01',phase:'食物玩法',status:'idea',title:'接食物：避開對狗有毒的食物'},
  {id:'FOOD-02',phase:'食物玩法',status:'idea',title:'丟到嘴巴：甩動手指丟食物'},
@@ -1044,22 +1172,22 @@ const iconHTML=it=>it.kind?`<span class="swatch" style="background:${it.bg}"></s
 /* ===== puppy art (original) ===== */
 function pupSVG(stage,m={}){
   const pose=m.pose||'stand',closed=pose==='sleep';
-  const eyes=closed?'<path d="M122 70q8 7 16 0M162 70q8 7 16 0" fill="none" stroke="#5A3E4B" stroke-width="5" stroke-linecap="round"/>'
+  const eyes=m.happy&&!closed?'<path d="M121 73q9 -10 18 0M161 73q9 -10 18 0" fill="none" stroke="#5A3E4B" stroke-width="5" stroke-linecap="round"/>':closed?'<path d="M122 70q8 7 16 0M162 70q8 7 16 0" fill="none" stroke="#5A3E4B" stroke-width="5" stroke-linecap="round"/>'
     :'<ellipse cx="130" cy="68" rx="5" ry="7.5" fill="#5A3E4B"/><ellipse cx="170" cy="68" rx="5" ry="7.5" fill="#5A3E4B"/><circle cx="131.5" cy="64.5" r="1.8" fill="#fff"/><circle cx="171.5" cy="64.5" r="1.8" fill="#fff"/>';
   const mouth=m.sad?'<path d="M142 95 Q150 88 158 95" fill="none" stroke="#5A3E4B" stroke-width="3" stroke-linecap="round"/><path d="M120 54l16 5M180 54l-16 5" stroke="#5A3E4B" stroke-width="3.5" stroke-linecap="round"/>'
     :pose==='eat'?'<ellipse cx="150" cy="94" rx="8" ry="6" fill="#E0567F" stroke="#5A3E4B" stroke-width="3"/>'
     :closed?'<path d="M145 92 Q150 95 155 92" fill="none" stroke="#5A3E4B" stroke-width="3" stroke-linecap="round"/>'
     :'<path d="M142 90 Q150 97 158 90" fill="none" stroke="#5A3E4B" stroke-width="3" stroke-linecap="round"/>';
-  const headIn=`<path d="M112 62 L100 22 L134 44 Z" fill="#F2A773" stroke="#5A3E4B" stroke-width="5" stroke-linejoin="round"/>
-    <path d="M188 62 L200 22 L166 44 Z" fill="#F2A773" stroke="#5A3E4B" stroke-width="5" stroke-linejoin="round"/>
-    <path d="M110 58 L104 34 L124 46 Z" fill="#FFB9C9"/><path d="M190 58 L196 34 L176 46 Z" fill="#FFB9C9"/>
+  const rnd=(a,b)=>(a+Math.random()*(b-a)).toFixed(2);
+  const headIn=`<g class="ear ear-l" style="transform-origin:120px 58px;animation-duration:${rnd(6,9)}s"><path d="M112 62 L100 22 L134 44 Z" fill="#F2A773" stroke="#5A3E4B" stroke-width="5" stroke-linejoin="round"/><path d="M110 58 L104 34 L124 46 Z" fill="#FFB9C9"/></g>
+    <g class="ear ear-r" style="transform-origin:180px 58px;animation-duration:${rnd(7,11)}s"><path d="M188 62 L200 22 L166 44 Z" fill="#F2A773" stroke="#5A3E4B" stroke-width="5" stroke-linejoin="round"/><path d="M190 58 L196 34 L176 46 Z" fill="#FFB9C9"/></g>
     <ellipse cx="150" cy="72" rx="52" ry="42" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="5"/>
-    <ellipse cx="150" cy="86" rx="30" ry="22" fill="#FFF3E2"/>${eyes}
+    <ellipse cx="150" cy="86" rx="30" ry="22" fill="#FFF3E2"/><g class="eyes" style="transform-origin:150px 68px;animation-duration:${rnd(3.5,5.5)}s;animation-delay:-${rnd(0,3)}s">${eyes}</g>
     <ellipse cx="150" cy="80" rx="5" ry="3.6" fill="#5A3E4B"/>${mouth}
     <ellipse cx="116" cy="84" rx="10" ry="6" fill="#FF9EC4" opacity=".75"/><ellipse cx="184" cy="84" rx="10" ry="6" fill="#FF9EC4" opacity=".75"/>
     <path d="M178 36c-4-8-16-4-11 5l11 10 11-10c5-9-7-13-11-5z" fill="#FF9EC4" stroke="#5A3E4B" stroke-width="4" stroke-linejoin="round"/>
     ${stage>=3?`<path d="M122 34 L128 8 L142 24 L150 2 L158 24 L172 8 L178 34 Z" fill="#FFD24A" stroke="#5A3E4B" stroke-width="5" stroke-linejoin="round"/><circle cx="150" cy="22" r="5" fill="#FF9EC4"/>`:''}`;
-  const HP={stand:[84,40,0],sit:[80,26,0],lie:[94,62,0],sleep:[94,68,10],eat:[98,80,26],sniff:[98,72,14]}[pose]||[84,40,0];
+  const HP={stand:[84,40,0],sit:[70,30,0],lie:[60,52,0],sleep:[60,55,4],belly:[90,76,-18],eat:[98,80,26],sniff:[98,72,14]}[pose]||[84,40,0];
   const head=`<g class="head"><g transform="translate(${HP[0]} ${HP[1]}) rotate(${HP[2]}) scale(.52) translate(-150 -72)">${headIn}</g></g>`;
   const tail=(d,o)=>`<g class="tail" style="transform-origin:${o}"><path d="${d}" fill="none" stroke="#5A3E4B" stroke-width="10" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#F9BF8C" stroke-width="5" stroke-linecap="round"/></g>`;
   const leg=(x,y,h)=>`<rect x="${x-6}" y="${y}" width="12" height="${h}" rx="6" fill="#F2A773" stroke="#5A3E4B" stroke-width="4"/>`;
@@ -1068,15 +1196,25 @@ function pupSVG(stage,m={}){
   const dirt=(dx,dy)=>m.dirty?`<g transform="translate(${dx} ${dy})" fill="#A8805F" opacity=".55"><ellipse cx="38" cy="68" rx="6" ry="4"/><ellipse cx="62" cy="82" rx="5" ry="3.5"/><ellipse cx="74" cy="64" rx="4" ry="3"/></g>`:'';
   let body;
   if(pose==='sit'){
-    body=tail('M30 98q-20 0-20-18','30px 98px')+`<ellipse cx="40" cy="88" rx="20" ry="15" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="4"/>`+paw(50,103)
-      +`<ellipse cx="60" cy="66" rx="22" ry="30" transform="rotate(18 60 66)" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="4"/><ellipse cx="68" cy="74" rx="10" ry="18" transform="rotate(18 68 74)" fill="#FFF3E2"/>`
-      +leg(66,80,24)+leg(80,80,24)+scarf(-6,-14)+dirt(6,-4);
+    // A：側面正確坐姿（背斜、大腿圓、前腳筆直撐地、尾巴貼地）
+    body=tail('M28 102q-18 0-20-12','28px 102px')
+      +`<path d="M30 102c-8-18-2-46 26-58l18 4c4 18 2 40-4 54z" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="4" stroke-linejoin="round"/>`
+      +`<circle cx="40" cy="86" r="17" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="4"/>`+paw(54,103)
+      +`<path d="M60 62c8 4 10 16 8 30" fill="none" stroke="#FFF3E2" stroke-width="10" stroke-linecap="round"/>`
+      +leg(67,70,34)+leg(79,70,34)+scarf(-14,-10)+dirt(2,16);
   }else if(pose==='lie'||pose==='sleep'){
-    body=tail('M20 90q-16 2-18-12','20px 90px')+paw(28,102)+`<ellipse cx="54" cy="86" rx="40" ry="18" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="4"/><ellipse cx="58" cy="94" rx="22" ry="7" fill="#FFF3E2"/>`
-      +paw(84,102)+paw(100,103)+scarf(8,16)+dirt(0,14);
+    // C：麻糬窩（縮成一團、只露兩隻前腳掌，頭朝前）
+    body=tail('M98 96q16-4 14-22','98px 96px')
+      +`<g class="bodyg" style="transform-origin:60px 104px"><path d="M18 104c0-22 18-36 42-36s42 14 42 36z" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="4" stroke-linejoin="round"/><path d="M40 104c0-10 9-16 20-16s20 6 20 16" fill="#FFF3E2"/>${dirt(0,22)}</g>`
+      +`<ellipse cx="50" cy="103" rx="9" ry="5.5" fill="#F2A773" stroke="#5A3E4B" stroke-width="4"/><ellipse cx="70" cy="103" rx="9" ry="5.5" fill="#F2A773" stroke="#5A3E4B" stroke-width="4"/>`
+      +scarf(-24,10);
+  }else if(pose==='belly'){
+    body=tail('M24 92q-14 4-20-8','24px 92px')+[34,48,66,80].map(x=>`<rect x="${x-6}" y="50" width="12" height="24" rx="6" fill="#F2A773" stroke="#5A3E4B" stroke-width="4"/>`).join('')
+      +`<ellipse cx="56" cy="84" rx="38" ry="18" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="4"/><ellipse cx="56" cy="76" rx="27" ry="9" fill="#FFF3E2"/><circle cx="56" cy="78" r="2" fill="#E8B9A0"/>`+dirt(0,12);
   }else{
-    body=tail('M24 64q-16-10-10-26','22px 62px')+`<g class="legs">${[30,44,62,76].map(x=>leg(x,80,24)).join('')}</g>`
-      +`<ellipse cx="52" cy="72" rx="36" ry="24" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="4"/><ellipse cx="56" cy="80" rx="20" ry="10" fill="#FFF3E2"/>`+scarf(0,0)+dirt(0,0);
+    const lg=(x,c)=>`<g class="leg ${c}" style="transform-origin:${x}px 84px">${leg(x,80,24)}</g>`;
+    body=tail('M24 64q-16-10-10-26','22px 62px')+`<g class="legs">${lg(30,'a')+lg(44,'b')+lg(62,'b')+lg(76,'a')}</g>`
+      +`<g class="bodyg"><ellipse cx="52" cy="72" rx="36" ry="24" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="4"/><ellipse cx="56" cy="80" rx="20" ry="10" fill="#FFF3E2"/>${scarf(0,0)}${dirt(0,0)}</g>`;
   }
   return `<svg viewBox="0 0 120 110" aria-hidden="true">${body}${head}</svg>`;
 }
@@ -1086,7 +1224,7 @@ const need=lv=>15+lv*10;
 function levelInfo(exp){let lv=1,n=need(1);while(exp>=n){exp-=n;lv++;n=need(lv)}return{lv,cur:exp,need:n}}
 
 /* ===== state ===== */
-const DEFAULT=()=>({dishes:{},floorFood:null,care:{food:80,fun:80,energy:80,clean:80,at:Date.now()},walk:{date:'',n:0},settings:{threshold:100,per:1,cost:1,pityN:3,prizeRate:10,pin:'0127'},exams:[],spent:0,prizes:SEED_PRIZES(),prizeWins:[],pity:0,
+const DEFAULT=()=>({subjects:[{n:'國語',i:'📖'},{n:'數學',i:'🔢'},{n:'英文',i:'🔤'},{n:'生活',i:'🌱'},{n:'自然',i:'🔬'},{n:'社會',i:'🌏'}],pending:[],signs:[],dishes:{},floorFood:null,care:{food:80,fun:80,energy:80,clean:80,at:Date.now()},walk:{date:'',n:0},settings:{threshold:100,per:1,cost:1,pityN:3,prizeRate:10,pin:'0127'},exams:[],spent:0,prizes:SEED_PRIZES(),prizeWins:[],pity:0,
   pet:{name:'小橘',exp:0,lastPet:''},owned:{},placed:[],wall:'',floor:'',log:[],
   rewards:[{id:uid(),level:3,name:'小狗貼紙',claimed:false},{id:uid(),level:5,name:'大耳狗吊飾',claimed:false},{id:uid(),level:10,name:'大耳狗吊飾（第二個）',claimed:false}]});
 let S;
@@ -1094,7 +1232,7 @@ try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!S){S=DEFAULT();try{const o=JSON.parse(localStorage.getItem(OLD_KEY));if(o){S.exams=(o.exams||[]).map(e=>({id:e.id,subject:e.subject,score:e.score,date:e.date}));S.settings=o.settings||S.settings;S.spent=o.spent||0}}catch(e){}}
 function normalize(x){const d=DEFAULT();x=x||{};
   for(const k of Object.keys(d))if(x[k]===undefined||x[k]===null)x[k]=d[k];
-  x.pet={...d.pet,...x.pet};x.settings={...d.settings,...x.settings};x.care={...d.care,...x.care};x.dishes={...x.dishes};x.walk={...d.walk,...x.walk};
+  x.pet={...d.pet,...x.pet};x.settings={...d.settings,...x.settings};x.care={...d.care,...x.care};x.dishes={...x.dishes};if(!Array.isArray(x.subjects)||!x.subjects.length)x.subjects=d.subjects;if(!Array.isArray(x.pending))x.pending=[];if(!Array.isArray(x.signs))x.signs=[];x.walk={...d.walk,...x.walk};
   x.prizes.forEach(p=>{if(typeof p.photo!=='string')p.photo=''});
   x.prizeWins.forEach(w=>{if(typeof w.photo!=='string')w.photo='';if(!w.status)w.status=w.claimed?'given':'won'});return x}
 S=normalize(S);
@@ -1264,17 +1402,20 @@ $('selDone').onclick=()=>{selected=null;renderRoom()};
 let pupX=50, pupStage=0, pupKey='', pupBusy=false;
 function renderPup(){
   const {lv}=levelInfo(S.pet.exp), st=stageOf(lv), c=careNow();
-  const dk=isDark(),pose=dk?'sleep':pupPose,m={pose,sad:!dk&&(c.food<25||c.fun<25),dirty:c.clean<40}, key=st+'|'+pose+'|'+m.sad+'|'+m.dirty;
+  const dk=isDark(),pose=dk?'sleep':pupPose,m={pose,happy:pupHappy,sad:!dk&&(c.food<25||c.fun<25),dirty:c.clean<40}, key=st+'|'+pose+'|'+m.sad+'|'+m.dirty+'|'+pupHappy;
   $('pup').classList.toggle('sleeping',dk);
   if(key!==pupKey){$('pupSvg').innerHTML=pupSVG(st,m);pupKey=key;pupStage=st}
   const pup=$('pup');pup.style.width=STAGES[st-1].scale*100+'%';pup.style.top='93%';pup.style.left=pupX+'%';pup.style.zIndex=930;
 }
-let pupPose='stand';
-function setPose(p){if(pupPose===p)return;pupPose=p;renderPup()}
+let pupPose='stand',pupHappy=false;
+function setPose(p){if(pupPose===p)return;pupPose=p;renderPup();
+  if(!reduced){const i2=$('pup').querySelector('.inner2');i2.animate([{transform:'scale(1.08,.88)'},{transform:'scale(.97,1.04)'},{transform:'none'}],{duration:300,easing:'ease-out'})}}
 const pupW=()=>STAGES[stageOf(levelInfo(S.pet.exp).lv)-1].scale*100;
 async function walkPup(x,speed=.06){const pup=$('pup');x=Math.max(5,Math.min(95,x));const dist=Math.abs(x-pupX);if(dist<.5)return;
   setPose('stand');pup.classList.toggle('left',x<pupX);pup.classList.add('walking');
-  pup.style.transitionDuration=(reduced?0:dist*speed)+'s';pupX=x;pup.style.left=x+'%';await wait(dist*speed*1000+40);pup.classList.remove('walking')}
+  pup.style.transitionTimingFunction='cubic-bezier(.45,.05,.4,1)';
+  pup.style.transitionDuration=(reduced?0:dist*speed)+'s';pupX=x;pup.style.left=x+'%';await wait(dist*speed*1000+40);pup.classList.remove('walking');pupSettle()}
+function pupSettle(){if(reduced)return;const p=$('pup');p.classList.remove('settle');void p.offsetWidth;p.classList.add('settle');clearTimeout(p._st);p._st=setTimeout(()=>p.classList.remove('settle'),600)}
 const sceneOpen=()=>['mapScene','parkScene','bathScene','kitScene'].some(id=>!$(id).hidden);
 async function wander(){
   if(reduced)return;
@@ -1287,20 +1428,41 @@ async function wander(){
   setTimeout(wander,1200+Math.random()*2500);
 }
 function pupJump(hearts=1){
-  const pup=$('pup'),i2=pup.querySelector('.inner2');
-  i2.style.animation='none';void i2.offsetWidth;i2.style.animation='';pup.classList.remove('jump');void pup.offsetWidth;pup.classList.add('jump');
+  const pup=$('pup'),i2=pup.querySelector('.inner2');sfx('pop');
+  i2.style.animation='none';void i2.offsetWidth;i2.style.animation='';pup.classList.remove('jump');void pup.offsetWidth;pup.classList.add('jump');clearTimeout(pup._jt);pup._jt=setTimeout(()=>pup.classList.remove('jump'),760);
   for(let k=0;k<hearts;k++)setTimeout(()=>{const h=document.createElement('span');h.className='heart';h.textContent=['💗','💕','✨','💖'][k%4];
     h.style.left=(pupX+(Math.random()*10-5))+'%';h.style.top='58%';$('room').appendChild(h);setTimeout(()=>h.remove(),1000)},k*160);
 }
-$('pup').onclick=()=>{
+/* 手勢（ACT-04）：點一下跳、連點 3 下轉圈、長按翻肚、在身上滑＝摸摸、點地板＝走過去聞 */
+function pupTap(){
   if(isDark()){const p=$('pup');p.classList.remove('twitch');void p.offsetWidth;p.classList.add('twitch');toast(`噓～${S.pet.name}在睡覺`);return}
-  if(!pupBusy)setPose('stand');
-  const pup=$('pup'),i2=pup.querySelector('.inner2');
-  i2.style.animation='none';void i2.offsetWidth;i2.style.animation='';pup.classList.remove('jump');void pup.offsetWidth;pup.classList.add('jump');
-  const h=document.createElement('span');h.className='heart';h.textContent=['💗','💕','🎀','✨'][Math.floor(Math.random()*4)];
-  h.style.left=pupX+'%';h.style.top='60%';$('room').appendChild(h);setTimeout(()=>h.remove(),1000);
-  if(S.pet.lastPet!==today()){S.pet.lastPet=today();addLog(`摸摸${S.pet.name}（經驗 +3）`);gainExp(3);toast(`摸摸${S.pet.name}，經驗 +3（每天一次）`)}
-};
+  if(!pupBusy)setPose('stand');pupJump(1);
+  gst.taps++;clearTimeout(gst.tapT);gst.tapT=setTimeout(()=>gst.taps=0,700);
+  if(gst.taps>=3){gst.taps=0;const p=$('pup');p.classList.remove('spin');void p.offsetWidth;p.classList.add('spin');setTimeout(()=>p.classList.remove('spin'),750);sfx('fanfare')}
+  if(S.pet.lastPet!==today()){S.pet.lastPet=today();addLog(`摸摸${S.pet.name}（經驗 +3）`);gainExp(3);toast(`摸摸${S.pet.name}，經驗 +3（每天一次）`)}}
+async function bellyUp(){if(isDark()||pupBusy)return;pupBusy=true;pupHappy=true;setPose('belly');renderPup();pupJump(3);sfx('ding');
+  await wait(2600);pupHappy=false;setPose('stand');pupBusy=false;renderPup()}
+const gst={down:false,x:0,y:0,dist:0,lp:null,long:false,taps:0,tapT:null,hx:0,endT:null};
+$('pup').addEventListener('pointerdown',e=>{if(e.target.closest('.bubble'))return;$('pup').setPointerCapture(e.pointerId);
+  Object.assign(gst,{down:true,x:e.clientX,y:e.clientY,dist:0,long:false,hx:0});clearTimeout(gst.lp);
+  gst.lp=setTimeout(()=>{if(gst.down&&gst.dist<25){gst.long=true;bellyUp()}},600)});
+$('pup').addEventListener('pointermove',e=>{if(!gst.down)return;const d=Math.hypot(e.clientX-gst.x,e.clientY-gst.y);gst.dist+=d;gst.hx+=d;gst.x=e.clientX;gst.y=e.clientY;
+  if(gst.dist>25&&!isDark()){clearTimeout(gst.lp);if(!pupHappy){pupHappy=true;$('pup').classList.add('wagfast');renderPup()}
+    if(gst.hx>60){gst.hx=0;const h=document.createElement('span');h.className='heart';h.textContent='💗';h.style.left=pupX+'%';h.style.top='58%';$('room').appendChild(h);setTimeout(()=>h.remove(),1000);sfx('bubble')}}});
+const gstEnd=e=>{if(!gst.down)return;gst.down=false;clearTimeout(gst.lp);if(e.type==='pointercancel')return;
+  if(gst.long)return;
+  if(gst.dist>25){clearTimeout(gst.endT);gst.endT=setTimeout(()=>{if(pupPose!=='belly'){pupHappy=false;$('pup').classList.remove('wagfast');renderPup()}},1200);
+    if(S.pet.lastPet!==today()){S.pet.lastPet=today();addLog(`摸摸${S.pet.name}（經驗 +3）`);gainExp(3)}return}
+  pupTap()};
+$('pup').addEventListener('pointerup',gstEnd);$('pup').addEventListener('pointercancel',gstEnd);
+$('pup').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pupTap()}});
+$('pup').tabIndex=0;
+$('room').addEventListener('click',async e=>{if(e.target.closest('.thing,.pup,button,.tray,.floor-food,.selbar'))return;
+  if(isDark()||pupBusy||!$('tray').hidden||selected)return;
+  const r=$('room').getBoundingClientRect(),x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100;if(y<60)return;
+  const m=document.createElement('span');m.className='paw-mark';m.textContent='🐾';m.style.left=x+'%';m.style.top=y+'%';$('room').appendChild(m);setTimeout(()=>m.remove(),1400);
+  pupBusy=true;try{const right=pupX<x;await walkPup(right?x-pupW()*.3:x+pupW()*.3,.05);$('pup').classList.toggle('left',!right);
+    setPose('sniff');$('pup').classList.add('sniffing');await wait(1200);$('pup').classList.remove('sniffing');setPose('stand')}finally{pupBusy=false}});
 
 /* exp & level up */
 let lvQueue=null;
@@ -1354,16 +1516,17 @@ function renderAll(){
   const open=S.prizeWins.filter(w=>w.status!=='given');
   $('myWins').innerHTML=open.map(w=>`<li><span class="pz-ic">${iconHTML(prizeItem(w))}</span><div class="grow"><b>${esc(w.name)}</b>
     <div class="meta">${w.status==='ready'?'🎁 爸爸媽媽準備好了，可以去領囉！':'🛒 爸爸媽媽準備中，再等一下下～'}</div></div></li>`).join('');
-  const nTodo=S.prizeWins.filter(w=>w.status==='won').length;
-  $('parentFab').innerHTML=`⚙️ 家長${nTodo?`<span class="fab-dot" aria-label="${nTodo} 個大獎還沒買">${nTodo}</span>`:''}`;
+  const nTodo=S.prizeWins.filter(w=>w.status==='won').length+S.pending.filter(p=>p.status==='wait').length;
+  $('parentFab').innerHTML=`⚙️ 家長${nTodo?`<span class="fab-dot" aria-label="${nTodo} 件事等家長處理">${nTodo}</span>`:''}`;
 
   // exams
   $('totalLine').innerHTML=`<span>共 ${S.exams.length} 張考卷</span><span>累積 ${total} 分 · 換到 ${earned()} 張</span>`;
   $('examList').innerHTML=S.exams.length?S.exams.slice().reverse().map(e=>`
     <li><span class="score ${e.score>=100?'full':''}">${e.score}</span>
-    <div class="grow"><div>${esc(e.subject||'考卷')}</div><div class="meta">${e.date}</div></div>
-    <button class="btn small danger" data-del-exam="${e.id}" aria-label="刪除這張考卷">刪除</button></li>`).join('')
+    <div class="grow"><div>${subjIcon(e.subject)} ${esc(e.subject||'考卷')}</div><div class="meta">${e.date}${e.how==='sign'?' · ✍️ 當場簽名':e.how==='review'?' · ✅ 家長確認':''}</div></div>
+    ${e.sig?sigSVG(e.sig):''}<button class="btn small danger" data-del-exam="${e.id}" aria-label="刪除這張考卷">刪除</button></li>`).join('')
     :'<li class="empty">還沒有考卷，在上面登記第一張</li>';
+  renderExamParts();checkApproved();
 
   // parent
   $('setThreshold').value=st.threshold;$('setPer').value=st.per;$('setCost').value=st.cost;
@@ -1401,49 +1564,128 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!=='tab-'+b.dataset.tab);
 });
 
-/* ===== exams ===== */
+/* ===== exams：A 送家長手機確認 ＋ B 當場簽名（EXAM-01～06）===== */
 $('exDate').value=today();
-function addRow(subject=''){
-  const d=document.createElement('div');d.className='batch-row';
-  d.innerHTML=`<input type="text" placeholder="科目" list="subjects" aria-label="科目" value="${esc(subject)}">
-    <input type="number" min="0" max="100" inputmode="numeric" placeholder="分數" aria-label="分數">
-    <button class="x" aria-label="移除這一列">×</button>`;
-  d.querySelector('.x').onclick=()=>{d.remove();if(!$('batchRows').children.length)addRow();updatePreview()};
-  d.querySelector('input[type=number]').oninput=updatePreview;
-  $('batchRows').appendChild(d);return d;
+let scoreStr='',cart=[];
+const subjIcon=n=>(S.subjects.find(x=>x.n===n)||{}).i||'📝';
+function renderSubjects(){const sel=$('exSubject'),cur=sel.value;
+  sel.innerHTML=S.subjects.map(x=>`<option value="${esc(x.n)}">${x.i} ${esc(x.n)}</option>`).join('')+'<option value="">📝 其他</option>';
+  if(sel.dataset.ok&&[...sel.options].some(o=>o.value===cur))sel.value=cur;else if(!sel.dataset.ok)sel.selectedIndex=0;sel.dataset.ok='1'}
+function renderScore(){const d=$('scoreDisp');d.textContent=scoreStr===''?'—':scoreStr;d.classList.toggle('full',scoreStr==='100')}
+$('numpad').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;sfx('tick');
+  if(k==='del')scoreStr=scoreStr.slice(0,-1);else if(k==='100')scoreStr='100';
+  else{const n=scoreStr==='0'?k:scoreStr+k;if(+n>100||n.length>3){const d=$('scoreDisp');d.classList.remove('bad');void d.offsetWidth;d.classList.add('bad');return}scoreStr=n}
+  renderScore()};
+$('exAdd').onclick=()=>{if(scoreStr===''){const d=$('scoreDisp');d.classList.remove('bad');void d.offsetWidth;d.classList.add('bad');toast('先按分數喔');return}
+  cart.push({id:uid(),subject:$('exSubject').value,score:+scoreStr,date:$('exDate').value||today()});scoreStr='';renderScore();sfx('pop');renderCart();
+  const i=$('exSubject').selectedIndex;if(i<S.subjects.length-1)$('exSubject').selectedIndex=i+1};
+function renderCart(){$('exCart').hidden=!cart.length;
+  $('cartList').innerHTML=cart.map(e=>`<li><span class="sticon">${subjIcon(e.subject)}</span><div class="grow">${esc(e.subject||'考卷')}<div class="meta">${e.date}</div></div><span class="score${e.score>=100?' full':''}">${e.score}</span><button class="btn small danger" data-cart-del="${e.id}" aria-label="拿掉這張">×</button></li>`).join('');
+  const add=cart.reduce((a,e)=>a+e.score,0),gain=earnedFor(totalScore()+add)-earned();
+  $('batchPreview').textContent=cart.length?`${cart.length} 張共 ${add} 分，確認後可以換 ${gain} 張扭蛋券`:''}
+$('cartList').onclick=e=>{const id=e.target.dataset.cartDel;if(!id)return;cart=cart.filter(x=>x.id!==id);renderCart()};
+// A：送出等待確認
+$('exSend').onclick=()=>{if(!cart.length)return;const now=new Date().toISOString();
+  cart.forEach(e=>S.pending.push({...e,at:now,device:deviceName(),status:'wait'}));
+  addLog(`✉️ 送出 ${cart.length} 張考卷等爸爸媽媽確認：${cart.map(e=>(e.subject?e.subject+' ':'')+e.score).join('、')}`);
+  flyEnvelope($('exSend'));sfx('whoosh');cart=[];renderCart();save();renderAll();toast('送出去了！等爸爸媽媽確認就會拿到券')};
+function flyEnvelope(from){if(reduced)return;const r=from.getBoundingClientRect(),e=document.createElement('div');e.className='envelope';e.textContent='✉️';
+  e.style.left=(r.left+r.width/2-22)+'px';e.style.top=(r.top-10)+'px';document.body.appendChild(e);
+  requestAnimationFrame(()=>{e.style.transform='translate(120px,-420px) rotate(25deg) scale(.5)';e.style.opacity='0'});setTimeout(()=>e.remove(),1000)}
+function creditExams(list,how,extra={}){const before=earned(),now=new Date().toISOString();
+  list.forEach(e=>S.exams.push({id:e.id||uid(),subject:e.subject,score:e.score,date:e.date,how,okAt:now,...extra}));
+  return earned()-before}
+function celebrateTickets(gain,msg){toast(msg);if(gain){const b=$('ticketBox');b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump');burst(25+gain*10);sfx('fanfare')}}
+// B：當場簽名
+let sig={strokes:[],cur:null,ctx:null};
+function openSign(){if(!cart.length)return;const add=cart.reduce((a,e)=>a+e.score,0);
+  $('sigSum').textContent=`${cart.length} 張考卷，共 ${add} 分`;$('sigPin').value='';$('sigMsg').textContent='';$('stamp').hidden=true;
+  $('sigModal').hidden=false;sigClear()}
+function sigClear(){const c=$('sigPad');sig.ctx=c.getContext('2d');sig.ctx.clearRect(0,0,c.width,c.height);sig.strokes=[];sig.cur=null}
+function sigPt(e){const c=$('sigPad'),r=c.getBoundingClientRect();return[Math.round((e.clientX-r.left)/r.width*c.width),Math.round((e.clientY-r.top)/r.height*c.height)]}
+$('sigPad').addEventListener('pointerdown',e=>{e.preventDefault();$('sigPad').setPointerCapture(e.pointerId);sig.cur=[sigPt(e)];sig.strokes.push(sig.cur)});
+$('sigPad').addEventListener('pointermove',e=>{if(!sig.cur)return;const p=sigPt(e),l=sig.cur[sig.cur.length-1];if(Math.hypot(p[0]-l[0],p[1]-l[1])<3)return;
+  sig.cur.push(p);const x=sig.ctx;x.strokeStyle='#3B2A33';x.lineWidth=5;x.lineCap='round';x.lineJoin='round';x.beginPath();x.moveTo(l[0],l[1]);x.lineTo(p[0],p[1]);x.stroke()});
+['pointerup','pointercancel'].forEach(t=>$('sigPad').addEventListener(t,()=>{sig.cur=null}));
+$('sigClear').onclick=sigClear;
+$('sigCancel').onclick=()=>{$('sigModal').hidden=true};
+$('exSign').onclick=openSign;
+$('sigOk').onclick=async()=>{
+  const len=sig.strokes.reduce((a,s)=>a+s.slice(1).reduce((b,p,i)=>b+Math.hypot(p[0]-s[i][0],p[1]-s[i][1]),0),0);
+  if(len<60){$('sigMsg').textContent='請先在框裡簽名';return}
+  if($('sigPin').value!==String(S.settings.pin||'0127')){$('sigMsg').textContent='家長密碼不對喔';$('sigPin').value='';return}
+  const path=sig.strokes.filter(s=>s.length>1).map(s=>'M'+s.map(p=>p.join(' ')).join('L')).join('');
+  const sid=uid();S.signs.push({id:sid,path:path.slice(0,6000),at:new Date().toISOString()});if(S.signs.length>40)S.signs=S.signs.slice(-40);
+  $('stamp').hidden=false;sfx('stamp');await wait(900);$('sigModal').hidden=true;
+  const n=cart.length,add=cart.reduce((a,e)=>a+e.score,0),gain=creditExams(cart,'sign',{sig:sid});
+  addLog(`✍️ 家長當場簽名，登記 ${n} 張考卷：${cart.map(e=>(e.subject?e.subject+' ':'')+e.score).join('、')}（+${gain} 張券）`);
+  cart=[];renderCart();markSeen();save();renderAll();celebrateTickets(gain,gain?`簽好了！拿到 ${gain} 張扭蛋券！`:`簽好了！累積 ${add} 分`)};
+// 家長審核（A）
+function approve(ids){const list=S.pending.filter(p=>ids.includes(p.id)&&p.status==='wait');if(!list.length)return;
+  const gain=creditExams(list,'review');S.pending=S.pending.filter(p=>!ids.includes(p.id));
+  addLog(`✅ 家長確認簽名，入帳 ${list.length} 張考卷（+${gain} 張券）`);markSeen();save();renderAll();toast(`已入帳 ${list.length} 張${gain?`，孩子拿到 ${gain} 張券`:''}`)}
+$('reviewList').onclick=e=>{const d=e.target.dataset;
+  if(d.ok)approve([d.ok]);
+  else if(d.back){const p=S.pending.find(x=>x.id===d.back);if(!p)return;p.status='back';addLog(`↩️ 退回考卷：${p.subject||'考卷'} ${p.score}`);save();renderAll()}};
+$('reviewAll').onclick=()=>{const ids=S.pending.filter(p=>p.status==='wait').map(p=>p.id);if(ids.length&&confirm(`確認這 ${ids.length} 張考卷都已經簽名了嗎？`))approve(ids)};
+$('pendingList').onclick=e=>{const id=e.target.dataset.pendDel;if(!id)return;const p=S.pending.find(x=>x.id===id);
+  if(p&&confirm('拿掉這張考卷？')){S.pending=S.pending.filter(x=>x.id!==id);addLog(`取消送出：${p.subject||'考卷'} ${p.score}`);save();renderAll()}};
+// 小孩那邊收到「確認了！」
+const SEEN_KEY='exam-pet-seen-ok';
+function markSeen(){try{localStorage.setItem(SEEN_KEY,new Date().toISOString())}catch(e){}}
+function checkApproved(){let seen='';try{seen=localStorage.getItem(SEEN_KEY)||''}catch(e){}
+  if(!seen){markSeen();return}
+  const fresh=S.exams.filter(e=>e.how==='review'&&e.okAt&&e.okAt>seen);if(!fresh.length)return;markSeen();
+  const before=earnedFor(totalScore(S.exams.filter(e=>!fresh.includes(e))));const gain=earned()-before;
+  setTimeout(()=>celebrateTickets(gain,`爸爸媽媽確認了 ${fresh.length} 張考卷！${gain?`拿到 ${gain} 張扭蛋券！`:''}`),300)}
+function sigSVG(id){const g=S.signs.find(x=>x.id===id);return g?`<svg class="sigmini" viewBox="0 0 600 240" aria-label="家長簽名"><path d="${esc(g.path)}" fill="none" stroke="#3B2A33" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}
+function renderExamParts(){
+  renderSubjects();renderCart();
+  const pend=S.pending;$('pendingWrap').hidden=!pend.length;
+  $('pendingList').innerHTML=pend.map(p=>`<li class="pend"><span class="sticon">${p.status==='back'?'↩️':'✉️'}</span><div class="grow">${esc(p.subject||'考卷')}<div class="meta">${p.status==='back'?'被退回了，檢查一下分數再登記':'等爸爸媽媽確認中…'}</div></div><span class="score">${p.score}</span><button class="btn small danger" data-pend-del="${p.id}" aria-label="拿掉">×</button></li>`).join('');
+  const wait=pend.filter(p=>p.status==='wait');$('reviewBox').hidden=!wait.length;$('reviewAll').hidden=wait.length<2;
+  $('reviewList').innerHTML=wait.map(p=>`<li><span class="sticon">${subjIcon(p.subject)}</span><div class="grow"><b>${esc(p.subject||'考卷')}</b> <span class="score${p.score>=100?' full':''}" style="font-size:1.2rem">${p.score}</span><div class="meta">${p.date} · ${esc(p.device||'')}</div></div>
+    <div class="rv-btns"><button class="btn small ghost" data-back="${p.id}">退回</button><button class="btn small" data-ok="${p.id}">已簽名，入帳</button></div></li>`).join('');
+  $('subjList').innerHTML=S.subjects.map((x,i)=>`<li><button class="subj-ic" data-subj-ic="${i}" aria-label="換圖示">${x.i}</button><input value="${esc(x.n)}" maxlength="6" data-subj-name="${i}" aria-label="科目名稱">
+    <button class="btn small ghost" data-subj-up="${i}" aria-label="往上"${i?'':' disabled'}>↑</button><button class="btn small danger" data-subj-del="${i}" aria-label="刪除科目">×</button></li>`).join('');
+  $('setSound').checked=soundOn();
 }
-const resetRows=()=>{$('batchRows').innerHTML='';['國語','數學','英文'].forEach(addRow)};
-resetRows();
-$('addRow').onclick=()=>addRow().querySelector('input').focus();
-function readRows(){const out=[],bad=[];
-  [...$('batchRows').children].forEach(r=>{const[s,n]=r.querySelectorAll('input');if(n.value==='')return;
-    const v=Number(n.value);if(!(v>=0&&v<=100))bad.push(n);else out.push({subject:s.value.trim(),score:Math.round(v)})});
-  return{out,bad}}
-function updatePreview(){const{out}=readRows();
-  if(!out.length){$('batchPreview').textContent='';return}
-  const add=out.reduce((a,e)=>a+e.score,0),gain=earnedFor(totalScore()+add)-earned();
-  $('batchPreview').textContent=`這 ${out.length} 張共 ${add} 分，可以換到 ${gain} 張扭蛋券`}
-function registerExams(list){
-  if(!list.length){toast('請先輸入至少一個分數');return false}
-  const before=earned(),date=$('exDate').value||today();
-  list.forEach(e=>S.exams.push({id:uid(),subject:e.subject,score:e.score,date}));
-  const gain=earned()-before,add=list.reduce((a,e)=>a+e.score,0);
-  addLog(`📝 登記 ${list.length} 張考卷：${list.map(e=>(e.subject?e.subject+' ':'')+e.score).join('、')}（+${gain} 張券）`);
-  save();renderAll();
-  toast(gain?`登記 ${list.length} 張，累積 ${add} 分，拿到 ${gain} 張扭蛋券！`:`登記 ${list.length} 張，累積 ${add} 分`);
-  if(gain){const b=$('ticketBox');b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump');burst(25+gain*10);
-    $('ticketBox').scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'})}
-  return true}
-$('submitBatch').onclick=()=>{const{out,bad}=readRows();
-  if(bad.length){bad[0].focus();toast('分數要在 0 到 100 之間');return}
-  if(registerExams(out)){resetRows();updatePreview()}};
-$('quickSubmit').onclick=()=>{const nums=$('quickText').value.split(/[\s,，、]+/).filter(Boolean).map(Number);
-  if(nums.some(n=>!(n>=0&&n<=100))){toast('只能輸入 0 到 100 的數字');return}
-  if(registerExams(nums.map(n=>({subject:'',score:Math.round(n)}))))$('quickText').value=''};
+// 科目管理
+const SUBJ_ICONS=['📖','🔢','🔤','🌱','🔬','🌏','🎵','🎨','⚽','💻','✏️','📝'];
+$('subjList').addEventListener('click',e=>{const d=e.target.dataset;
+  if(d.subjIc!==undefined){const x=S.subjects[+d.subjIc];x.i=SUBJ_ICONS[(SUBJ_ICONS.indexOf(x.i)+1)%SUBJ_ICONS.length];save();renderAll()}
+  else if(d.subjUp!==undefined){const i=+d.subjUp;if(i>0){[S.subjects[i-1],S.subjects[i]]=[S.subjects[i],S.subjects[i-1]];save();renderAll()}}
+  else if(d.subjDel!==undefined){const i=+d.subjDel;if(S.subjects.length<=1){toast('至少要留一個科目');return}
+    if(confirm(`刪除「${S.subjects[i].n}」？（舊考卷紀錄不受影響）`)){S.subjects.splice(i,1);save();renderAll()}}});
+$('subjList').addEventListener('change',e=>{const i=e.target.dataset.subjName;if(i===undefined)return;const v=e.target.value.trim();
+  if(!v||S.subjects.some((x,j)=>j!=i&&x.n===v)){toast('名稱不能空白或重複');renderAll();return}S.subjects[+i].n=v;save();renderAll()});
+$('subjAdd').onclick=()=>{const v=$('subjName').value.trim();if(!v)return;if(S.subjects.some(x=>x.n===v)){toast('已經有這個科目了');return}
+  S.subjects.push({n:v,i:'📝'});$('subjName').value='';addLog(`新增科目：${v}`);save();renderAll()};
 $('examList').onclick=e=>{const id=e.target.dataset.delExam;if(!id)return;
   const rest=S.exams.filter(x=>x.id!==id);
   if(earnedFor(totalScore(rest))<S.spent){toast('這張考卷換到的券已經用掉了，不能刪除');return}
   if(confirm('刪除這張考卷？')){const ex=S.exams.find(x=>x.id===id);S.exams=rest;addLog(`刪除考卷：${ex.subject||'考卷'} ${ex.score}`);save();renderAll()}};
+
+/* ===== 音效（CARE-11）：Web Audio 合成，不用音檔 ===== */
+const SOUND_KEY='exam-pet-sound';let actx=null;
+const soundOn=()=>{try{return localStorage.getItem(SOUND_KEY)!=='off'}catch(e){return true}};
+$('setSound').onchange=()=>{try{localStorage.setItem(SOUND_KEY,$('setSound').checked?'on':'off')}catch(e){}if($('setSound').checked)sfx('ding')};
+document.addEventListener('pointerdown',()=>{if(!actx&&soundOn()){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}else if(actx&&actx.state==='suspended')actx.resume()},{passive:true});
+function tone(f,t0,d,type='sine',v=.18,f2){const o=actx.createOscillator(),g=actx.createGain();o.type=type;o.frequency.setValueAtTime(f,actx.currentTime+t0);
+  if(f2)o.frequency.exponentialRampToValueAtTime(f2,actx.currentTime+t0+d);
+  g.gain.setValueAtTime(0,actx.currentTime+t0);g.gain.linearRampToValueAtTime(v,actx.currentTime+t0+.01);g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+t0+d);
+  o.connect(g).connect(actx.destination);o.start(actx.currentTime+t0);o.stop(actx.currentTime+t0+d+.02)}
+function sfx(k){if(!actx||!soundOn())return;try{({
+  pop:()=>tone(520,0,.12,'sine',.2,880),tick:()=>tone(880,0,.05,'square',.05),
+  chomp:()=>{tone(180,0,.08,'square',.08,120);tone(200,.18,.08,'square',.08,130)},
+  bubble:()=>tone(600+Math.random()*500,0,.1,'sine',.08,1200),
+  ding:()=>{tone(1047,0,.25,'triangle',.15);tone(1568,.08,.3,'triangle',.1)},
+  whoosh:()=>tone(300,0,.35,'sawtooth',.05,1200),
+  stamp:()=>{tone(90,0,.18,'square',.25,50);tone(1200,.12,.2,'triangle',.08)},
+  fanfare:()=>[523,659,784,1047].forEach((f,i)=>tone(f,i*.09,.22,'triangle',.14)),
+  plop:()=>tone(400,0,.15,'sine',.2,150),
+  splash:()=>{for(let i=0;i<5;i++)tone(800+Math.random()*900,i*.04,.08,'sine',.06,1500)},
+  yawn:()=>tone(500,0,.6,'sine',.08,250)}[k]||(()=>{}))()}catch(e){}}
 
 /* ===== parent ===== */
 $('setName').onchange=()=>{S.pet.name=$('setName').value.trim()||'小橘';save();renderAll()};
@@ -1557,7 +1799,7 @@ $('pinInput').onkeydown=e=>{if(e.key==='Enter')checkPin()};
 $('pinCancel').onclick=()=>{$('pinModal').hidden=true;$('parentFab').focus()};
 $('parentClose').onclick=closeParent;
 document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;
-  if(!$('devModal').hidden){$('devModal').hidden=true}else if(!$('kitScene').hidden){closeKitchen()}else if(!$('parkScene').hidden){$('parkHome').click()}else if(!$('bathScene').hidden){closeBath()}else if(!$('mapScene').hidden){closeMap()}else if(!$('picker').hidden){$('picker').hidden=true}else if(!$('pinModal').hidden){$('pinModal').hidden=true}else if(!$('tab-parent').hidden)closeParent()});
+  if(!$('sigModal').hidden){$('sigModal').hidden=true}else if(!$('devModal').hidden){$('devModal').hidden=true}else if(!$('kitScene').hidden){closeKitchen()}else if(!$('parkScene').hidden){$('parkHome').click()}else if(!$('bathScene').hidden){closeBath()}else if(!$('mapScene').hidden){closeMap()}else if(!$('picker').hidden){$('picker').hidden=true}else if(!$('pinModal').hidden){$('pinModal').hidden=true}else if(!$('tab-parent').hidden)closeParent()});
 $('pinSave').onclick=()=>{const v=$('pinNew').value.trim();
   if(!/^\d{4,8}$/.test(v)){toast('密碼要 4～8 位數字');return}
   S.settings.pin=v;$('pinNew').value='';addLog('更改了家長密碼');save();toast('家長密碼已更改')};
@@ -1694,7 +1936,7 @@ async function dogGoEat(){const ff=S.floorFood;if(!ff||pupBusy||isDark()||sceneO
     const c=careNow(),f=FOODS[ff.k]||FOODS.kibble;
     if(c.food>=90){setPose('sniff');pup.classList.add('sniffing');await wait(1700);pup.classList.remove('sniffing');setPose('stand');
       await wait(200);await walkPup(right?tx-22-Math.random()*20:tx+22+Math.random()*20,.06)}
-    else{setPose('eat');pup.classList.add('eating');$('floorFood').classList.add('eaten');await wait(2400);pup.classList.remove('eating');
+    else{setPose('eat');pup.classList.add('eating');$('floorFood').classList.add('eaten');[0,800,1600].forEach(t=>setTimeout(()=>sfx('chomp'),t));await wait(2400);pup.classList.remove('eating');
       S.floorFood=null;careSet(o=>{o.food+=f.food;o.fun+=f.fun});addLog(`${S.pet.name}吃了${f.name}`);setPose('stand');pupJump(3);
       if(f.exp)gainExp(f.exp);else renderAll()}
   }finally{pupBusy=false}}
@@ -1719,7 +1961,7 @@ const DARK_KEY='exam-pet-dark';let darkAt=0;try{darkAt=+(localStorage.getItem(DA
 const isDark=()=>darkAt>0, isNight=()=>{const h=new Date().getHours();return h>=20||h<7};
 function setDark(on){
   if(on===isDark())return;
-  if(on){if(sceneOpen())return;closeTray();darkAt=Date.now();addLog(`關燈，${S.pet.name}去睡覺了`)}
+  if(on){if(sceneOpen())return;closeTray();darkAt=Date.now();sfx('yawn');addLog(`關燈，${S.pet.name}去睡覺了`)}
   else{const h=(Date.now()-darkAt)/36e5;darkAt=0;if(h>0.02)careSet(o=>{o.energy+=Math.min(60,h*8)});addLog(`開燈，${S.pet.name}醒來了`);
     setTimeout(()=>{setPose('stand');pupJump(2)},300)}
   try{on?localStorage.setItem(DARK_KEY,String(darkAt)):localStorage.removeItem(DARK_KEY)}catch(e){}
@@ -1763,7 +2005,7 @@ $('shelf').addEventListener('pointerup',async e=>{if(!kd)return;const{k,b,g,move
   if(!inPot){g.remove();return}
   if(!reduced){g.style.transition='left .35s ease-in,top .35s ease-in,transform .35s';g.style.left=(pr.left+pr.width/2)+'px';g.style.top=(pr.top+pr.height*.3)+'px';g.style.transform='translate(-50%,-50%) scale(.6)';await wait(350)}
   g.remove();
-  if(kit&&k===kit.r.need[kit.step]){b.classList.add('used');kit.step++;$('potIn').insertAdjacentHTML('beforeend',icon(k));
+  if(kit&&k===kit.r.need[kit.step]){sfx('plop');b.classList.add('used');kit.step++;$('potIn').insertAdjacentHTML('beforeend',icon(k));
     sparkle($('potWrap'),2);
     if(kit.step>=kit.r.need.length){kit.phase='stir';$('stirHint').innerHTML=icon('stir');$('stirHint').hidden=false;$('steam').hidden=false}
     renderKitStrip()}
@@ -1780,7 +2022,7 @@ function stirMove(e){if(!kit||kit.phase!=='stir')return;const r=$('potWrap').get
   kit.lastA=a;$('potIn').style.transform=`rotate(${(kit.stir*30)%360}deg)`;
   if(kit.stir>=Math.PI*2*3)kitDone()}
 function kitDone(){if(!kit||kit.phase==='done')return;kit.phase='done';renderKitStrip();$('spoon').hidden=true;$('potIn').style.transform='';
-  $('dishBig').innerHTML=icon(kit.r.ic);$('kitServe').innerHTML=icon('plate');$('kitDone').hidden=false;burst(50)}
+  sfx('fanfare');$('dishBig').innerHTML=icon(kit.r.ic);$('kitServe').innerHTML=icon('plate');$('kitDone').hidden=false;burst(50)}
 $('kitServe').onclick=()=>{if(!kit)return;const id=kit.r.id;S.dishes[id]=Math.min(9,(S.dishes[id]||0)+1);
   addLog(`🍳 做了${FOODS[id].name}`);save();closeKitchen();openTray(true)};
 
@@ -1793,8 +2035,8 @@ async function playBall(){if(pupBusy)return;const c=careNow();
   const a=ball.animate([{left:from+'%',top:'72%'},{left:(from+to)/2+'%',top:'22%'},{left:to+'%',top:'88%'}],{duration:reduced?1:850,easing:'ease-out',fill:'forwards'});
   await a.finished.catch(()=>{});
   const pup=$('pup'),dist=Math.abs(to-pupX);pup.classList.toggle('left',to<pupX);pup.classList.add('walking');
-  pup.style.transitionDuration=(reduced?0:dist*0.025)+'s';pupX=to;pup.style.left=to+'%';await wait(dist*25+50);
-  pup.classList.remove('walking');ball.remove();pupJump(3);
+  pup.style.transitionTimingFunction='cubic-bezier(.45,.05,.4,1)';pup.style.transitionDuration=(reduced?0:dist*0.025)+'s';pupX=to;pup.style.left=to+'%';await wait(dist*25+50);
+  pup.classList.remove('walking');pupSettle();ball.remove();pupJump(3);
   careSet(o=>{o.fun+=12;o.energy-=8;o.food-=3});pupBusy=false}
 $('dBall').onclick=()=>isDark()?wakeHint():playBall();
 
@@ -1806,14 +2048,18 @@ function openBath(){$('tray').hidden=true;$('dFeed').classList.remove('on');
   $('bathSlots').innerHTML=Array.from({length:5},()=>icon('soap')).join('');
   $('bathScene').hidden=false;document.body.style.overflow='hidden'}
 function closeBath(){$('bathScene').hidden=true;document.body.style.overflow='';$('bathStage').querySelectorAll('.foam').forEach(f=>f.remove());
-  if(bath&&bath.done){pupJump(4);showLevelUp()}bath=null;renderAll()}
+  const was=bath&&bath.done;bath=null;renderAll();if(was)shakeOff()}
+async function shakeOff(){const p=$('pup');p.classList.remove('shakeoff');void p.offsetWidth;p.classList.add('shakeoff');sfx('splash');
+  for(let i=0;i<14;i++){const d=document.createElement('span');d.className='drop';const a=Math.random()*Math.PI*2,r=40+Math.random()*50;
+    d.style.left=pupX+'%';d.style.top='80%';d.style.setProperty('--dx',Math.cos(a)*r+'px');d.style.setProperty('--dy',(Math.sin(a)*r-20)+'px');$('room').appendChild(d);setTimeout(()=>d.remove(),750)}
+  await wait(1000);p.classList.remove('shakeoff');pupJump(4);showLevelUp()}
 $('dBath').onclick=()=>isDark()?wakeHint():openBath();$('bathHome').onclick=closeBath;
 function rub(e){if(!bath||bath.done)return;const now=performance.now();if(now-bath.last<45)return;bath.last=now;
   const st=$('bathStage').getBoundingClientRect(),d=$('bathDog').getBoundingClientRect();
   if(e.clientX<d.left||e.clientX>d.right||e.clientY<d.top-20||e.clientY>d.bottom+20)return;
   const f=document.createElement('span');f.className='foam';const sz=14+Math.random()*22;f.style.width=f.style.height=sz+'px';
   f.style.left=(e.clientX-st.left)+'px';f.style.top=(e.clientY-st.top)+'px';$('bathStage').appendChild(f);setTimeout(()=>f.remove(),1700);
-  bath.n++;$('bathHint').hidden=true;
+  bath.n++;$('bathHint').hidden=true;if(bath.n%4===0)sfx('bubble');
   const lit=Math.floor(bath.n/bath.need*5);$('bathSlots').querySelectorAll('svg').forEach((s,i)=>s.classList.toggle('got',i<lit));
   if(bath.n===Math.floor(bath.need/2))$('bathDog').innerHTML=pupSVG(bath.st,{});
   if(bath.n>=bath.need){bath.done=true;burst(50);careSet(o=>{o.clean=100;o.fun+=6});addLog(`幫${S.pet.name}洗香香`);
@@ -1887,7 +2133,7 @@ function spawnItem(){if(pk.spawned>=PK_N)return;pk.spawned++;const f=$('pkField'
 function checkHits(){const d=$('pkDog').getBoundingClientRect(),cx=d.left+d.width/2,cy=d.top+d.height*.7;
   for(const it of [...pk.items]){const r=it.el.getBoundingClientRect();
     if(Math.hypot(r.left+r.width/2-cx,r.top+r.height/2-cy)<52){it.el.classList.add('got');setTimeout(()=>it.el.remove(),450);
-      pk.items=pk.items.filter(x=>x!==it);pk.got++;$('pkSlots').querySelectorAll('svg')[pk.got-1]?.classList.add('got');
+      pk.items=pk.items.filter(x=>x!==it);pk.got++;sfx('ding');$('pkSlots').querySelectorAll('svg')[pk.got-1]?.classList.add('got');
       sparkle(it.el,2);if(pk.got>=PK_N){setTimeout(endPark,400);return}setTimeout(spawnItem,300)}}}
 $('pkField').addEventListener('pointerdown',e=>{if(!pk||pk.over)return;const f=$('pkField').getBoundingClientRect(),dog=$('pkDog');
   const x=Math.max(6,Math.min(94,(e.clientX-f.left)/f.width*100)),y=Math.max(18,Math.min(96,(e.clientY-f.top)/f.height*100));
@@ -2010,7 +2256,7 @@ function showStage(n){
 async function openCap(cell){
   if(cell.classList.contains('open'))return;
   cell.classList.add('open');opened++;
-  const r=results[+cell.dataset.i];sparkle(cell.querySelector('.cap'),r.it.tier);
+  const r=results[+cell.dataset.i];sparkle(cell.querySelector('.cap'),r.it.tier);sfx(r.it.tier>=3?'fanfare':'pop');
   if(r.it.tier>=3){const f=$('flash');f.classList.remove('on');void f.offsetWidth;f.classList.add('on');burst(r.prize?90:60);
     helperAct('spin',900);sparkle($('hSpark'),3);helperSay(r.prize?'是真的禮物耶！🎁':'哇！是稀有的！')}
   else if(r.it.tier===2){helperAct('hop',400);helperSay('紫色的～好棒！')}
