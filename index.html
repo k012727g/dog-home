@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>小狗的家 ♡</title>
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
@@ -455,6 +457,59 @@ h3::before{content:"✿ ";color:var(--pink)}
 .art-framed svg{width:100%;display:block}
 .wall-art{position:absolute;left:20%;top:9%;width:17%;z-index:5;padding:0;border:5px solid #E2B48C;border-radius:4px;background:#fff;box-shadow:0 0 0 2.5px #5A3E4B,0 3px 0 2px rgba(90,62,75,.3);cursor:pointer}
 .wall-art[hidden]{display:none}.wall-art svg{width:100%;display:block}
+.dance-scene{background:radial-gradient(circle,rgba(255,255,255,.55) 3px,transparent 4px) 0 0/26px 26px,#F1E8FF}
+.lib-scene{background:radial-gradient(circle,rgba(255,255,255,.55) 3px,transparent 4px) 0 0/26px 26px,#FFF1E3}
+.hall-scene{background:radial-gradient(circle,rgba(255,255,255,.55) 3px,transparent 4px) 0 0/26px 26px,#E5F4FF}
+.salon-scene{background:radial-gradient(circle,rgba(255,255,255,.55) 3px,transparent 4px) 0 0/26px 26px,#FFE9F2}
+.dance-body,.hall-body,.salon-body{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.dance-cue{display:flex;gap:6px;min-height:56px}.dance-cue svg{width:52px;height:52px}.dance-cue svg.now{animation:needpulse .45s}
+.dance-floor{width:min(70vw,260px);aspect-ratio:1.4;display:flex;align-items:flex-end;justify-content:center;background:radial-gradient(ellipse at 50% 92%,#E5D9FB 0 40%,transparent 41%)}
+.dance-dog{width:70%}.dance-dog svg{width:100%;display:block;overflow:visible}
+.dance-dog{transform-origin:50% 100%}
+.dance-dog.mv-L{animation:mvL .45s ease-in-out}.dance-dog.mv-R{animation:mvR .45s ease-in-out}.dance-dog.mv-U{animation:mvU .45s ease-out}.dance-dog.mv-D{animation:mvD .45s ease-in-out}.dance-dog.oops{animation:nope .45s}
+@keyframes mvL{50%{transform:translateX(-18%) rotate(-12deg)}}@keyframes mvR{50%{transform:translateX(18%) rotate(12deg)}}
+@keyframes mvU{40%{transform:translateY(-30%) scale(.92,1.1)}75%{transform:scale(1.1,.9)}}@keyframes mvD{50%{transform:scale(1.18,.72)}}
+.dance-turn{font-size:1.6rem;min-height:1.4em}
+.arrow-pad{display:grid;grid-template-columns:repeat(3,76px);grid-template-rows:repeat(2,76px);gap:8px}
+.arrow-pad button{border-radius:22px;border:3px solid #5A3E4B;background:#fff;box-shadow:0 4px 0 #5A3E4B;padding:8px;cursor:pointer}
+.arrow-pad button:active{transform:translateY(3px);box-shadow:0 1px 0 #5A3E4B}.arrow-pad button svg{width:100%;height:100%}
+.arrow-pad .pu{grid-column:2;grid-row:1}.arrow-pad .pl{grid-column:1;grid-row:2}.arrow-pad .pd{grid-column:2;grid-row:2}.arrow-pad .pr{grid-column:3;grid-row:2}
+.arrow-pad.off{opacity:.45;pointer-events:none}
+.lib-find{display:flex;align-items:center;gap:6px;background:#fff;border:3px solid #5A3E4B;border-radius:999px;padding:2px 14px;font-size:2rem}
+.lib-find b{font-size:1.1rem}
+.lib-book{position:relative;flex:1;min-height:0;border-radius:20px;border:4px solid #5A3E4B;box-shadow:inset 8px 0 0 #E8CDBA;overflow:hidden;background:#FFFDF6}
+.lib-book.flip{animation:flip .5s ease-in-out}@keyframes flip{50%{transform:perspective(800px) rotateY(-70deg);transform-origin:left center}}
+.lib-item{position:absolute;transform:translate(-50%,-50%);background:none;border:0;padding:4px;cursor:pointer;line-height:1}
+.lib-item.no{animation:nope .4s;opacity:.5}.lib-item.ok{animation:needpulse .5s 2}
+.hall-friend{width:110px;height:110px}.hall-friend svg{width:100%;height:100%;overflow:visible}
+.boxes{position:relative;width:min(88vw,360px);height:120px}
+.gbox{position:absolute;top:0;width:30%;height:100%;border:0;background:none;padding:0;cursor:pointer;transition:left .35s ease-in-out}
+.gbox svg{width:100%;height:100%}.gbox .who{position:absolute;left:15%;width:70%;bottom:60%;opacity:0;transition:.3s}.gbox.open .who{opacity:1;bottom:85%}
+.gbox.open>svg{transform:translateY(8px)}.boxes.lock .gbox{pointer-events:none}
+.hall-friends{display:flex;gap:6px;justify-content:center;margin-bottom:10px}.hall-friends>div{width:70px;text-align:center;font-weight:900;font-size:.85rem}.hall-friends svg{width:64px;height:64px}
+.salon-mirror{width:min(60vw,240px);aspect-ratio:1.1;border:8px solid #E2B48C;border-radius:50% 50% 24px 24px;background:#fff;display:flex;align-items:flex-end;justify-content:center;padding:10px;box-shadow:0 0 0 3px #5A3E4B}
+.salon-mirror svg{width:85%;overflow:visible}
+.swatches{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.sw{width:58px;height:58px;border-radius:50%;border:3px solid #5A3E4B;cursor:pointer;font:inherit;font-size:.72rem;font-weight:900;color:#5A3E4B;display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px}
+.sw.sel{box-shadow:0 0 0 4px #fff,0 0 0 7px #F27BA6}.sw.clip{width:46px;height:46px}
+#salonOk{background:#C9EFE0}
+.bp-tools{display:flex;gap:8px;flex-wrap:wrap;margin:-2px 0 8px}
+.bd-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:#FFE3EF;border:2px dashed #F27BA6;border-radius:12px;padding:6px 10px;margin-bottom:6px;font-weight:900}
+.bd-bar[hidden]{display:none}.bd-bar span{margin-right:auto}
+.pz-row.bd{grid-template-columns:28px 44px 1fr auto}.pz-chk{width:22px;height:22px}
+.pz-name{background:none;border:0;padding:0;font:inherit;color:var(--ink);text-align:left;cursor:pointer;text-decoration:underline dotted #C9B6BF}
+.bp-card{max-width:560px;width:100%;max-height:88vh;overflow-y:auto;text-align:left}
+.bp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.bp-ph{position:relative;border:3px solid #F8D3E2;border-radius:12px;background:#FFF2F7;padding:3px;cursor:pointer;font:inherit}
+.bp-ph img,.bp-ph .ph-miss{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;display:block}
+.bp-ph.on{border-color:#F27BA6;box-shadow:0 0 0 2px #F27BA6}
+.bp-ph .tick{position:absolute;right:4px;top:4px;width:24px;height:24px;border-radius:50%;background:#fff;border:2px solid #5A3E4B;font-weight:900;font-size:.85rem;display:flex;align-items:center;justify-content:center;color:#fff}
+.bp-ph.on .tick{background:#F27BA6}
+.bp-ph.used{opacity:.45;cursor:default}.bp-ph.used .tag{position:absolute;left:4px;bottom:4px;background:#5A3E4B;color:#fff;border-radius:6px;font-size:.65rem;padding:1px 5px}
+.bp-list li{display:grid;grid-template-columns:52px 1fr auto;gap:8px;align-items:center}
+.bp-list img,.bp-list .ph-miss{width:52px;height:52px;object-fit:cover;border-radius:10px}
+.bp-qty{display:flex;align-items:center;gap:4px}.bp-qty b{min-width:1.6em;text-align:center}
+.slot .ic img.bagph{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;display:block}
 .fab-dot{display:inline-block;min-width:1.4em;margin-left:4px;background:#E0567F;color:#fff;border-radius:999px;font-size:.7rem;padding:0 5px}
 .my-wins{margin-top:10px}.my-wins li{padding:6px 0}
 .linkish{background:none;border:0;padding:2px 0;font:inherit;font-size:.8rem;font-weight:700;color:var(--blue);cursor:pointer;text-align:left}
@@ -819,6 +874,10 @@ h3::before{content:"✿ ";color:var(--pink)}
     <h3>音效</h3>
     <label class="switch-row"><input type="checkbox" id="setSound"> 在這台裝置播放音效</label>
 
+    <h3>備份</h3>
+    <div class="rest-row"><button class="btn small" id="bkSave">下載備份檔</button><label class="btn small ghost" for="bkFile" style="margin:0">從備份還原</label><input type="file" id="bkFile" accept=".json,application/json" hidden></div>
+    <p class="meta">更新網頁前先下載一份最保險。備份包含考卷、道具、大獎、小狗進度。</p>
+
     <h3>遊戲開發進度</h3>
     <button class="btn small" id="devOpen">打開開發清單</button>
     <p class="meta" id="devLine" style="margin-top:4px"></p>
@@ -848,6 +907,8 @@ h3::before{content:"✿ ";color:var(--pink)}
     <p class="win-sum" id="winSum"></p>
     <ul class="list" id="prizeWins"></ul>
     <h3 style="font-size:1rem">獎品清單</h3>
+    <div class="bp-tools"><button class="btn small" id="bpOpen">📷 用照片批次新增</button><button class="btn small ghost" id="bdToggle">批次刪除</button></div>
+    <div class="bd-bar" id="bdBar" hidden><span id="bdCount">已選 0 個</span><button class="btn small ghost" id="bdAll">全選</button><button class="btn small danger" id="bdGo">刪除選取</button><button class="btn small ghost" id="bdCancel">取消</button></div>
     <ul class="list" id="prizeList"></ul>
     <div class="prize-add">
       <input id="pzName" type="text" maxlength="12" placeholder="獎品名稱" aria-label="獎品名稱">
@@ -975,6 +1036,39 @@ h3::before{content:"✿ ";color:var(--pink)}
   </div>
   <div class="pk-end lesson-end" id="artEnd" hidden><div class="pk-card"><div class="art-framed" id="artFramed"></div><div class="gain" id="artGain"></div><button class="round-btn big" id="artDone" data-ic="home" aria-label="掛到牆上，回家"></button></div></div>
 </div>
+<div class="scene dance-scene" id="danceScene" hidden role="dialog" aria-modal="true" aria-label="舞蹈教室">
+  <div class="hud"><button class="round-btn" id="danceHome" data-ic="home" aria-label="回家"></button><div class="slots" id="danceDots"></div><span style="width:56px"></span></div>
+  <div class="dance-body">
+    <div class="dance-cue" id="danceCue"></div>
+    <div class="dance-floor"><div class="dance-dog" id="danceDog"></div></div>
+    <div class="dance-turn" id="danceTurn"></div>
+    <div class="arrow-pad" id="arrowPad">
+      <button data-a="U" aria-label="上" class="pu"></button><button data-a="L" aria-label="左" class="pl"></button><button data-a="R" aria-label="右" class="pr"></button><button data-a="D" aria-label="下" class="pd"></button>
+    </div>
+  </div>
+  <div class="pk-end lesson-end" id="danceEnd" hidden><div class="pk-card"><div class="pk-stars" id="danceStars"></div><div class="gain" id="danceGain"></div><button class="round-btn big" id="danceDone" data-ic="home" aria-label="回家"></button></div></div>
+</div>
+<div class="scene lib-scene" id="libScene" hidden role="dialog" aria-modal="true" aria-label="圖書館">
+  <div class="hud"><button class="round-btn" id="libHome" data-ic="home" aria-label="回家"></button><div class="lib-find" id="libFind"></div><div class="slots" id="libDots"></div></div>
+  <div class="lib-book" id="libBook"></div>
+  <div class="pk-end lesson-end" id="libEnd" hidden><div class="pk-card"><div class="pk-stars" id="libStars"></div><div class="gain" id="libGain"></div><button class="round-btn big" id="libDone" data-ic="home" aria-label="回家"></button></div></div>
+</div>
+<div class="scene hall-scene" id="hallScene" hidden role="dialog" aria-modal="true" aria-label="活動中心">
+  <div class="hud"><button class="round-btn" id="hallHome" data-ic="home" aria-label="回家"></button><div class="slots" id="hallDots"></div><span style="width:56px"></span></div>
+  <div class="hall-body">
+    <div class="hall-friend" id="hallFriend"></div>
+    <div class="boxes" id="boxes"></div>
+  </div>
+  <div class="pk-end lesson-end" id="hallEnd" hidden><div class="pk-card"><div class="hall-friends" id="hallFriends"></div><div class="gain" id="hallGain"></div><button class="round-btn big" id="hallDone" data-ic="home" aria-label="回家"></button></div></div>
+</div>
+<div class="scene salon-scene" id="salonScene" hidden role="dialog" aria-modal="true" aria-label="美容院">
+  <div class="hud"><button class="round-btn" id="salonHome" data-ic="home" aria-label="不換，回家"></button><span class="plan-title">美容院</span><button class="round-btn" id="salonOk" aria-label="換好了"></button></div>
+  <div class="salon-body">
+    <div class="salon-mirror" id="salonDog"></div>
+    <div class="swatches" id="coatSw"></div>
+    <div class="swatches" id="clipSw"></div>
+  </div>
+</div>
 <div class="scene bath-scene" id="bathScene" hidden role="dialog" aria-modal="true" aria-label="幫小狗洗澡">
   <div class="hud"><button class="round-btn" id="bathHome" data-ic="home" aria-label="洗好了，回家"></button><div class="slots" id="bathSlots"></div><span style="width:56px"></span></div>
   <div class="bath-stage" id="bathStage">
@@ -1004,6 +1098,22 @@ h3::before{content:"✿ ";color:var(--pink)}
     <div style="display:flex;gap:8px;justify-content:center;margin-top:8px"><button class="btn ghost small" id="sigCancel">取消</button><button class="btn" id="sigOk">簽好了</button></div>
   </div>
   <div class="stamp" id="stamp" hidden>已簽名<br><small>✓</small></div>
+</div>
+<div class="modal" id="bpModal" hidden role="dialog" aria-modal="true" aria-labelledby="bpTitle">
+  <div class="gate-card bp-card">
+    <div class="dev-head"><b id="bpTitle">📷 用照片新增獎品</b><button class="btn small ghost" id="bpClose">關閉</button></div>
+    <div id="bpStep1">
+      <p class="meta" style="margin:0 0 6px" id="bpInfo"></p>
+      <div class="dev-filter"><button id="bpAllNew" class="btn small">全選還沒加入的</button><button id="bpNone" class="btn small ghost">全部取消</button><button id="bpReload" class="btn small ghost">重新整理照片</button></div>
+      <div class="bp-grid" id="bpGrid"></div>
+      <button class="btn wide" id="bpNext" style="margin-top:10px">下一步：取名字和數量</button>
+    </div>
+    <div id="bpStep2" hidden>
+      <p class="meta" style="margin:0 0 6px">名字會顯示在孩子的背包裡，可以改。數量就是可以抽到幾次。</p>
+      <ul class="list bp-list" id="bpList"></ul>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="btn ghost" id="bpBack">上一步</button><button class="btn wide" id="bpAdd">新增</button></div>
+    </div>
+  </div>
 </div>
 <div class="modal" id="devModal" hidden role="dialog" aria-modal="true" aria-labelledby="devTitle">
   <div class="gate-card dev-card">
@@ -1116,7 +1226,7 @@ h3::before{content:"✿ ";color:var(--pink)}
    【貼紙課表】一週 7 格，把課程貼紙拖進去（或點貼紙再點格子）；當天要上的地點在地圖上閃星星。
      照課表上課：每天每門課 +1 技能星星；集滿 5 顆得到 🏅。沒排的課也能去練習，但不給星星。
      每堂課：體力 −10、開心 +8、飽足 −4；照課表上 +6 經驗，練習 +2 經驗。
-     目前開放：英文課、畫畫課；跳舞課、閱讀課貼紙先上鎖（第 3 批）。
+     目前開放：英文課、畫畫課、跳舞課（舞蹈教室）、閱讀課（圖書館）。
 
    【食物玩法候選】
      1 小廚房做菜（已完成：肉肉飯、南瓜湯、草莓鬆餅；巧克力／葡萄／洋蔥放錯會冒煙並提醒有毒）
@@ -1150,7 +1260,7 @@ h3::before{content:"✿ ";color:var(--pink)}
 
    【版權原則】不畫任何既有角色（包含三麗鷗角色與其二創）；實體商品照片只由家長自行上傳到 photos/。
    ===================================================================================== */
-const DEV_VERSION='2026-11-01 · 測試版（動作改造後半）';
+const DEV_VERSION='2026-11-04 · 測試版（大獎批次管理）';
 const DEV_TASKS=[
  {id:'CORE-01',phase:'基礎功能',status:'done',title:'考卷登記、分數累加換扭蛋券'},
  {id:'CORE-02',phase:'基礎功能',status:'done',title:'扭蛋單抽／5 連抽／10 連抽與動畫'},
@@ -1162,6 +1272,9 @@ const DEV_TASKS=[
  {id:'CORE-08',phase:'基礎功能',status:'done',title:'實體大獎：彩虹扭蛋、保底、數量、抽完消失'},
  {id:'CORE-09',phase:'基礎功能',status:'done',title:'GitHub photos 資料夾讀取照片，後台選照片'},
  {id:'CORE-10',phase:'基礎功能',status:'done',title:'家長設定移到左下角，密碼保護（預設 0127）'},
+ {id:'PRIZE-01',phase:'基礎功能',status:'done',title:'用 photos 照片批次新增實體大獎（預填名字、可改數量）'},
+ {id:'PRIZE-02',phase:'基礎功能',status:'done',title:'獎品批次刪除、點名字改名',note:'刪獎品不會影響已抽中的大獎紀錄'},
+ {id:'PRIZE-03',phase:'基礎功能',status:'done',title:'孩子背包的實體大獎改顯示照片（讀不到照片就顯示禮物盒）'},
  {id:'CORE-11',phase:'基礎功能',status:'done',title:'大獎準備進度：還沒買 → 準備好 → 已送出'},
  {id:'CARE-01',phase:'第 1 批：照顧與小鎮',status:'done',title:'狀態條：飽足、開心、體力（乾淨用泥巴點表示）'},
  {id:'CARE-02',phase:'第 1 批：照顧與小鎮',status:'done',title:'想法泡泡，點泡泡直接去做'},
@@ -1194,10 +1307,13 @@ const DEV_TASKS=[
  {id:'LEARN-04',phase:'第 2 批：課程',status:'done',title:'畫室：3 張圖案、8 種顏色，畫好掛到房間牆上',note:'牆上的畫點一下可以換下一張，最多保存 12 張'},
  {id:'LEARN-06',phase:'第 2 批：課程',status:'doing',title:'學會技能後的新動作',note:'已完成：英文 🏅 後小狗偶爾冒出英文單字泡泡；畫畫獎牌的動作待做'},
  {id:'LEARN-05',phase:'第 2 批：課程',status:'idea',title:'上課門票用扭蛋券購買'},
- {id:'TOWN-01',phase:'第 3 批：更多地點',status:'todo',title:'舞蹈教室：跟節奏點箭頭'},
- {id:'TOWN-02',phase:'第 3 批：更多地點',status:'todo',title:'圖書館：翻繪本找東西'},
- {id:'TOWN-03',phase:'第 3 批：更多地點',status:'todo',title:'活動中心：遇到原創朋友一起玩'},
- {id:'TOWN-04',phase:'第 3 批：更多地點',status:'todo',title:'美容院：換毛色、配件、犬種'},
+ {id:'TOWN-01',phase:'第 3 批：更多地點',status:'done',title:'舞蹈教室：看小狗老師跳，跟著按箭頭（3 回合，3→4→5 步）'},
+ {id:'TOWN-02',phase:'第 3 批：更多地點',status:'done',title:'圖書館：翻 4 頁繪本，每頁找出指定的東西'},
+ {id:'TOWN-03',phase:'第 3 批：更多地點',status:'done',title:'活動中心：和雲寶、刺刺、小黃玩猜禮物盒，累積友情'},
+ {id:'TOWN-04',phase:'第 3 批：更多地點',status:'doing',title:'美容院：換毛色、配件、犬種',note:'已完成：5 種毛色、5 種髮夾顏色；換犬種等「自己捏一隻」'},
+ {id:'TOWN-05',phase:'第 3 批：更多地點',status:'done',title:'課表開放跳舞課、閱讀課（技能星星 4 門）'},
+ {id:'OPS-04',phase:'第 3 批：更多地點',status:'done',title:'家長設定：下載備份檔、從備份還原'},
+ {id:'OPS-03',phase:'第 3 批：更多地點',status:'done',title:'相容性測試：舊版存檔（已抽到的道具、大獎、考卷）升級後完全不變',note:'舊版與新版同時開也不會互相洗掉新欄位'},
  {id:'PET-01',phase:'自己捏一隻',status:'doing',title:'共用骨架：頭、身體、腳、尾巴、耳朵零件化',note:'站姿已拆成身體、頭、雙耳、眼睛、4 隻腳、尾巴；其他犬種待做'},
  {id:'PET-02',phase:'自己捏一隻',status:'todo',title:'捏狗畫面：犬種、毛色、花紋、眼睛、配件、名字'},
  {id:'PET-03',phase:'自己捏一隻',status:'todo',title:'第一批犬種：柴犬、柯基、貴賓、臘腸'},
@@ -1310,7 +1426,7 @@ function pupSVG(stage,m={}){
     <ellipse cx="150" cy="86" rx="30" ry="22" fill="#FFF3E2"/><g class="eyes" style="transform-origin:150px 68px;animation-duration:${rnd(3.5,5.5)}s;animation-delay:-${rnd(0,3)}s">${eyes}</g>
     <ellipse cx="150" cy="80" rx="5" ry="3.6" fill="#5A3E4B"/>${mouth}
     <ellipse cx="116" cy="84" rx="10" ry="6" fill="#FF9EC4" opacity=".75"/><ellipse cx="184" cy="84" rx="10" ry="6" fill="#FF9EC4" opacity=".75"/>
-    <path d="M178 36c-4-8-16-4-11 5l11 10 11-10c5-9-7-13-11-5z" fill="#FF9EC4" stroke="#5A3E4B" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M178 36c-4-8-16-4-11 5l11 10 11-10c5-9-7-13-11-5z" fill="#FF9EC5" stroke="#5A3E4B" stroke-width="4" stroke-linejoin="round"/>
     ${stage>=3?`<path d="M122 34 L128 8 L142 24 L150 2 L158 24 L172 8 L178 34 Z" fill="#FFD24A" stroke="#5A3E4B" stroke-width="5" stroke-linejoin="round"/><circle cx="150" cy="22" r="5" fill="#FF9EC4"/>`:''}`;
   const HP={stand:[84,40,0],sit:[70,30,0],lie:[60,52,0],sleep:[60,55,4],belly:[90,76,-18],eat:[98,80,26],sniff:[98,72,14]}[pose]||[84,40,0];
   const head=`<g class="head"><g transform="translate(${HP[0]} ${HP[1]}) rotate(${HP[2]}) scale(.52) translate(-150 -72)">${headIn}</g></g>`;
@@ -1341,15 +1457,20 @@ function pupSVG(stage,m={}){
     body=tail('M24 64q-16-10-10-26','22px 62px')+`<g class="legs">${lg(30,'a')+lg(44,'b')+lg(62,'b')+lg(76,'a')}</g>`
       +`<g class="bodyg"><ellipse cx="52" cy="72" rx="36" ry="24" fill="#F9BF8C" stroke="#5A3E4B" stroke-width="4"/><ellipse cx="56" cy="80" rx="20" ry="10" fill="#FFF3E2"/>${scarf(0,0)}${dirt(0,0)}</g>`;
   }
-  return `<svg viewBox="0 0 120 110" aria-hidden="true">${body}${head}</svg>`;
+  return recolor(`<svg viewBox="0 0 120 110" aria-hidden="true">${body}${head}</svg>`,m.look);
 }
+// 美容院：毛色、髮夾顏色（只換顏色，造型不變）
+const COATS={aka:['#F9BF8C','#F2A773','#FFF3E2','赤'],cream:['#FBE3C2','#EFCB9C','#FFF9F0','奶油'],sesame:['#D7B18C','#B38B69','#FFF3E2','芝麻'],kuro:['#7A6470','#5E4C56','#F6E2CF','黑'],shiro:['#FFFDF8','#EFE4D8','#FFFFFF','白']};
+const CLIPS=['#FF9EC4','#8CC8F0','#FFD86B','#8FDCC0','#C9B3F5'];
+function recolor(svg,look){const L0=look||(typeof S!=='undefined'&&S.pet&&S.pet.look)||{};const c=COATS[L0.coat]||COATS.aka,clip=CLIPS.includes(L0.clip)?L0.clip:CLIPS[0];
+  return svg.replace(/#F9BF8C/g,c[0]).replace(/#F2A773/g,c[1]).replace(/#FFF3E2/g,c[2]).replace(/#FF9EC5/g,clip)}
 const STAGES=[{min:1,name:'小狗寶寶',scale:.17},{min:4,name:'小狗',scale:.21},{min:8,name:'大狗狗',scale:.25}];
 const stageOf=lv=>STAGES.reduce((a,s,i)=>lv>=s.min?i+1:a,1);
 const need=lv=>15+lv*10;
 function levelInfo(exp){let lv=1,n=need(1);while(exp>=n){exp-=n;lv++;n=need(lv)}return{lv,cur:exp,need:n}}
 
 /* ===== state ===== */
-const DEFAULT=()=>({plan:{},skills:{english:0,art:0},lessonDone:{date:'',list:[]},paintings:[],subjects:[{n:'國語',i:'📖'},{n:'數學',i:'🔢'},{n:'英文',i:'🔤'},{n:'生活',i:'🌱'},{n:'自然',i:'🔬'},{n:'社會',i:'🌏'}],pending:[],signs:[],dishes:{},floorFood:null,care:{food:80,fun:80,energy:80,clean:80,at:Date.now()},walk:{date:'',n:0},settings:{threshold:100,per:1,cost:1,pityN:3,prizeRate:10,pin:'0127',napMin:2,bed:{on:false,from:'21:00',to:'07:00'},quota:{on:false,min:30}},exams:[],spent:0,prizes:SEED_PRIZES(),prizeWins:[],pity:0,
+const DEFAULT=()=>({friends:{},plan:{},skills:{english:0,art:0,dance:0,read:0},lessonDone:{date:'',list:[]},paintings:[],subjects:[{n:'國語',i:'📖'},{n:'數學',i:'🔢'},{n:'英文',i:'🔤'},{n:'生活',i:'🌱'},{n:'自然',i:'🔬'},{n:'社會',i:'🌏'}],pending:[],signs:[],dishes:{},floorFood:null,care:{food:80,fun:80,energy:80,clean:80,at:Date.now()},walk:{date:'',n:0},settings:{threshold:100,per:1,cost:1,pityN:3,prizeRate:10,pin:'0127',napMin:2,bed:{on:false,from:'21:00',to:'07:00'},quota:{on:false,min:30}},exams:[],spent:0,prizes:SEED_PRIZES(),prizeWins:[],pity:0,
   pet:{name:'小橘',exp:0,lastPet:''},owned:{},placed:[],wall:'',floor:'',log:[],
   rewards:[{id:uid(),level:3,name:'小狗貼紙',claimed:false},{id:uid(),level:5,name:'大耳狗吊飾',claimed:false},{id:uid(),level:10,name:'大耳狗吊飾（第二個）',claimed:false}]});
 let S;
@@ -1357,7 +1478,7 @@ try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!S){S=DEFAULT();try{const o=JSON.parse(localStorage.getItem(OLD_KEY));if(o){S.exams=(o.exams||[]).map(e=>({id:e.id,subject:e.subject,score:e.score,date:e.date}));S.settings=o.settings||S.settings;S.spent=o.spent||0}}catch(e){}}
 function normalize(x){const d=DEFAULT();x=x||{};
   for(const k of Object.keys(d))if(x[k]===undefined||x[k]===null)x[k]=d[k];
-  x.pet={...d.pet,...x.pet};x.settings={...d.settings,...x.settings};x.care={...d.care,...x.care};x.dishes={...x.dishes};if(!Array.isArray(x.subjects)||!x.subjects.length)x.subjects=d.subjects;if(!Array.isArray(x.pending))x.pending=[];x.plan={...x.plan};x.skills={...d.skills,...x.skills};x.lessonDone={...d.lessonDone,...x.lessonDone};if(!Array.isArray(x.paintings))x.paintings=[];if(!Array.isArray(x.signs))x.signs=[];x.walk={...d.walk,...x.walk};
+  x.pet={...d.pet,...x.pet};x.settings={...d.settings,...x.settings};x.care={...d.care,...x.care};x.dishes={...x.dishes};if(!Array.isArray(x.subjects)||!x.subjects.length)x.subjects=d.subjects;if(!Array.isArray(x.pending))x.pending=[];x.plan={...x.plan};x.skills={...d.skills,...x.skills};x.friends={...x.friends};x.lessonDone={...d.lessonDone,...x.lessonDone};if(!Array.isArray(x.paintings))x.paintings=[];if(!Array.isArray(x.signs))x.signs=[];x.walk={...d.walk,...x.walk};
   x.prizes.forEach(p=>{if(typeof p.photo!=='string')p.photo=''});
   x.prizeWins.forEach(w=>{if(typeof w.photo!=='string')w.photo='';if(!w.status)w.status=w.claimed?'given':'won'});return x}
 S=normalize(S);
@@ -1527,7 +1648,7 @@ $('selDone').onclick=()=>{selected=null;renderRoom()};
 let pupX=50, pupStage=0, pupKey='', pupBusy=false;
 function renderPup(){
   const {lv}=levelInfo(S.pet.exp), st=stageOf(lv), c=careNow();
-  const dk=isDark(),pose=dk?'sleep':pupPose,m={pose,happy:pupHappy,yawn:pupYawn&&!dk,sad:!dk&&(c.food<25||c.fun<25),dirty:c.clean<40}, key=st+'|'+pose+'|'+m.sad+'|'+m.dirty+'|'+pupHappy+'|'+m.yawn;
+  const dk=isDark(),pose=dk?'sleep':pupPose,m={pose,happy:pupHappy,yawn:pupYawn&&!dk,sad:!dk&&(c.food<25||c.fun<25),dirty:c.clean<40}, key=st+'|'+pose+'|'+m.sad+'|'+m.dirty+'|'+pupHappy+'|'+m.yawn+'|'+JSON.stringify(S.pet.look||{});
   $('pup').classList.toggle('sleeping',dk);
   if(key!==pupKey){$('pupSvg').innerHTML=pupSVG(st,m);pupKey=key;pupStage=st}
   const pup=$('pup');pup.style.width=STAGES[st-1].scale*100+'%';pup.style.top='93%';pup.style.left=pupX+'%';pup.style.zIndex=930;
@@ -1541,7 +1662,7 @@ async function walkPup(x,speed=.06){const pup=$('pup');x=Math.max(5,Math.min(95,
   pup.style.transitionTimingFunction='cubic-bezier(.45,.05,.4,1)';
   pup.style.transitionDuration=(reduced?0:dist*speed)+'s';pupX=x;pup.style.left=x+'%';await wait(dist*speed*1000+40);pup.classList.remove('walking');pupSettle()}
 function pupSettle(){if(reduced)return;const p=$('pup');p.classList.remove('settle');void p.offsetWidth;p.classList.add('settle');clearTimeout(p._st);p._st=setTimeout(()=>p.classList.remove('settle'),600)}
-const sceneOpen=()=>['mapScene','parkScene','bathScene','kitScene','planScene','engScene','artScene'].some(id=>!$(id).hidden);
+const sceneOpen=()=>['mapScene','parkScene','bathScene','kitScene','planScene','engScene','artScene','danceScene','libScene','hallScene','salonScene'].some(id=>!$(id).hidden);
 function pupAct(cls,ms){const p=$('pup');p.classList.remove(cls);void p.offsetWidth;p.classList.add(cls);return new Promise(r=>setTimeout(()=>{p.classList.remove(cls);r()},reduced?0:ms))}
 async function doTilt(){setPose('stand');await pupAct('tilt',1500)}
 async function doWiggle(){setPose('stand');sfx('bubble');await pupAct('wiggle',1400)}
@@ -1656,7 +1777,7 @@ function renderAll(){
   const stockN=S.prizes.reduce((a,p)=>a+p.left,0), toGo=Math.max(0,S.settings.pityN-S.pity);
   $('prizeNote').textContent=!stockN?'大獎都被抽完了！等爸爸媽媽補新的吧':
     S.pity>=S.settings.pityN?'下一顆扭蛋保證是彩虹大獎！🌈':`抽到彩虹扭蛋就能拿到真的禮物！最多再 ${toGo+1} 顆一定會中`;
-  $('bagPrizes').innerHTML=S.prizes.map(p=>`<div class="slot t4${p.left?'':' gone'}"><span class="cnt">${p.left?`剩 ${p.left}`:'抽完了'}</span><div class="ic">${iconHTML(prizeItem(p))}</div><div class="nm">${esc(p.name)}</div></div>`).join('')
+  $('bagPrizes').innerHTML=S.prizes.map(p=>`<div class="slot t4${p.left?'':' gone'}"><span class="cnt">${p.left?`剩 ${p.left}`:'抽完了'}</span><div class="ic">${p.photo?`<img class="bagph" src="${esc(photoURL(p.photo))}" alt="" loading="lazy">`:iconHTML(prizeItem(p))}</div><div class="nm">${esc(p.name)}</div></div>`).join('')
     ||'<p class="meta">還沒有設定實體大獎</p>';
   const open=S.prizeWins.filter(w=>w.status!=='given');
   $('myWins').innerHTML=open.map(w=>`<li><span class="pz-ic">${iconHTML(prizeItem(w))}</span><div class="grow"><b>${esc(w.name)}</b>
@@ -1760,7 +1881,7 @@ $('sigOk').onclick=async()=>{
   if(len<60){$('sigMsg').textContent='請先在框裡簽名';return}
   if($('sigPin').value!==String(S.settings.pin||'0127')){$('sigMsg').textContent='家長密碼不對喔';$('sigPin').value='';return}
   const path=sig.strokes.filter(s=>s.length>1).map(s=>'M'+s.map(p=>p.join(' ')).join('L')).join('');
-  const sid=uid();S.signs.push({id:sid,path:path.slice(0,6000),at:new Date().toISOString()});if(S.signs.length>40)S.signs=S.signs.slice(-40);
+  const sid=uid();S.signs.push({id:sid,path:path.slice(0,4000),at:new Date().toISOString()});if(S.signs.length>20)S.signs=S.signs.slice(-20);
   $('stamp').hidden=false;sfx('stamp');await wait(900);$('sigModal').hidden=true;
   const n=cart.length,add=cart.reduce((a,e)=>a+e.score,0),gain=creditExams(cart,'sign',{sig:sid});
   addLog(`✍️ 家長當場簽名，登記 ${n} 張考卷：${cart.map(e=>(e.subject?e.subject+' ':'')+e.score).join('、')}（+${gain} 張券）`);
@@ -1876,7 +1997,8 @@ function loadPhotoList(force){
   return photoLoad}
 async function photoFor(name){if(!name)return null;return await probe(photoURL(name),3500)}
 const thumb=(name,fallback)=>name?`<img class="ph" src="${esc(photoURL(name))}" alt="" loading="lazy">`:fallback;
-document.addEventListener('error',e=>{const t=e.target;if(t&&t.tagName==='IMG'&&t.classList.contains('ph')){
+document.addEventListener('error',e=>{const t=e.target;if(t&&t.tagName==='IMG'&&t.classList.contains('bagph')){t.outerHTML=icon('gift');return}
+  if(t&&t.tagName==='IMG'&&t.classList.contains('ph')){
   const sp=document.createElement('span');sp.className='ph-miss';sp.textContent='沒有照片';t.replaceWith(sp)}},true);
 function renderPhotoParts(){
   const g=$('photoGrid');if(!g)return;
@@ -1902,8 +2024,8 @@ function renderPrizeParent(){
     :'<li class="empty">還沒有人抽中大獎</li>';
   $('prizeList').innerHTML=S.prizes.length?S.prizes.map(p=>{
     const missing=p.photo&&photoState==='ok'&&!photoList.includes(p.photo);
-    return `<li class="pz-row"><button class="pz-ic pz-pick" data-pz-pick="${p.id}" aria-label="幫${esc(p.name)}選照片">${thumb(p.photo,iconHTML(prizeItem(p)))}</button>
-    <div><div>${esc(p.name)}</div><div class="meta">剩 ${p.left} 個</div>
+    return `<li class="pz-row${bdMode?' bd':''}">${bdMode?`<input type="checkbox" class="pz-chk" data-bd="${p.id}"${bdSel.has(p.id)?' checked':''} aria-label="選取${esc(p.name)}">`:''}<button class="pz-ic pz-pick" data-pz-pick="${p.id}" aria-label="幫${esc(p.name)}選照片">${thumb(p.photo,iconHTML(prizeItem(p)))}</button>
+    <div><button class="pz-name" data-pz-rename="${p.id}" aria-label="改名字">${esc(p.name)}</button><div class="meta">剩 ${p.left} 個</div>
       <button class="linkish" data-pz-pick="${p.id}">${p.photo?(missing?'⚠️ 照片不見了，重選':'📷 換照片'):'📷 選照片'}</button></div>
     <div class="stepper"><button class="btn small ghost" data-pz-dec="${p.id}" aria-label="減少">−</button><b>${p.left}</b><button class="btn small ghost" data-pz-inc="${p.id}" aria-label="增加">＋</button>
     <button class="btn small danger" data-pz-del="${p.id}" aria-label="刪除獎品">×</button></div></li>`}).join('')
@@ -1944,7 +2066,7 @@ $('pinInput').onkeydown=e=>{if(e.key==='Enter')checkPin()};
 $('pinCancel').onclick=()=>{$('pinModal').hidden=true;$('parentFab').focus()};
 $('parentClose').onclick=closeParent;
 document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;
-  if(!$('sigModal').hidden){$('sigModal').hidden=true}else if(!$('engScene').hidden){$('engHome').click()}else if(!$('artScene').hidden){$('artHome').click()}else if(!$('planScene').hidden){closePlan()}else if(!$('devModal').hidden){$('devModal').hidden=true}else if(!$('kitScene').hidden){closeKitchen()}else if(!$('parkScene').hidden){$('parkHome').click()}else if(!$('bathScene').hidden){closeBath()}else if(!$('mapScene').hidden){closeMap()}else if(!$('picker').hidden){$('picker').hidden=true}else if(!$('pinModal').hidden){$('pinModal').hidden=true}else if(!$('tab-parent').hidden)closeParent()});
+  if(!$('bpModal').hidden){$('bpModal').hidden=true}else if(!$('sigModal').hidden){$('sigModal').hidden=true}else if(!$('danceScene').hidden){$('danceHome').click()}else if(!$('libScene').hidden){$('libHome').click()}else if(!$('hallScene').hidden){$('hallHome').click()}else if(!$('salonScene').hidden){$('salonHome').click()}else if(!$('engScene').hidden){$('engHome').click()}else if(!$('artScene').hidden){$('artHome').click()}else if(!$('planScene').hidden){closePlan()}else if(!$('devModal').hidden){$('devModal').hidden=true}else if(!$('kitScene').hidden){closeKitchen()}else if(!$('parkScene').hidden){$('parkHome').click()}else if(!$('bathScene').hidden){closeBath()}else if(!$('mapScene').hidden){closeMap()}else if(!$('picker').hidden){$('picker').hidden=true}else if(!$('pinModal').hidden){$('pinModal').hidden=true}else if(!$('tab-parent').hidden)closeParent()});
 $('pinSave').onclick=()=>{const v=$('pinNew').value.trim();
   if(!/^\d{4,8}$/.test(v)){toast('密碼要 4～8 位數字');return}
   S.settings.pin=v;$('pinNew').value='';addLog('更改了家長密碼');save();toast('家長密碼已更改')};
@@ -2024,6 +2146,12 @@ const IC={
  calendar:`<rect x="6" y="10" width="36" height="32" rx="5" fill="#fff" ${L2}/><path d="M6 19h36" ${L2}/><rect x="6" y="10" width="36" height="9" rx="4" fill="#FF9EC4" ${L2}/><path d="M15 6v8M33 6v8" ${L2}/><circle cx="16" cy="27" r="3" fill="#FFD86B"/><circle cx="24" cy="27" r="3" fill="#8CC8F0"/><circle cx="32" cy="34" r="3" fill="#8FDCC0"/>`,
  moonS:`<path d="M30 6a17 17 0 1 0 12 26 14 14 0 0 1-12-26z" fill="#FFF3B0" ${L2}/>`,
  eraser:`<path d="M8 32l16-18 14 12-14 16H14z" fill="#FFC6DD" ${L2}/><path d="M17 23l13 11" ${L2}/><path d="M24 42h18" ${L2}/>`,
+ scissors:`<circle cx="14" cy="34" r="7" fill="#FFC6DD" ${L2}/><circle cx="34" cy="34" r="7" fill="#FFC6DD" ${L2}/><path d="M19 29L34 6M29 29L14 6" ${L2}/><circle cx="24" cy="22" r="2" fill="#5A3E4B"/>`,
+ arrowL:`<path d="M30 8L12 24l18 16v-9h8V17h-8z" fill="#FF9EC4" ${L2}/>`,
+ arrowR:`<path d="M18 8l18 16-18 16v-9h-8V17h8z" fill="#8CC8F0" ${L2}/>`,
+ arrowU:`<path d="M8 30L24 12l16 18h-9v8H17v-8z" fill="#FFD86B" ${L2}/>`,
+ arrowD:`<path d="M8 18l16 18 16-18h-9v-8H17v8z" fill="#8FDCC0" ${L2}/>`,
+ box:`<rect x="7" y="18" width="34" height="24" rx="4" fill="#FFD6E7" ${L2}/><rect x="4" y="12" width="40" height="9" rx="3" fill="#FF9EC4" ${L2}/><path d="M24 12v30" stroke="#FFD86B" stroke-width="5"/><path d="M24 12v30" fill="none" ${L2} stroke-width="1.5"/>`,
  hall:`<path d="M5 22L24 9l19 13v19H5z" fill="#E5D9FB" ${L2}/><rect x="19" y="28" width="10" height="13" fill="#FFD86B" ${L2}/><path d="M24 9V2" ${L2}/><path d="M24 2h9l-2 3 2 3h-9" fill="#FF9EC4" ${L2}/>`,
 };
 const icon=(k,cls='')=>`<svg viewBox="0 0 48 48" aria-hidden="true"${cls?` class="${cls}"`:''}>${IC[k]}</svg>`;
@@ -2259,13 +2387,14 @@ $('bathStage').addEventListener('pointermove',e=>{if(e.buttons||e.pointerType===
 const LOCS=[
  {id:'home',x:70,y:480,ic:'home',open:true,label:'回家'},
  {id:'park',x:222,y:410,ic:'trees',open:true,label:'公園散步'},
- {id:'library',x:300,y:286,ic:'books',label:'圖書館'},
+ {id:'library',x:300,y:286,ic:'books',open:true,label:'圖書館'},
  {id:'art',x:82,y:300,ic:'palette',open:true,label:'畫室'},
- {id:'dance',x:272,y:160,ic:'music',label:'舞蹈教室'},
+ {id:'dance',x:272,y:160,ic:'music',open:true,label:'舞蹈教室'},
  {id:'english',x:88,y:168,ic:'abc',open:true,label:'英文教室'},
- {id:'hall',x:190,y:62,ic:'hall',label:'活動中心'}];
+ {id:'hall',x:190,y:62,ic:'hall',open:true,label:'活動中心'},
+ {id:'salon',x:312,y:58,ic:'scissors',open:true,label:'美容院'}];
 function drawMap(){
-  const deco=[[30,90,'#B8E6AE'],[330,70,'#B8E6AE'],[160,250,'#C9EFE0'],[330,520,'#B8E6AE'],[20,380,'#C9EFE0'],[180,520,'#B8E6AE']]
+  const deco=[[30,90,'#B8E6AE'],[160,250,'#C9EFE0'],[330,520,'#B8E6AE'],[20,380,'#C9EFE0'],[180,520,'#B8E6AE']]
     .map(([x,y,f])=>`<circle cx="${x}" cy="${y}" r="16" fill="${f}" stroke="#5A3E4B" stroke-width="3"/><path d="M${x} ${y+16}v10" stroke="#5A3E4B" stroke-width="3" stroke-linecap="round"/>`).join('');
   const road='M70 480 C140 506 182 440 222 410 S322 340 300 286 S150 340 82 300 S110 196 272 160 S150 126 88 168 S120 70 190 62';
   $('mapSvg').innerHTML=`<rect x="4" y="4" width="352" height="552" rx="30" fill="#D8F1CC" stroke="#5A3E4B" stroke-width="4"/>
@@ -2276,6 +2405,7 @@ function drawMap(){
     <path id="walkPark" d="M70 480 C140 506 182 440 222 410" fill="none" stroke="none"/>
     <path id="walk_art" d="M70 480 C30 420 40 350 82 300" fill="none" stroke="none"/>
     <path id="walk_english" d="M70 480 C10 380 20 240 88 168" fill="none" stroke="none"/>
+    ${['library','dance','hall','salon'].map(id=>{const l=LOCS.find(x=>x.id===id);return `<path id="walk_${id}" d="M70 480 Q ${Math.round((70+l.x)/2+70)} ${Math.round((480+l.y)/2+40)} ${l.x} ${l.y}" fill="none" stroke="none"/>`}).join('')}
     ${LOCS.map(l=>`<g class="loc${l.open?'':' locked'}" data-loc="${l.id}" role="button" tabindex="0" aria-label="${l.label}${l.open?'':'（還沒開放）'}">
       <circle class="badge" cx="${l.x}" cy="${l.y}" r="38" fill="${l.id==='home'?'#FFD6E7':'#fff'}" stroke="#5A3E4B" stroke-width="4"/>
       <svg x="${l.x-27}" y="${l.y-27}" width="54" height="54" viewBox="0 0 48 48">${IC[l.ic]}</svg>
@@ -2297,15 +2427,16 @@ $('mapSvg').addEventListener('click',async e=>{const g=e.target.closest('.loc');
   if(!l.open){g.classList.remove('shake');void g.getBoundingClientRect();g.classList.add('shake');toast('還沒開放，敬請期待！');return}
   if(id==='park'){if(careNow().energy<20){toast('小狗太累了，先回家休息一下');return}
     mapBusy=true;await walkTo('walkPark');startPark();mapBusy=false}
-  if(id==='english'||id==='art'){if(careNow().energy<15){toast('小狗太累了，先回家休息一下');return}
-    mapBusy=true;await walkTo('walk_'+id);id==='english'?startEnglish():startArt();mapBusy=false}});
+  if(['english','art','dance','library','hall'].includes(id)&&careNow().energy<15){toast('小狗太累了，先回家休息一下');return}
+  if(['english','art','dance','library','hall','salon'].includes(id)){mapBusy=true;await walkTo('walk_'+id);
+    ({english:startEnglish,art:startArt,dance:startDance,library:startLibrary,hall:startHall,salon:startSalon})[id]();mapBusy=false}});
 $('mapSvg').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest('.loc')){e.preventDefault();e.target.closest('.loc').dispatchEvent(new MouseEvent('click',{bubbles:true}))}});
 $('goMap').onclick=$('dMap').onclick=()=>isDark()?wakeHint():openMap();$('mapHome').onclick=closeMap;
 $('dGacha').onclick=()=>document.querySelector('.drawzone').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});
 
 /* ===== 第 2 批：課表（LEARN-01）、技能星星（LEARN-02）、英文教室（LEARN-03）、畫室（LEARN-04）===== */
-const LESSONS={english:{ic:'abc',name:'英文課'},art:{ic:'palette',name:'畫畫課'}};
-const LOCKED_LESSONS=[{ic:'music',name:'跳舞課'},{ic:'books',name:'閱讀課'}];
+const LESSONS={english:{ic:'abc',name:'英文課'},art:{ic:'palette',name:'畫畫課'},dance:{ic:'music',name:'跳舞課'},read:{ic:'books',name:'閱讀課'}};
+const LOCKED_LESSONS=[];
 const DAYS=[1,2,3,4,5,6,0],DAYN={0:'日',1:'一',2:'二',3:'三',4:'四',5:'五',6:'六'};
 const todayLesson=()=>S.plan&&S.plan[new Date().getDay()]||'';
 let pickSticker=null,sd=null;
@@ -2396,6 +2527,88 @@ function renderWallArt(){const P=S.paintings,el=$('wallArt');if(!P.length){el.hi
   if(el.dataset.k!==p.id){el.innerHTML=artSVG(p.t,p.f,false);el.dataset.k=p.id}el.hidden=false}
 $('wallArt').onclick=e=>{e.stopPropagation();if(S.paintings.length<2)return;wallIdx=(wallIdx+1)%S.paintings.length;renderWallArt();sfx('tick')};
 
+/* ===== 第 3 批（TOWN-01～04）===== */
+/* 舞蹈教室：看小狗老師跳，跟著按箭頭 */
+const DANCE_IC={L:'arrowL',R:'arrowR',U:'arrowU',D:'arrowD'};
+let dance=null;
+function danceMove(a,bad){const d=$('danceDog');d.className='dance-dog';void d.offsetWidth;d.classList.add(bad?'oops':'mv-'+a);sfx(bad?'plop':'tick')}
+function startDance(){dance={round:0,lens:[3,4,5],miss:0,seq:[],pos:0,busy:true};$('danceDog').innerHTML=pupSVG(stageOf(levelInfo(S.pet.exp).lv));
+  $('danceDots').innerHTML=[0,1,2].map(()=>icon('star')).join('');$('arrowPad').querySelectorAll('button').forEach(b=>b.innerHTML=icon(DANCE_IC[b.dataset.a]));
+  $('danceEnd').hidden=true;$('danceScene').hidden=false;setTimeout(danceShow,600)}
+async function danceShow(again){const n=dance.lens[dance.round];if(!again)dance.seq=Array.from({length:n},()=>'LRUD'[Math.floor(Math.random()*4)]);
+  dance.pos=0;dance.busy=true;$('arrowPad').classList.add('off');$('danceTurn').textContent='👀 看小狗跳';
+  $('danceCue').innerHTML=dance.seq.map(a=>icon(DANCE_IC[a])).join('');const cues=$('danceCue').querySelectorAll('svg');cues.forEach(c=>c.style.opacity=.3);
+  for(let i=0;i<dance.seq.length;i++){cues[i].style.opacity=1;cues[i].classList.add('now');danceMove(dance.seq[i]);await wait(700);cues[i].classList.remove('now')}
+  cues.forEach(c=>c.style.opacity=.15);$('danceTurn').textContent='👉 換你了！';$('arrowPad').classList.remove('off');dance.busy=false}
+$('arrowPad').onclick=async e=>{const b=e.target.closest('button');if(!b||!dance||dance.busy)return;const a=b.dataset.a;
+  const cues=$('danceCue').querySelectorAll('svg');
+  if(a===dance.seq[dance.pos]){danceMove(a);cues[dance.pos].style.opacity=1;dance.pos++;
+    if(dance.pos>=dance.seq.length){dance.busy=true;sfx('ding');$('danceDots').querySelectorAll('svg')[dance.round].classList.add('got');dance.round++;
+      if(dance.round>=3){const st=dance.miss===0?3:dance.miss<=2?2:1;$('danceStars').innerHTML=[0,1,2].map(i=>icon(i<st?'star':'starOff')).join('');
+        pendExp=finishLesson('dance',st,'danceGain');await wait(500);$('danceEnd').hidden=false;burst(st*20);sfx('fanfare')}
+      else{$('danceTurn').textContent='🎉 好棒！';await wait(900);danceShow()}}}
+  else{dance.miss++;danceMove(a,true);$('danceTurn').textContent='再看一次喔';dance.busy=true;await wait(900);danceShow(true)}};
+$('danceHome').onclick=()=>{if(dance&&$('danceEnd').hidden&&dance.round>0&&!confirm('還沒跳完，要回家嗎？'))return;leaveLesson('danceScene')};
+$('danceDone').onclick=()=>leaveLesson('danceScene');
+
+/* 圖書館：翻繪本，找出藏起來的東西 */
+const BOOKS=[['🌸','🌼','🌷','🍄','🌿','🦋','🐌','🐝','🐞','🌻'],['🐟','🐠','🐙','🦀','🐚','🐳','🪸','🐬','🦑','⭐'],['🍎','🍌','🍇','🍓','🍒','🥕','🍉','🍋','🥝','🍑'],['🚗','🚌','🚲','✈️','🚂','🚀','🚁','⛵','🚜','🛴']];
+const BOOK_BG=['#EAF8E4','#E3F2FD','#FFF4E0','#F3EEFF'];
+let lib=null;
+function startLibrary(){lib={page:0,miss:0,pages:BOOKS.slice().sort(()=>Math.random()-.5)};$('libDots').innerHTML=lib.pages.map(()=>icon('books')).join('');
+  $('libEnd').hidden=true;$('libScene').hidden=false;libPage()}
+function libPage(){const set=lib.pages[lib.page],target=set[Math.floor(Math.random()*set.length)],others=set.filter(x=>x!==target);
+  lib.target=target;$('libFind').innerHTML=`<b>找找看</b>${target}`;const book=$('libBook');book.style.background=BOOK_BG[BOOKS.indexOf(set)];
+  const items=[target,...Array.from({length:13},(_,i)=>others[i%others.length])].sort(()=>Math.random()-.5),pos=[];
+  book.innerHTML=items.map(it=>{let x,y,t=0;do{x=10+Math.random()*80;y=10+Math.random()*80;t++}while(t<40&&pos.some(p=>Math.hypot(p[0]-x,p[1]-y)<15));pos.push([x,y]);
+    const sz=34+Math.random()*16;return `<button class="lib-item" data-it="${it}" style="left:${x}%;top:${y}%;font-size:${sz}px;transform:translate(-50%,-50%) rotate(${Math.round(Math.random()*40-20)}deg)" aria-label="${it}">${it}</button>`}).join('');
+  $('libDots').querySelectorAll('svg').forEach((s,i)=>s.classList.toggle('got',i<lib.page))}
+$('libBook').onclick=async e=>{const b=e.target.closest('.lib-item');if(!b||!lib||lib.lock)return;
+  if(b.dataset.it===lib.target){lib.lock=true;b.classList.add('ok');sparkle(b,2);sfx('ding');await wait(800);lib.page++;
+    if(lib.page>=lib.pages.length){$('libDots').querySelectorAll('svg').forEach(s=>s.classList.add('got'));const st=lib.miss===0?3:lib.miss<=3?2:1;
+      $('libStars').innerHTML=[0,1,2].map(i=>icon(i<st?'star':'starOff')).join('');pendExp=finishLesson('read',st,'libGain');$('libEnd').hidden=false;burst(st*20);sfx('fanfare')}
+    else{const bk=$('libBook');bk.classList.remove('flip');void bk.offsetWidth;bk.classList.add('flip');sfx('whoosh');await wait(250);libPage()}lib.lock=false}
+  else{lib.miss++;b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sfx('plop')}};
+$('libHome').onclick=()=>{if(lib&&$('libEnd').hidden&&lib.page>0&&!confirm('還沒看完，要回家嗎？'))return;leaveLesson('libScene')};
+$('libDone').onclick=()=>leaveLesson('libScene');
+
+/* 活動中心：和原創朋友玩躲貓貓（猜禮物盒）*/
+const FRIENDS={cloud:{name:'雲寶',svg:()=>`<svg viewBox="0 0 120 112">${$('helper').querySelector('svg').innerHTML}</svg>`},
+ hedge:{name:'刺刺',svg:()=>`<svg viewBox="0 0 120 112"><path d="M20 80c-6-20 4-46 30-54l-4-10 12 6 6-12 6 12 12-6-2 12c18 8 26 28 22 52z" fill="#8FDCC0" stroke="#5A3E4B" stroke-width="4" stroke-linejoin="round"/><ellipse cx="62" cy="80" rx="34" ry="26" fill="#FFF3E2" stroke="#5A3E4B" stroke-width="4"/><ellipse cx="50" cy="76" rx="3.5" ry="5" fill="#5A3E4B"/><ellipse cx="74" cy="76" rx="3.5" ry="5" fill="#5A3E4B"/><circle cx="62" cy="86" r="4" fill="#5A3E4B"/><ellipse cx="42" cy="88" rx="6" ry="3.5" fill="#FF9EC4" opacity=".8"/><ellipse cx="82" cy="88" rx="6" ry="3.5" fill="#FF9EC4" opacity=".8"/><ellipse cx="46" cy="106" rx="9" ry="5" fill="#E2B48C" stroke="#5A3E4B" stroke-width="3.5"/><ellipse cx="78" cy="106" rx="9" ry="5" fill="#E2B48C" stroke="#5A3E4B" stroke-width="3.5"/></svg>`},
+ chick:{name:'小黃',svg:()=>`<svg viewBox="0 0 120 112"><path d="M58 14c-4-8 4-12 6-4 2-8 10-4 6 4" fill="#FFD86B" stroke="#5A3E4B" stroke-width="3.5" stroke-linejoin="round"/><ellipse cx="60" cy="62" rx="38" ry="40" fill="#FFE38F" stroke="#5A3E4B" stroke-width="4"/><path d="M22 66c-10 2-14 12-8 16 6 2 10-4 12-8M98 66c10 2 14 12 8 16-6 2-10-4-12-8" fill="#FFD86B" stroke="#5A3E4B" stroke-width="3.5"/><ellipse cx="48" cy="54" rx="4" ry="5.5" fill="#5A3E4B"/><ellipse cx="72" cy="54" rx="4" ry="5.5" fill="#5A3E4B"/><path d="M54 64l6 8 6-8z" fill="#FFB86B" stroke="#5A3E4B" stroke-width="3" stroke-linejoin="round"/><ellipse cx="38" cy="68" rx="6" ry="3.5" fill="#FF9EC4" opacity=".8"/><ellipse cx="82" cy="68" rx="6" ry="3.5" fill="#FF9EC4" opacity=".8"/><path d="M48 102v8M72 102v8" stroke="#FFB86B" stroke-width="5" stroke-linecap="round"/></svg>`}};
+let hall=null;
+function startHall(){hall={round:0,found:0,order:[0,1,2],friends:Object.keys(FRIENDS).sort(()=>Math.random()-.5)};
+  $('hallDots').innerHTML=[0,1,2].map(()=>icon('heart')).join('');$('hallEnd').hidden=true;$('hallScene').hidden=false;hallRound()}
+async function hallRound(){const f=hall.friends[hall.round],bx=$('boxes');hall.at=Math.floor(Math.random()*3);
+  $('hallFriend').innerHTML=FRIENDS[f].svg();$('hallFriend').style.opacity=1;
+  bx.innerHTML=[0,1,2].map(i=>`<button class="gbox" data-i="${i}" style="left:${i*35}%" aria-label="第 ${i+1} 個禮物盒"><div class="who">${i===hall.at?FRIENDS[f].svg():''}</div>${icon('box')}</button>`).join('');
+  bx.classList.add('lock');const boxes=[...bx.querySelectorAll('.gbox')];boxes[hall.at].classList.add('open');await wait(1100);boxes[hall.at].classList.remove('open');
+  $('hallFriend').style.opacity=.15;await wait(400);
+  let order=[0,1,2];for(let k=0;k<4+hall.round*2;k++){const a=Math.floor(Math.random()*3),b=(a+1+Math.floor(Math.random()*2))%3;[order[a],order[b]]=[order[b],order[a]];
+    order.forEach((bi,slot)=>boxes[bi].style.left=slot*35+'%');sfx('tick');await wait(reduced?0:420)}
+  bx.classList.remove('lock')}
+$('boxes').onclick=async e=>{const b=e.target.closest('.gbox');if(!b||!hall||$('boxes').classList.contains('lock'))return;$('boxes').classList.add('lock');
+  const boxes=[...$('boxes').querySelectorAll('.gbox')],hit=+b.dataset.i===hall.at;b.classList.add('open');
+  if(!hit){sfx('plop');await wait(700);boxes[hall.at].classList.add('open')}else{sfx('ding');burst(25);hall.found++;S.friends[hall.friends[hall.round]]=(S.friends[hall.friends[hall.round]]||0)+1}
+  $('hallDots').querySelectorAll('svg')[hall.round].classList.toggle('got',hit);await wait(1200);hall.round++;
+  if(hall.round<3)hallRound();else hallEnd()};
+function hallEnd(){$('hallFriends').innerHTML=Object.entries(FRIENDS).map(([k,v])=>`<div>${v.svg()}${v.name}<br>💗${S.friends[k]||0}</div>`).join('');
+  careSet(o=>{o.fun+=10+hall.found*4;o.energy-=6});addLog(`🎈 ${S.pet.name}去活動中心和朋友玩，找到 ${hall.found} 次`);
+  $('hallGain').innerHTML=`<span>${icon('heart')}${icon('up','ar')}</span><span>${icon('bolt')}${icon('down','ar')}</span>`;pendExp=hall.found?2:1;save();$('hallEnd').hidden=false;sfx('fanfare')}
+$('hallHome').onclick=()=>leaveLesson('hallScene');$('hallDone').onclick=()=>leaveLesson('hallScene');
+
+/* 美容院：換毛色、髮夾顏色 */
+let salon=null;
+function startSalon(){salon={...(S.pet.look||{coat:'aka',clip:CLIPS[0]})};$('salonOk').innerHTML=icon('star');$('salonScene').hidden=false;drawSalon()}
+function drawSalon(){const st=stageOf(levelInfo(S.pet.exp).lv);$('salonDog').innerHTML=pupSVG(st,{pose:'sit',look:salon});
+  $('coatSw').innerHTML=Object.entries(COATS).map(([k,c])=>`<button class="sw${salon.coat===k?' sel':''}" data-coat="${k}" style="background:linear-gradient(${c[0]} 60%,${c[2]} 60%)" aria-label="${c[3]}色">${c[3]}</button>`).join('');
+  $('clipSw').innerHTML=CLIPS.map(c=>`<button class="sw clip${salon.clip===c?' sel':''}" data-clip="${c}" style="background:${c}" aria-label="髮夾顏色"></button>`).join('')}
+$('coatSw').onclick=e=>{const b=e.target.closest('.sw');if(!b)return;salon.coat=b.dataset.coat;sfx('pop');drawSalon()};
+$('clipSw').onclick=e=>{const b=e.target.closest('.sw');if(!b)return;salon.clip=b.dataset.clip;sfx('pop');drawSalon()};
+$('salonOk').onclick=()=>{S.pet.look={coat:salon.coat,clip:salon.clip};addLog(`💇 ${S.pet.name}去美容院換成${COATS[salon.coat][3]}色`);save();pupKey='';
+  $('salonScene').hidden=true;closeMap();burst(40);sfx('fanfare');pupJump(3)};
+$('salonHome').onclick=()=>{$('salonScene').hidden=true;closeMap()};
+
 /* ===== park walk game ===== */
 const PK_N=8,PK_T=45000;let pk=null;
 function startPark(){
@@ -2461,6 +2674,62 @@ function renderDev(){const{done,total}=devStats();
 $('devOpen').onclick=()=>{renderDev();$('devModal').hidden=false;$('devClose').focus()};
 $('devClose').onclick=()=>{$('devModal').hidden=true;$('devOpen').focus()};
 $('devFilter').onclick=e=>{const b=e.target.closest('button');if(!b)return;devFilter=b.dataset.f;renderDev()};
+
+/* ===== 備份／還原（OPS-04）===== */
+$('bkSave').onclick=()=>{try{const blob=new Blob([JSON.stringify({app:'dog-home',v:1,at:new Date().toISOString(),state:S},null,1)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`小狗的家備份-${today()}.json`;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);addLog('下載了備份檔');save()}catch(e){toast('這個環境不能下載，請在正式網址操作')}};
+$('bkFile').onchange=async()=>{const f=$('bkFile').files[0];$('bkFile').value='';if(!f)return;
+  try{const j=JSON.parse(await f.text());if(j.app!=='dog-home'||!j.state||!Array.isArray(j.state.exams))throw 0;
+    if(!confirm(`要用 ${String(j.at||'').slice(0,10)} 的備份覆蓋現在的進度嗎？（兩台裝置都會同步成備份的內容）`))return;
+    S=normalize(j.state);addLog('從備份還原進度');save();renderAll();toast('已經還原')}catch(e){toast('這不是小狗的家的備份檔')}};
+
+/* ===== 大獎批次管理（PRIZE-01～03）===== */
+// 依照片檔名預先填好的名字（Kevin 2026-11 上傳的禮物照片；不在表裡的照片預設叫「禮物」）
+const PHOTO_NAMES={'IMG_2695.jpeg':'湯匙','IMG_2697.jpeg':'口罩掛繩','IMG_2698.jpeg':'指甲貼紙','IMG_2699.jpeg':'彩虹筆','IMG_2700.jpeg':'梳子','IMG_2701.jpeg':'自動鉛筆',
+ 'IMG_2766.jpeg':'盒裝小物','IMG_2767.jpeg':'絨毛玩偶','IMG_2768.jpeg':'後背包','IMG_2769.jpeg':'毛毛髮帶','IMG_2770.jpeg':'髮夾','IMG_2771.jpeg':'小毯子',
+ 'IMG_2772.jpeg':'手鍊','IMG_2773.jpeg':'毛毛吊飾','IMG_2774.jpeg':'襪子','IMG_2776.jpeg':'拖鞋','IMG_2779.jpeg':'玩偶吊飾','IMG_2780.jpeg':'大玩偶',
+ 'IMG_2781.jpeg':'玩偶吊飾','IMG_2782.jpeg':'毛毛手套','IMG_2783.jpeg':'鑰匙圈','IMG_2784.jpeg':'立體貼紙','IMG_2785.jpeg':'卡套','IMG_2786.jpeg':'造型抱枕',
+ 'IMG_2787.jpeg':'蝴蝶結髮夾','IMG_2788.jpeg':'原子筆','IMG_2789.jpeg':'髮圈','IMG_2790.jpeg':'帆布袋','IMG_2791.jpeg':'鈴鐺鑰匙圈','IMG_2792.jpeg':'卡套掛繩',
+ 'IMG_2793.jpeg':'毛毛小物','IMG_2794.jpeg':'蝴蝶結玩偶'};
+let bpSel=new Set(),bpRows=[],bdMode=false,bdSel=new Set();
+const usedPhotos=()=>new Set(S.prizes.map(p=>p.photo).filter(Boolean));
+function openBatchAdd(){bpSel=new Set();$('bpStep1').hidden=false;$('bpStep2').hidden=true;$('bpModal').hidden=false;drawBp();
+  if(!photoList.length||photoState!=='ok')loadPhotoList(true).then(()=>{if(!$('bpModal').hidden)drawBp()})}
+function drawBp(){const used=usedPhotos(),fresh=photoList.filter(n=>!used.has(n));
+  $('bpInfo').textContent=photoState==='loading'?'讀取照片清單中…':photoState==='nogh'?'只有在 GitHub 網址打開時才能讀照片清單':
+    `photos 資料夾有 ${photoList.length} 張，還沒變成獎品的有 ${fresh.length} 張。點照片選取。`;
+  $('bpGrid').innerHTML=photoList.map(n=>{const u=used.has(n),on=bpSel.has(n);
+    return `<button class="bp-ph${u?' used':''}${on?' on':''}" data-n="${esc(n)}"${u?' disabled':''}><img class="ph" src="${esc(photoURL(n))}" alt="${esc(n)}" loading="lazy"><span class="tick">✓</span>${u?'<span class="tag">已是獎品</span>':''}</button>`}).join('');
+  $('bpNext').textContent=bpSel.size?`下一步：取名字和數量（${bpSel.size} 張）`:'先點選照片';$('bpNext').disabled=!bpSel.size}
+$('bpGrid').onclick=e=>{const b=e.target.closest('.bp-ph');if(!b||b.disabled)return;const n=b.dataset.n;bpSel.has(n)?bpSel.delete(n):bpSel.add(n);drawBp()};
+$('bpAllNew').onclick=()=>{const used=usedPhotos();photoList.forEach(n=>{if(!used.has(n))bpSel.add(n)});drawBp()};
+$('bpNone').onclick=()=>{bpSel.clear();drawBp()};
+$('bpReload').onclick=()=>{loadPhotoList(true).then(drawBp);drawBp()};
+$('bpNext').onclick=()=>{if(!bpSel.size)return;bpRows=[...bpSel].map(n=>({n,name:(PHOTO_NAMES[n]||'禮物').slice(0,12),qty:1}));drawBpList();$('bpStep1').hidden=true;$('bpStep2').hidden=false};
+function drawBpList(){$('bpList').innerHTML=bpRows.map((r,i)=>`<li><img class="ph" src="${esc(photoURL(r.n))}" alt=""><input type="text" maxlength="12" value="${esc(r.name)}" data-bpn="${i}" aria-label="獎品名稱">
+  <div class="bp-qty"><button class="btn small ghost" data-bpq="${i}" data-d="-1" aria-label="少一個">−</button><b>${r.qty}</b><button class="btn small ghost" data-bpq="${i}" data-d="1" aria-label="多一個">＋</button></div></li>`).join('');
+  $('bpAdd').textContent=`新增 ${bpRows.length} 個獎品（共 ${bpRows.reduce((a,r)=>a+r.qty,0)} 份）`}
+$('bpList').addEventListener('input',e=>{const i=e.target.dataset.bpn;if(i!==undefined)bpRows[+i].name=e.target.value});
+$('bpList').addEventListener('click',e=>{const i=e.target.dataset.bpq;if(i===undefined)return;const r=bpRows[+i];r.qty=Math.max(1,Math.min(99,r.qty+(+e.target.dataset.d)));drawBpList()});
+$('bpBack').onclick=()=>{$('bpStep2').hidden=true;$('bpStep1').hidden=false;drawBp()};
+$('bpAdd').onclick=()=>{const used=usedPhotos(),add=bpRows.filter(r=>!used.has(r.n));if(!add.length){$('bpModal').hidden=true;return}
+  add.forEach(r=>S.prizes.push({id:uid(),name:(r.name.trim()||'禮物').slice(0,12),icon:'gift',total:r.qty,left:r.qty,photo:r.n}));
+  addLog(`📷 用照片批次新增 ${add.length} 個實體大獎`);save();$('bpModal').hidden=true;renderAll();toast(`新增了 ${add.length} 個獎品`)};
+$('bpClose').onclick=()=>{$('bpModal').hidden=true};
+$('bpOpen').onclick=openBatchAdd;
+// 批次刪除（只刪「獎品清單」，已抽中的大獎紀錄不受影響）
+function setBd(on){bdMode=on;bdSel.clear();$('bdBar').hidden=!on;$('bdToggle').hidden=on;renderAll();updBd()}
+function updBd(){$('bdCount').textContent=`已選 ${bdSel.size} 個`;$('bdGo').disabled=!bdSel.size}
+$('bdToggle').onclick=()=>setBd(true);$('bdCancel').onclick=()=>setBd(false);
+$('bdAll').onclick=()=>{const all=bdSel.size<S.prizes.length;bdSel.clear();if(all)S.prizes.forEach(p=>bdSel.add(p.id));renderAll();updBd()};
+$('prizeList').addEventListener('change',e=>{const id=e.target.dataset.bd;if(!id)return;e.target.checked?bdSel.add(id):bdSel.delete(id);updBd()});
+$('bdGo').onclick=()=>{if(!bdSel.size)return;const names=S.prizes.filter(p=>bdSel.has(p.id)).map(p=>p.name);
+  if(!confirm(`刪除這 ${names.length} 個獎品？\n${names.slice(0,8).join('、')}${names.length>8?'…':''}\n（已經抽中的大獎紀錄不會被刪掉）`))return;
+  S.prizes=S.prizes.filter(p=>!bdSel.has(p.id));addLog(`批次刪除 ${names.length} 個實體大獎`);save();setBd(false)};
+$('prizeList').addEventListener('click',e=>{const id=e.target.dataset.pzRename;if(!id)return;const p=S.prizes.find(x=>x.id===id);if(!p)return;
+  const v=prompt('獎品的新名字',p.name);if(v===null)return;const n=v.trim().slice(0,12);if(!n)return;
+  addLog(`獎品改名：${p.name} → ${n}`);p.name=n;save();renderAll()});
 
 /* ===== prize settings ===== */
 $('pzIcon').innerHTML=Object.entries(PRIZE_ICONS).map(([k,v])=>`<option value="${k}"${k==='gift'?' selected':''}>${v.label}</option>`).join('');
