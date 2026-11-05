@@ -706,12 +706,66 @@ h3::before{content:"✿ ";color:var(--pink)}
   .rays,.confetti i,.cap,.cap::before,.cap .top,.cap .bot,.tickets.bump,.pup .tail,.pup .legs,.lvup-pup,.heart,.eyes,.ear,.bodyg,.leg{animation:none!important}
   .cap{opacity:1}.pup{transition:none!important}
 }
-/* 平板橫放：左邊房間固定、右邊操作區；廚房改左右排 */
+/* ===== 一屏遊戲主畫面（SHELL-01）：上方狀態、中間房間、下方按鈕，不捲動 ===== */
+html,body{height:100%}
+body{overflow:hidden;overscroll-behavior:none}
+.wrap{height:100dvh;max-width:620px;display:flex;flex-direction:column;gap:8px;overflow:hidden;box-sizing:border-box;
+  padding:calc(8px + env(safe-area-inset-top,0px)) 12px calc(10px + env(safe-area-inset-bottom,0px))}
+.wrap>.ribbon,.wrap>.tabs{display:none}
+.wrap>.sync{align-self:flex-start;margin:0}
+.wrap>.pet-head,.wrap>.needs{margin:0;flex:none}
+.wrap>.room{flex:1;min-height:180px;aspect-ratio:auto;height:auto}
+.wrap>.dock{flex:none;margin:0;padding-left:72px}
+.quick{display:flex;gap:8px;justify-content:flex-end;flex:none;margin-top:-4px}
+.quick button{width:48px;height:48px;border-radius:16px;border:3px solid #5A3E4B;background:var(--card);box-shadow:0 3px 0 #5A3E4B;padding:7px;cursor:pointer}
+.quick button svg{width:100%;height:100%;display:block}
+.quick button:active{transform:translateY(2px);box-shadow:0 1px 0 #5A3E4B}
+.quick .badge,.dock .badge{position:absolute}
+#dGacha{position:relative}
+.dock .badge{right:-6px;top:-6px;min-width:28px;height:28px;border-radius:999px;background:#FFD86B;border:3px solid #5A3E4B;font-weight:900;font-size:.95rem;color:#5A3E4B;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.dock .badge.zero{background:#EEE;color:#A07C8C}
+.parent-fab{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+#selbar{position:absolute;left:8px;right:8px;bottom:8px;z-index:1250;margin:0}
+.scene-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px}
+.scene-scroll>.panel{margin:0;max-width:620px;margin-inline:auto}
+.sheet-scene{background:radial-gradient(circle,var(--dot) 2.6px,transparent 3.2px) 0 0/22px 22px,var(--sky)}
+/* 扭蛋機（SHELL-02）*/
+.gacha-scene{background:radial-gradient(circle,rgba(255,255,255,.6) 3px,transparent 4px) 0 0/26px 26px,#FFEAF3}
+.gacha-body{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.machine{position:relative;height:min(52vh,420px);aspect-ratio:240/300}
+.machine>svg{width:100%;height:100%;display:block;overflow:visible}
+.machine .dome{transform-origin:120px 96px}.machine.shake .balls{animation:balls .18s 7 alternate ease-in-out;transform-origin:120px 110px}
+@keyframes balls{from{transform:rotate(-7deg) translateY(2px)}to{transform:rotate(7deg) translateY(-3px)}}
+.crank{position:absolute;left:50%;top:63%;width:27%;aspect-ratio:1;transform:translate(-50%,-50%);border:0;background:none;padding:0;cursor:grab;touch-action:none;border-radius:50%}
+.crank svg{width:100%;height:100%;display:block;overflow:visible}
+.crank:focus-visible{outline:4px solid #F27BA6;outline-offset:3px}
+.crank.ready{animation:needpulse 1.2s ease-in-out infinite}
+.crank.off{opacity:.5;cursor:not-allowed;animation:none}
+.turn-hint{position:absolute;left:73%;top:52%;width:20%;aspect-ratio:1;pointer-events:none;animation:rot 2.4s linear infinite}
+.turn-hint[hidden]{display:none}.turn-hint svg{width:100%;height:100%}
+.drop-cap{position:absolute;left:50%;top:86%;width:16%;aspect-ratio:1;transform:translate(-50%,-50%) scale(0);border-radius:50%;border:4px solid #5A3E4B;
+  background:linear-gradient(var(--cc,#FFD86B) 50%,#fff 50%);pointer-events:none}
+.drop-cap.go{animation:dropcap .9s cubic-bezier(.3,1.4,.5,1) forwards}
+@keyframes dropcap{0%{transform:translate(-50%,-60%) scale(.3)}60%{transform:translate(-50%,10%) scale(1.1)}100%{transform:translate(-50%,0) scale(1)}}
+.pick-n{display:flex;gap:10px}
+.pick-n button{min-width:86px;border-radius:20px;border:3px solid #5A3E4B;background:#fff;box-shadow:0 4px 0 #5A3E4B;padding:8px 10px;cursor:pointer;font:inherit;color:#5A3E4B;display:flex;flex-direction:column;align-items:center;gap:4px}
+.pick-n button[aria-checked="true"]{background:#FFE38F}
+.pick-n button:disabled{opacity:.4;cursor:not-allowed}
+.pick-n .caps{font-size:.85rem;line-height:1;letter-spacing:-.05em;color:#F27BA6}
+.pick-n .pcost{display:flex;align-items:center;gap:2px;font-weight:900;font-size:1.25rem}.pick-n .pcost svg{width:30px;height:30px}
+.tk-stack{display:flex;align-items:center;gap:6px;background:#fff;border:3px solid #5A3E4B;border-radius:999px;padding:4px 14px;font-weight:900;font-size:1.6rem}
+.tk-stack svg{width:40px;height:40px}
+.next-tk{display:flex;align-items:center;gap:8px;width:min(90%,340px);font-size:.85rem;color:#A07C8C;font-weight:700}
+.nt-bar{flex:1;height:14px;border:2.5px solid #5A3E4B;border-radius:999px;background:#fff;overflow:hidden}.nt-bar i{display:block;height:100%;background:#FFD86B;border-radius:999px;transition:width .6s}
+/* 平板橫放：左邊房間、右邊狀態與按鈕；廚房改左右排 */
 @media (orientation:landscape) and (min-width:700px) and (max-height:820px){
-  .wrap{max-width:1100px;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:18px;align-items:start}
+  .wrap{max-width:1180px;display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,30%);grid-template-rows:auto auto auto auto 1fr;column-gap:16px;row-gap:8px}
   .wrap>*{grid-column:2;min-width:0}
-  .wrap>.room{grid-column:1;grid-row:1 / span 30;position:sticky;top:10px;width:min(60vw,calc((100vh - 28px)*4/3));align-self:start}
-  .dock{margin-top:4px}
+  .wrap>.room{grid-column:1;grid-row:1 / -1;min-height:0;height:100%}
+  .wrap>.dock{padding-left:0;display:grid;grid-template-columns:repeat(3,1fr);align-self:end;margin-bottom:60px;justify-items:center}
+  .quick{justify-content:flex-start;margin-top:0}
+  .machine{height:min(62vh,420px)}
+  .gacha-body{flex-direction:row;flex-wrap:wrap;align-content:center}
   .pet-head{flex-wrap:wrap;row-gap:4px}.pet-head .nm,.pet-head .lv,.pet-head .stage-name{white-space:nowrap}.pet-head .exp{flex-basis:100%}
   .kit-cook{flex-direction:row;justify-content:center;gap:28px}
   .pot-wrap{width:min(40vw,calc(62vh))}
@@ -736,7 +790,11 @@ h3::before{content:"✿ ";color:var(--pink)}
     <div class="need" id="needFood"><span data-ic="bowl"></span><div class="nb" role="progressbar" aria-label="飽足"><i style="background:#FFB86B"></i></div></div>
     <div class="need" id="needFun"><span data-ic="heart"></span><div class="nb" role="progressbar" aria-label="開心"><i style="background:#FF9EC4"></i></div></div>
     <div class="need" id="needEnergy"><span data-ic="bolt"></span><div class="nb" role="progressbar" aria-label="體力"><i style="background:#FFD86B"></i></div></div>
-    <div class="tk-chip" aria-label="扭蛋券"><span data-ic="ticket"></span><span id="tkChip">0</span></div>
+  </div>
+  <div class="quick" aria-label="更多">
+    <button id="qBag" data-ic="bag" aria-label="背包圖鑑"></button>
+    <button id="qPlan" data-ic="calendar" aria-label="課表"></button>
+    <button id="qExam" data-ic="paper" aria-label="登記考卷"></button>
   </div>
 
   <div class="room" id="room" aria-label="小狗的房間">
@@ -760,8 +818,7 @@ h3::before{content:"✿ ";color:var(--pink)}
     <button id="dBall" data-ic="ball" aria-label="玩球"></button>
     <button id="dBath" data-ic="bath" aria-label="洗澡"></button>
     <button id="dMap" data-ic="map" aria-label="出門"></button>
-    <button id="dPlan" data-ic="calendar" aria-label="課表"></button>
-    <button id="dGacha" data-ic="gift" aria-label="扭蛋"></button>
+    <button id="dGacha" data-ic="capsule" aria-label="扭蛋機"><span class="badge" id="tkChip">0</span></button>
   </div>
   <div class="selbar" id="selbar" hidden>
     <b id="selName"></b>
@@ -1009,6 +1066,51 @@ h3::before{content:"✿ ";color:var(--pink)}
     </div>
     <div class="kit-done" id="kitDone" hidden><div class="pk-card"><div class="dish-big" id="dishBig"></div><button class="round-btn big" id="kitServe" aria-label="盛起來"></button></div></div>
   </div>
+</div>
+<div class="scene gacha-scene" id="gachaScene" hidden role="dialog" aria-modal="true" aria-label="扭蛋機">
+  <div class="hud"><button class="round-btn" id="gachaHome" data-ic="home" aria-label="回家"></button>
+    <div class="tk-stack" id="tkStack" aria-live="polite"></div><span style="width:56px"></span></div>
+  <div class="gacha-body">
+    <div class="machine" id="machine">
+      <svg viewBox="0 0 240 300" aria-hidden="true">
+        <ellipse cx="120" cy="292" rx="86" ry="7" fill="rgba(90,62,75,.15)"/>
+        <rect x="38" y="168" width="164" height="118" rx="26" fill="#FF9EC4" stroke="#5A3E4B" stroke-width="5"/>
+        <rect x="52" y="182" width="136" height="16" rx="8" fill="#FFC6DD"/>
+        <g class="dome"><circle cx="120" cy="96" r="84" fill="#F4FBFF" stroke="#5A3E4B" stroke-width="5"/>
+          <g class="balls">
+            <g transform="translate(82 132)"><circle r="17" fill="#fff" stroke="#5A3E4B" stroke-width="3"/><path d="M-17 0a17 17 0 0 1 34 0z" fill="#FFD86B" stroke="#5A3E4B" stroke-width="3"/></g>
+            <g transform="translate(118 140)"><circle r="17" fill="#fff" stroke="#5A3E4B" stroke-width="3"/><path d="M-17 0a17 17 0 0 1 34 0z" fill="#8CC8F0" stroke="#5A3E4B" stroke-width="3"/></g>
+            <g transform="translate(154 130)"><circle r="17" fill="#fff" stroke="#5A3E4B" stroke-width="3"/><path d="M-17 0a17 17 0 0 1 34 0z" fill="#C9B3F5" stroke="#5A3E4B" stroke-width="3"/></g>
+            <g transform="translate(98 106)"><circle r="17" fill="#fff" stroke="#5A3E4B" stroke-width="3"/><path d="M-17 0a17 17 0 0 1 34 0z" fill="#FF9EC4" stroke="#5A3E4B" stroke-width="3"/></g>
+            <g transform="translate(138 104)"><circle r="17" fill="#fff" stroke="#5A3E4B" stroke-width="3"/><path d="M-17 0a17 17 0 0 1 34 0z" fill="#8FDCC0" stroke="#5A3E4B" stroke-width="3"/></g>
+            <g transform="translate(118 72)"><circle r="17" fill="#fff" stroke="#5A3E4B" stroke-width="3"/><path d="M-17 0a17 17 0 0 1 34 0z" fill="#FFB86B" stroke="#5A3E4B" stroke-width="3"/></g>
+            <g transform="translate(78 78)"><circle r="15" fill="#fff" stroke="#5A3E4B" stroke-width="3"/><path d="M-15 0a15 15 0 0 1 30 0z" fill="#8CC8F0" stroke="#5A3E4B" stroke-width="3"/></g>
+            <g transform="translate(160 84)"><circle r="15" fill="#fff" stroke="#5A3E4B" stroke-width="3"/><path d="M-15 0a15 15 0 0 1 30 0z" fill="#FFD86B" stroke="#5A3E4B" stroke-width="3"/></g>
+          </g>
+          <path d="M70 52a62 62 0 0 1 40-26" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/></g>
+        <rect x="102" y="6" width="36" height="16" rx="8" fill="#FFD86B" stroke="#5A3E4B" stroke-width="5"/>
+        <rect x="86" y="248" width="68" height="28" rx="12" fill="#5A3E4B"/><path d="M92 256h56" stroke="#7A5C6E" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <button class="crank" id="crank" aria-label="轉動把手"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="34" fill="#FFE38F" stroke="#5A3E4B" stroke-width="5"/><g id="crankArm"><rect x="34" y="8" width="12" height="64" rx="6" fill="#fff" stroke="#5A3E4B" stroke-width="4"/><circle cx="40" cy="14" r="8" fill="#FF9EC4" stroke="#5A3E4B" stroke-width="4"/></g><circle cx="40" cy="40" r="6" fill="#5A3E4B"/></svg></button>
+      <div class="drop-cap" id="dropCap"></div>
+      <div class="turn-hint" id="turnHint" aria-hidden="true"></div>
+    </div>
+    <div class="pick-n" id="pickN" role="radiogroup" aria-label="一次抽幾顆">
+      <button data-n="1" role="radio"><span class="caps">●</span><span class="pcost"></span></button>
+      <button data-n="5" role="radio"><span class="caps">●●●●●</span><span class="pcost"></span></button>
+      <button data-n="10" role="radio"><span class="caps">●●●●●<br>●●●●●</span><span class="pcost"></span></button>
+    </div>
+    <div class="next-tk" id="nextTk"><div class="nt-bar"><i id="ntFill"></i></div><span id="ntText"></span></div>
+  </div>
+  <div class="gacha-host" id="gachaHost" hidden></div>
+</div>
+<div class="scene sheet-scene" id="bagScene" hidden role="dialog" aria-modal="true" aria-label="背包圖鑑">
+  <div class="hud"><button class="round-btn" id="bagHome" data-ic="home" aria-label="回家"></button><span class="plan-title">背包</span><span style="width:56px"></span></div>
+  <div class="scene-scroll" id="bagHost"></div>
+</div>
+<div class="scene sheet-scene" id="examScene" hidden role="dialog" aria-modal="true" aria-label="登記考卷">
+  <div class="hud"><button class="round-btn" id="examHome" data-ic="home" aria-label="回家"></button><span class="plan-title">考卷</span><span style="width:56px"></span></div>
+  <div class="scene-scroll" id="examHost"></div>
 </div>
 <div class="scene plan-scene" id="planScene" hidden role="dialog" aria-modal="true" aria-label="課表">
   <div class="hud"><button class="round-btn" id="planHome" data-ic="home" aria-label="回家"></button><span class="plan-title">一週課表</span><span style="width:56px"></span></div>
@@ -1258,10 +1360,19 @@ h3::before{content:"✿ ";color:var(--pink)}
    【手勢】點一下＝跳＋愛心；連點 3 下＝轉圈；長按＝瞇眼翻肚；在身上滑＝摸摸；點地板＝走過去聞
      學會技能後：在小狗旁畫圈＝跳舞（其他技能手勢待定）
 
+   【impeccable critique（2026-11-05，單一脈絡）】25/40 Acceptable。
+     P1 主畫面網頁與遊戲場景混搭 → SHELL-01；P1 扭蛋區文字太多 → SHELL-02；P1 深色模式對比 1.4:1 → SHELL-03；
+     P2 字級太平 → SHELL-03；P2 emoji 與手繪圖示混用 → SHELL-04；說明引導 1 分 → SHELL-05。
+     刻意保留：貼紙風硬邊陰影、兒童 Q 彈緩動（偵測工具的建議項）。
    【版權原則】不畫任何既有角色（包含三麗鷗角色與其二創）；實體商品照片只由家長自行上傳到 photos/。
    ===================================================================================== */
-const DEV_VERSION='2026-11-04 · 測試版（大獎批次管理）';
+const DEV_VERSION='2026-11-05 · 測試版（impeccable 重構 1、2：一屏主畫面＋扭蛋機）';
 const DEV_TASKS=[
+ {id:'SHELL-01',phase:'impeccable 重構',status:'done',title:'一屏遊戲主畫面：上方狀態、中間房間、下方 5 顆按鈕，不再往下捲',note:'背包、課表、考卷移到右上小按鈕，變成全螢幕場景'},
+ {id:'SHELL-02',phase:'impeccable 重構',status:'done',title:'扭蛋機場景：選 1／5／10 顆，用手指轉把手（點一下也會自動轉）',note:'下方按鈕列的扭蛋鈕上直接顯示券數'},
+ {id:'SHELL-03',phase:'impeccable 重構',status:'todo',title:'字級 4 級（14/18/24/36），兒童畫面最小 18px；深色模式對比修正'},
+ {id:'SHELL-04',phase:'impeccable 重構',status:'todo',title:'emoji 圖示全部換成手繪 SVG'},
+ {id:'SHELL-05',phase:'impeccable 重構',status:'todo',title:'第一次打開的引導（小孩）'},
  {id:'CORE-01',phase:'基礎功能',status:'done',title:'考卷登記、分數累加換扭蛋券'},
  {id:'CORE-02',phase:'基礎功能',status:'done',title:'扭蛋單抽／5 連抽／10 連抽與動畫'},
  {id:'CORE-03',phase:'基礎功能',status:'done',title:'26 種道具、背包圖鑑、房間布置拖曳'},
@@ -1662,7 +1773,7 @@ async function walkPup(x,speed=.06){const pup=$('pup');x=Math.max(5,Math.min(95,
   pup.style.transitionTimingFunction='cubic-bezier(.45,.05,.4,1)';
   pup.style.transitionDuration=(reduced?0:dist*speed)+'s';pupX=x;pup.style.left=x+'%';await wait(dist*speed*1000+40);pup.classList.remove('walking');pupSettle()}
 function pupSettle(){if(reduced)return;const p=$('pup');p.classList.remove('settle');void p.offsetWidth;p.classList.add('settle');clearTimeout(p._st);p._st=setTimeout(()=>p.classList.remove('settle'),600)}
-const sceneOpen=()=>['mapScene','parkScene','bathScene','kitScene','planScene','engScene','artScene','danceScene','libScene','hallScene','salonScene'].some(id=>!$(id).hidden);
+const sceneOpen=()=>['mapScene','parkScene','bathScene','kitScene','planScene','engScene','artScene','danceScene','libScene','hallScene','salonScene','gachaScene','bagScene','examScene'].some(id=>!$(id).hidden);
 function pupAct(cls,ms){const p=$('pup');p.classList.remove(cls);void p.offsetWidth;p.classList.add(cls);return new Promise(r=>setTimeout(()=>{p.classList.remove(cls);r()},reduced?0:ms))}
 async function doTilt(){setPose('stand');await pupAct('tilt',1500)}
 async function doWiggle(){setPose('stand');sfx('bubble');await pupAct('wiggle',1400)}
@@ -2066,7 +2177,7 @@ $('pinInput').onkeydown=e=>{if(e.key==='Enter')checkPin()};
 $('pinCancel').onclick=()=>{$('pinModal').hidden=true;$('parentFab').focus()};
 $('parentClose').onclick=closeParent;
 document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;
-  if(!$('bpModal').hidden){$('bpModal').hidden=true}else if(!$('sigModal').hidden){$('sigModal').hidden=true}else if(!$('danceScene').hidden){$('danceHome').click()}else if(!$('libScene').hidden){$('libHome').click()}else if(!$('hallScene').hidden){$('hallHome').click()}else if(!$('salonScene').hidden){$('salonHome').click()}else if(!$('engScene').hidden){$('engHome').click()}else if(!$('artScene').hidden){$('artHome').click()}else if(!$('planScene').hidden){closePlan()}else if(!$('devModal').hidden){$('devModal').hidden=true}else if(!$('kitScene').hidden){closeKitchen()}else if(!$('parkScene').hidden){$('parkHome').click()}else if(!$('bathScene').hidden){closeBath()}else if(!$('mapScene').hidden){closeMap()}else if(!$('picker').hidden){$('picker').hidden=true}else if(!$('pinModal').hidden){$('pinModal').hidden=true}else if(!$('tab-parent').hidden)closeParent()});
+  if(!$('bpModal').hidden){$('bpModal').hidden=true}else if(!$('stage').hidden){}else if(!$('gachaScene').hidden){$('gachaHome').click()}else if(!$('bagScene').hidden){closeScene('bagScene')}else if(!$('examScene').hidden){closeScene('examScene')}else if(!$('sigModal').hidden){$('sigModal').hidden=true}else if(!$('danceScene').hidden){$('danceHome').click()}else if(!$('libScene').hidden){$('libHome').click()}else if(!$('hallScene').hidden){$('hallHome').click()}else if(!$('salonScene').hidden){$('salonHome').click()}else if(!$('engScene').hidden){$('engHome').click()}else if(!$('artScene').hidden){$('artHome').click()}else if(!$('planScene').hidden){closePlan()}else if(!$('devModal').hidden){$('devModal').hidden=true}else if(!$('kitScene').hidden){closeKitchen()}else if(!$('parkScene').hidden){$('parkHome').click()}else if(!$('bathScene').hidden){closeBath()}else if(!$('mapScene').hidden){closeMap()}else if(!$('picker').hidden){$('picker').hidden=true}else if(!$('pinModal').hidden){$('pinModal').hidden=true}else if(!$('tab-parent').hidden)closeParent()});
 $('pinSave').onclick=()=>{const v=$('pinNew').value.trim();
   if(!/^\d{4,8}$/.test(v)){toast('密碼要 4～8 位數字');return}
   S.settings.pin=v;$('pinNew').value='';addLog('更改了家長密碼');save();toast('家長密碼已更改')};
@@ -2152,6 +2263,9 @@ const IC={
  arrowU:`<path d="M8 30L24 12l16 18h-9v8H17v-8z" fill="#FFD86B" ${L2}/>`,
  arrowD:`<path d="M8 18l16 18 16-18h-9v-8H17v8z" fill="#8FDCC0" ${L2}/>`,
  box:`<rect x="7" y="18" width="34" height="24" rx="4" fill="#FFD6E7" ${L2}/><rect x="4" y="12" width="40" height="9" rx="3" fill="#FF9EC4" ${L2}/><path d="M24 12v30" stroke="#FFD86B" stroke-width="5"/><path d="M24 12v30" fill="none" ${L2} stroke-width="1.5"/>`,
+ bag:`<path d="M12 18h24l3 24H9z" fill="#C9EFE0" ${L2}/><path d="M17 18v-3a7 7 0 0 1 14 0v3" fill="none" ${L2}/><rect x="18" y="26" width="12" height="8" rx="3" fill="#FFD86B" ${L2}/>`,
+ paper:`<path d="M11 5h20l8 8v30H11z" fill="#fff" ${L2}/><path d="M31 5v8h8" fill="#EDE3E8" ${L2}/><path d="M16 21h16M16 28h16M16 35h10" stroke="#C9B6BF" stroke-width="3" stroke-linecap="round"/><text x="34" y="44" font-size="13" font-weight="900" fill="#E0567F" text-anchor="middle">100</text>`,
+ capsule:`<circle cx="24" cy="25" r="17" fill="#fff" ${L2}/><path d="M7 25a17 17 0 0 1 34 0z" fill="#FF9EC4" ${L2}/><circle cx="17" cy="16" r="3" fill="#fff" opacity=".8"/>`,
  hall:`<path d="M5 22L24 9l19 13v19H5z" fill="#E5D9FB" ${L2}/><rect x="19" y="28" width="10" height="13" fill="#FFD86B" ${L2}/><path d="M24 9V2" ${L2}/><path d="M24 2h9l-2 3 2 3h-9" fill="#FF9EC4" ${L2}/>`,
 };
 const icon=(k,cls='')=>`<svg viewBox="0 0 48 48" aria-hidden="true"${cls?` class="${cls}"`:''}>${IC[k]}</svg>`;
@@ -2170,7 +2284,7 @@ function renderCare(){
   [['needFood','food',30],['needFun','fun',30],['needEnergy','energy',20]].forEach(([id,k,low])=>{
     const el=$(id);el.querySelector('i').style.width=Math.max(4,c[k])+'%';el.classList.toggle('low',c[k]<low);
     el.querySelector('.nb').setAttribute('aria-valuenow',Math.round(c[k]))});
-  $('tkChip').textContent=tickets();
+  const tk=tickets();$('tkChip').textContent=tk;$('tkChip').classList.toggle('zero',!tk);$('dGacha').setAttribute('aria-label',`扭蛋機，有 ${tk} 張券`);if(!$('gachaScene').hidden&&!gBusy)renderGacha();
   const t=needType(c),b=$('bubble');
   if(t&&$('tray').hidden){b.innerHTML=icon(t);b.dataset.t=t;b.hidden=false;
     b.setAttribute('aria-label',{bowl:'小狗肚子餓了',zzz:'小狗想睡覺',bath:'小狗想洗澡',ball:'小狗想玩'}[t])}else b.hidden=true;
@@ -2432,7 +2546,7 @@ $('mapSvg').addEventListener('click',async e=>{const g=e.target.closest('.loc');
     ({english:startEnglish,art:startArt,dance:startDance,library:startLibrary,hall:startHall,salon:startSalon})[id]();mapBusy=false}});
 $('mapSvg').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest('.loc')){e.preventDefault();e.target.closest('.loc').dispatchEvent(new MouseEvent('click',{bubbles:true}))}});
 $('goMap').onclick=$('dMap').onclick=()=>isDark()?wakeHint():openMap();$('mapHome').onclick=closeMap;
-$('dGacha').onclick=()=>document.querySelector('.drawzone').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});
+
 
 /* ===== 第 2 批：課表（LEARN-01）、技能星星（LEARN-02）、英文教室（LEARN-03）、畫室（LEARN-04）===== */
 const LESSONS={english:{ic:'abc',name:'英文課'},art:{ic:'palette',name:'畫畫課'},dance:{ic:'music',name:'跳舞課'},read:{ic:'books',name:'閱讀課'}};
@@ -2461,7 +2575,7 @@ const stickerUp=e=>{if(!sd)return;const{g,moved}=sd;sd=null;g.remove();$('week')
   if(!moved||!e)return;const hit=[...$('week').querySelectorAll('.day')].find(d=>{const r=d.getBoundingClientRect();return e.clientX>r.left&&e.clientX<r.right&&e.clientY>r.top&&e.clientY<r.bottom});
   if(hit)setPlan(+hit.dataset.day,pickSticker)};
 $('stickers').addEventListener('pointerup',stickerUp);$('stickers').addEventListener('pointercancel',()=>stickerUp(null));
-$('planHome').onclick=closePlan;$('dPlan').onclick=openPlan;
+$('planHome').onclick=closePlan;
 // 上完課的共同結算
 function finishLesson(k,score,gainEl){const sched=todayLesson()===k,done=S.lessonDone.date===today()?S.lessonDone.list:[],star=sched&&!done.includes(k);
   if(S.lessonDone.date!==today())S.lessonDone={date:today(),list:[]};
@@ -2731,6 +2845,50 @@ $('prizeList').addEventListener('click',e=>{const id=e.target.dataset.pzRename;i
   const v=prompt('獎品的新名字',p.name);if(v===null)return;const n=v.trim().slice(0,12);if(!n)return;
   addLog(`獎品改名：${p.name} → ${n}`);p.name=n;save();renderAll()});
 
+/* ===== SHELL：一屏主畫面＋扭蛋機（SHELL-01、02）===== */
+(function mountScenes(){
+  $('bagHost').appendChild($('tab-bag'));$('examHost').appendChild($('tab-exam'));
+  $('tab-bag').hidden=false;$('tab-exam').hidden=false;
+  $('gachaHost').appendChild(document.querySelector('.drawzone'));
+  $('room').appendChild($('selbar'));
+  $('turnHint').innerHTML=icon('stir');
+})();
+function openScene(id){if(isDark()&&id!=='bagScene'&&id!=='examScene'){wakeHint();return false}closeTray();$(id).hidden=false;return true}
+function closeScene(id){$(id).hidden=true;renderAll()}
+$('qBag').onclick=()=>openScene('bagScene');$('bagHome').onclick=()=>closeScene('bagScene');
+$('qExam').onclick=()=>openScene('examScene');$('examHome').onclick=()=>closeScene('examScene');
+$('qPlan').onclick=()=>openPlan();
+let gPick=1,cr=null,gBusy=false;
+function openGacha(){if(!openScene('gachaScene'))return;renderGacha()}
+$('dGacha').onclick=openGacha;$('gachaHome').onclick=()=>{if(gBusy)return;closeScene('gachaScene')};
+function renderGacha(){const t=tickets(),st=S.settings,total=totalScore(),rem=total%st.threshold;
+  $('tkStack').innerHTML=`${icon('ticket')}<span>${t}</span>`;
+  $('pickN').querySelectorAll('button').forEach(b=>{const n=+b.dataset.n,c=n*st.cost;b.querySelector('.pcost').innerHTML=`${icon('ticket')}${c}`;
+    b.disabled=t<c;b.setAttribute('aria-checked',String(+b.dataset.n===gPick));b.setAttribute('aria-label',`抽 ${n} 顆，要 ${c} 張券`)});
+  if(t<gPick*st.cost){const ok=[10,5,1].find(n=>t>=n*st.cost);if(ok&&ok<gPick){gPick=ok;return renderGacha()}}
+  const can=t>=gPick*st.cost&&!gBusy;$('crank').classList.toggle('ready',can);$('crank').classList.toggle('off',!can);$('turnHint').hidden=!can;
+  $('crank').setAttribute('aria-label',can?`轉動把手，抽 ${gPick} 顆扭蛋`:'扭蛋券不夠');
+  $('ntFill').style.width=rem/st.threshold*100+'%';$('ntText').textContent=`再 ${st.threshold-rem} 分換下一張`}
+$('pickN').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled||gBusy)return;gPick=+b.dataset.n;sfx('tick');renderGacha()};
+function crankAngle(e){const r=$('crank').getBoundingClientRect();return Math.atan2(e.clientY-(r.top+r.height/2),e.clientX-(r.left+r.width/2))}
+function setCrank(deg){$('crankArm').setAttribute('transform',`rotate(${deg} 40 40)`)}
+$('crank').addEventListener('pointerdown',e=>{if(gBusy||tickets()<gPick*S.settings.cost){if(!gBusy)toast('扭蛋券不夠喔');return}
+  e.preventDefault();$('crank').setPointerCapture(e.pointerId);cr={last:crankAngle(e),sum:0,moved:false};$('turnHint').hidden=true});
+$('crank').addEventListener('pointermove',e=>{if(!cr)return;const a=crankAngle(e);let d=a-cr.last;if(d>Math.PI)d-=2*Math.PI;if(d<-Math.PI)d+=2*Math.PI;cr.last=a;
+  if(d>0){cr.sum+=d;cr.moved=true;setCrank(cr.sum*180/Math.PI);if(Math.random()<.25)sfx('tick');$('machine').classList.add('shake')}
+  if(cr.sum>=Math.PI*1.7){cr=null;gachaGo()}});
+const crankUp=()=>{if(!cr)return;const tapped=!cr.moved;cr=null;$('machine').classList.remove('shake');
+  if(tapped)autoCrank();else{setCrank(0);renderGacha()}};
+$('crank').addEventListener('pointerup',crankUp);$('crank').addEventListener('pointercancel',()=>{cr=null;setCrank(0)});
+$('crank').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(!gBusy&&tickets()>=gPick*S.settings.cost)autoCrank()}});
+async function autoCrank(){if(gBusy)return;gBusy=true;$('machine').classList.add('shake');
+  for(let d=0;d<=330;d+=30){setCrank(d);sfx('tick');await wait(45)}gBusy=false;gachaGo()}
+async function gachaGo(){if(gBusy)return;gBusy=true;$('machine').classList.add('shake');setCrank(360);sfx('whoosh');
+  const cols=['#FFD86B','#8CC8F0','#C9B3F5','#FF9EC4','#8FDCC0'];const dc=$('dropCap');dc.style.setProperty('--cc',cols[Math.floor(Math.random()*cols.length)]);
+  dc.classList.remove('go');void dc.offsetWidth;dc.classList.add('go');sfx('plop');await wait(950);
+  $('machine').classList.remove('shake');setCrank(0);dc.classList.remove('go');gBusy=false;
+  const b=document.querySelector(`.draw-btn[data-n="${gPick}"]`);b.disabled=false;b.click()}
+
 /* ===== prize settings ===== */
 $('pzIcon').innerHTML=Object.entries(PRIZE_ICONS).map(([k,v])=>`<option value="${k}"${k==='gift'?' selected':''}>${v.label}</option>`).join('');
 $('setPity').onchange=()=>{const v=Math.round(+$('setPity').value);if(v>=0&&v<=50){S.settings.pityN=v;save()}renderAll()};
@@ -2838,7 +2996,7 @@ function finish(){
     else{helperAct('clap',1600);helperSay(nNew?pickOne(['有新道具耶！','收集又變多了！']):pickOne(['下次一定會中！','再接再厲！']))}},500);
 }
 $('stageDone').onclick=()=>{$('stage').hidden=true;gainExp(pendingExp);pendingExp=0;
-  document.querySelector('.tab[data-tab="bag"]').click();showLevelUp()};
+  if(!$('gachaScene').hidden)renderGacha();showLevelUp()};
 
 function sparkle(el,t){if(reduced)return;
   const cs=t===3?['#FFD24A','#FFF3B0','#fff']:t===2?['#C9B3F5','#E2D8FF','#fff']:['#fff','#FFD86B','#FF9EC4'];
