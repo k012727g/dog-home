@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>小狗的家｜美術總覽</title>
+<style>
+:root{--ink:#4A3140;--line:#F3CFE0;--paper:#FFF2F7;--card:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--ink);background:var(--paper);padding:calc(14px + env(safe-area-inset-top,0px)) 14px 60px}
+h1{font-size:24px;margin:0 0 4px}h2{font-size:19px;margin:26px 0 8px;border-bottom:3px dashed var(--line);padding-bottom:4px}
+.meta{font-size:13px;color:#6E4C5C;margin:0 0 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.grid.big{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.grid.scene{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.it{background:var(--card);border:2px solid var(--ink);border-radius:12px;padding:6px;text-align:center;font-size:11px;overflow:hidden;word-break:break-all}
+.it svg{width:100%;height:auto;display:block}.it .emo{font-size:44px;line-height:1.2}
+.it.err{border-color:#E53935;background:#FFEBEE;color:#B71C1C}
+details{background:var(--card);border:2px solid var(--ink);border-radius:12px;padding:8px 10px;margin-bottom:8px}summary{font-weight:900;cursor:pointer}
+.err-box{background:#FFEBEE;border:2px solid #E53935;border-radius:12px;padding:8px 12px;margin:10px 0;font-size:14px}
+.ok-box{background:#E6F7EF;border:2px solid #3E9B78;border-radius:12px;padding:8px 12px;margin:10px 0;font-size:14px}
+</style></head><body>
+<h1>🎨 美術總覽</h1><p class="meta" id="ver"></p><div id="status"></div><div id="root"></div>
+<script>
+(function(){var file=location.pathname.split('/').pop()||'gallery.html',m=file.match(/(_beta_V[\w.-]+)\.html?$/i),sfx=m?m[1]:'';
+  var q=new URLSearchParams(location.search),pick=function(k){var v=q.get(k);return v?'_beta_'+v.replace(/^_?beta_?/i,''):sfx};
+  window.DOG_BUILD={art:'art'+pick('art')+'.js',content:'content'+pick('content')+'.js'};var t=Date.now();
+  document.write('<script src="'+DOG_BUILD.art+'?t='+t+'"><\/script><script src="'+DOG_BUILD.content+'?t='+t+'"><\/script>')})();
+</script>
+<script>
+const $=id=>document.getElementById(id);const root=$('root');let nErr=0,nOk=0;
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function cell(label,fn){try{const h=fn();if(typeof h!=='string'||!h)throw new Error('沒有回傳圖');
+    if(/<svg/.test(h)){const d=new DOMParser().parseFromString(h.match(/<svg[\s\S]*<\/svg>/)[0],'image/svg+xml');if(d.querySelector('parsererror'))throw new Error('SVG 格式錯誤')}
+    nOk++;return `<div class="it">${h}<div>${esc(label)}</div></div>`}catch(e){nErr++;return `<div class="it err"><b>${esc(label)}</b><br>${esc(e.message)}</div>`}}
+function sec(title,note,cls,cells){root.insertAdjacentHTML('beforeend',`<h2>${title}</h2>${note?`<p class="meta">${note}</p>`:''}<div class="grid ${cls||''}">${cells.join('')}</div>`)}
+if(!window.DOGART){$('status').innerHTML=`<div class="err-box">找不到 ${DOG_BUILD.art}，請確認它和這個網頁放在同一個資料夾。</div>`}
+else{
+  $('ver').textContent=`art ${DOGART.version}（${DOG_BUILD.art}）・content ${window.DOGCONTENT?DOGCONTENT.version:'沒有載入'}`;
+  sec('介面圖示 IC',`共 ${Object.keys(IC).length} 個，48×48`,'',Object.keys(IC).map(k=>cell(k,()=>icon(k))));
+  const poses=['stand','sit','lie','sleep','eat','belly'];
+  sec('主角小狗 pupSVG','3 個階段 × 6 個姿勢','big',[1,2,3].flatMap(st=>poses.map(p=>cell(`階段${st}・${p}`,()=>pupSVG(st,{pose:p})))));
+  sec('表情與毛色','','big',[['happy',{happy:true}],['sad',{sad:true}],['dirty',{dirty:true}],['yawn',{yawn:true}]].map(([n,o])=>cell(n,()=>pupSVG(2,o))).concat(Object.keys(COATS).map(c=>cell('毛色 '+COATS[c][3],()=>pupSVG(2,{look:{coat:c,clip:CLIPS[1]}})))));
+  if(window.DOGCONTENT)sec('英文單字圖 wordPic',`${WORD_BANK.length} 個單字`,'',WORD_BANK.map(w=>cell(w[0],()=>wordPic(w[1]))));
+  const kinds=['pig','bear','fox','lion','mouse','donkey','dog','cat','cow','hare','tortoise','duck','chick','ugly','swan','goose','hen','rooster'];
+  const W=(inner)=>`<svg viewBox="0 0 120 120">${inner}</svg>`;
+  sec('繪本動物 SK.animal','腳底在 (x,y)、面向左','',kinds.map(k=>cell(k,()=>W(SK.animal(64,104,k,1.6)))));
+  const people=[['girl',()=>SK.girl(60,110)],['queen',()=>SK.queen(60,110)],['prince',()=>SK.prince(60,110)],['oldw',()=>SK.oldw(60,110)],['dwarf',()=>SK.dwarf(60,100,'#5CC46E')],
+    ['person 洋裝',()=>SK.person(60,110,{})],['person 褲子',()=>SK.person(60,110,{body:'pants',col:'#4A90E2',style:'short'})],['person 人魚',()=>SK.person(60,112,{body:'tail',col:'#4A90E2'})],
+    ['person 斗篷',()=>SK.person(60,110,{hood:'#E53935',col:'#FFF3E2'})],['person 仙女',()=>SK.person(60,110,{col:'#FFD86B',style:'bun',wings:true,wand:true})],['person 老爺爺',()=>SK.person(60,110,{body:'pants',col:'#9A6A4F',style:'none',beard:true})],['person 長鼻子',()=>SK.person(60,110,{body:'pants',col:'#5CC46E',style:'short',nose:30})],
+    ['wolf',()=>SK.wolf(70,104)],['goat',()=>SK.goat(56,104,1.4)]];
+  sec('繪本人物','','',people.map(([n,f])=>cell(n,()=>W(f()))));
+  const props=[['tree',()=>SK.tree(60,112)],['house',()=>SK.house(60,112)],['castle',()=>`<g transform="scale(.8) translate(15 28)">${SK.castle(60,112)}</g>`],['hut straw',()=>SK.hut(60,110,'straw')],['hut sticks',()=>SK.hut(60,110,'sticks')],['hut brick',()=>SK.hut(60,110,'brick')],
+    ['mirror',()=>SK.mirror(60,110)],['apple',()=>SK.apple(60,70)],['door',()=>SK.door(60,110)],['clock',()=>SK.clock(60,112)],['bed',()=>SK.bed(60,100)],['basket',()=>SK.basket(60,70)],['coach',()=>SK.coach(60,100)],['slipper',()=>SK.slipper(60,70)],
+    ['spindle',()=>SK.spindle(60,100)],['thorns',()=>SK.thorns(60,100)],['rose',()=>SK.rose(60,60)],['broom',()=>SK.broom(60,100)],['ship',()=>SK.ship(60,90)],['fish',()=>SK.fish(60,60,1.6)],['bigfish',()=>`<g transform="scale(.55) translate(60 120)">${SK.bigfish(60,60)}</g>`],
+    ['bowl',()=>SK.bowl(60,80,2)],['chair',()=>SK.chair(60,100,1.6)],['cloud',()=>SK.cloud(60,70)],['goldegg',()=>SK.goldegg(60,80)],['ginger',()=>SK.ginger(60,104)],['net',()=>SK.net(60,100)],['wheat',()=>SK.wheat(60,100)],['bread',()=>SK.bread(60,80)],['notes',()=>SK.notes(50,40)],['heart',()=>SK.heart(60,60)],['zz',()=>SK.zz(40,70)]];
+  sec('繪本道具','','',props.map(([n,f])=>cell(n,()=>W(f()))));
+  sec('其他','節奏音符、朋友、塗色圖','',['L','U','D','R'].map(a=>cell('音符 '+a,()=>noteSVG(a))).concat(Object.keys(FRIENDS).filter(k=>k!=='cloud').map(k=>cell(FRIENDS[k].name,()=>FRIENDS[k].svg())),
+    Object.keys(ART).map(k=>cell('塗色 '+k,()=>`<svg viewBox="0 0 200 160">${ART[k].rg.map(r=>r.replace(/^<(\w+)/,'<$1 fill="#fff" stroke="#5A3E4B" stroke-width="3.5"')).join('')}</svg>`))));
+  if(window.DOGCONTENT){root.insertAdjacentHTML('beforeend',`<h2>繪本畫面</h2><p class="meta">${STORIES.length} 本、共 ${STORIES.reduce((a,s)=>a+s.pages.length,0)} 頁。點書名展開。</p>`);
+    STORIES.forEach(st=>{root.insertAdjacentHTML('beforeend',`<details><summary>${esc(st.zh)}　${esc(st.title)}</summary><div class="grid scene" style="margin-top:8px">${cell('封面',st.cover)}${st.pages.map((p,i)=>cell(`${i+1}. ${p.zh}`,p.sc)).join('')}</div></details>`)})}
+  $('status').innerHTML=nErr?`<div class="err-box">有 ${nErr} 個圖畫不出來（紅色框），其餘 ${nOk} 個正常。</div>`:`<div class="ok-box">全部 ${nOk} 個圖都正常。</div>`;
+  window.GALLERY_RESULT={ok:nOk,err:nErr};
+}
+</script></body></html>

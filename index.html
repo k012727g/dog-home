@@ -300,6 +300,14 @@ h3::before{content:"✿ ";color:var(--pink)}
 .sheet-head{position:sticky;top:calc(-12px - env(safe-area-inset-top,0px));z-index:2;display:flex;align-items:center;justify-content:space-between;
   background:var(--card);padding:10px 0;margin-bottom:6px;border-bottom:2px dashed var(--line)}
 .sheet-head h2{margin:0}
+.sheet-head{flex-wrap:wrap;row-gap:8px}
+.ptabs{flex-basis:100%;display:flex;flex-wrap:wrap;gap:6px;padding:2px 1px}
+.ptabs [role=tab]{flex:1 0 auto;min-height:40px;font:inherit;font-size:.9rem;font-weight:900;white-space:nowrap;border:2px solid var(--ink);border-radius:999px;background:var(--card);color:var(--ink);padding:6px 12px;cursor:pointer}
+.ptabs [role=tab][aria-selected="true"]{background:var(--pink);color:#5A3E4B}
+.ptabs [role=tab]:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.ptab-dot{display:inline-block;min-width:18px;height:18px;line-height:18px;border-radius:999px;background:var(--danger);color:#fff;font-size:.7rem;margin-left:4px;padding:0 4px;vertical-align:middle}
+.ptab-dot[hidden]{display:none}
+.ppane>:first-child{margin-top:6px}
 .pin-card{max-width:300px;width:100%}
 .pin-card input{text-align:center;font-size:1.6rem;letter-spacing:.4em;font-weight:900}
 .pin-card .row{display:flex;gap:8px;justify-content:center;margin-top:10px}
@@ -1020,16 +1028,17 @@ body{overflow:hidden;overscroll-behavior:none}
   </section>
 
   <section class="panel sheet" id="tab-parent" role="dialog" aria-modal="true" aria-labelledby="parentTitle" hidden>
-    <div class="sheet-head"><h2 id="parentTitle">家長設定</h2><button class="btn small" id="parentClose">關閉</button></div>
+    <div class="sheet-head"><h2 id="parentTitle">家長設定</h2><button class="btn small" id="parentClose">關閉</button>
+      <div class="ptabs" role="tablist" aria-label="家長設定分頁"><button type="button" role="tab" id="ptab-pet" data-ptab="pet" aria-controls="pane-pet" aria-selected="true">小狗與考卷</button><button type="button" role="tab" id="ptab-game" data-ptab="game" aria-controls="pane-game" aria-selected="false" tabindex="-1">遊戲與作息</button><button type="button" role="tab" id="ptab-prize" data-ptab="prize" aria-controls="pane-prize" aria-selected="false" tabindex="-1">獎品<span class="ptab-dot" id="ptabPrizeDot" hidden></span></button><button type="button" role="tab" id="ptab-family" data-ptab="family" aria-controls="pane-family" aria-selected="false" tabindex="-1">家庭與裝置</button><button type="button" role="tab" id="ptab-data" data-ptab="data" aria-controls="pane-data" aria-selected="false" tabindex="-1">備份與其他</button></div></div>
     <div id="reviewBox" class="review-box" hidden>
       <h3 style="margin-top:4px">待確認考卷</h3>
       <p class="meta" style="margin-top:-4px">請確認紙本考卷上已經簽名，再按「已簽名，入帳」。分數打錯可以退回。</p>
       <ul class="list" id="reviewList"></ul>
       <button class="btn wide" id="reviewAll">全部都簽好了，一次入帳</button>
     </div>
+    <div class="ppane" id="pane-pet" data-pane="pet" role="tabpanel" aria-labelledby="ptab-pet">
     <label for="setName">小狗的名字</label>
     <input id="setName" type="text" maxlength="8">
-
     <h3>集點規則</h3>
     <div class="settings-grid">
       <div><label for="setThreshold">每累積幾分</label><input id="setThreshold" type="number" min="10" max="1000"></div>
@@ -1037,18 +1046,17 @@ body{overflow:hidden;overscroll-behavior:none}
       <div><label for="setCost">抽一次要</label><input id="setCost" type="number" min="1" max="20"></div>
     </div>
     <p class="meta">分數會一直累加，沒滿也會留著。改規則會用全部分數重新計算。</p>
-
+    <h3>科目</h3>
+    <ul class="list subj-list" id="subjList"></ul>
+    <div class="subj-add"><input id="subjName" type="text" maxlength="6" placeholder="新科目名稱" aria-label="新科目名稱"><button class="btn small" id="subjAdd">新增</button></div>
+    </div>
+    <div class="ppane" id="pane-game" data-pane="game" role="tabpanel" aria-labelledby="ptab-game" hidden>
     <h3>遊戲難度報告</h3>
     <label class="switch-row"><input type="checkbox" id="setAuto"> 自動調難度（玩得很順就變難一點，卡關就變簡單一點）</label>
     <div class="table-scroll"><table class="lv-report"><thead><tr><th>遊戲</th><th>最高關</th><th>星星</th><th>最近成功率</th><th>平均秒數</th><th>自動調整</th></tr></thead><tbody id="lvReport"></tbody></table></div>
     <p class="meta" id="lvStuck"></p>
     <div class="test-row"><b>測試關卡</b><select id="tGame" aria-label="遊戲"></select><select id="tLv" aria-label="關卡"></select><button class="btn small" id="tGo">直接玩（不記錄）</button></div>
     <p class="meta">測試模式不會改變孩子的關卡、星星和紀錄。</p>
-
-    <h3>科目</h3>
-    <ul class="list subj-list" id="subjList"></ul>
-    <div class="subj-add"><input id="subjName" type="text" maxlength="6" placeholder="新科目名稱" aria-label="新科目名稱"><button class="btn small" id="subjAdd">新增</button></div>
-
     <h3>作息與遊玩時間</h3>
     <div class="rest-row"><label for="setNap">關燈小睡</label><select id="setNap"><option value="0.5">30 秒</option><option value="1">1 分鐘</option><option value="2">2 分鐘</option><option value="3">3 分鐘</option><option value="5">5 分鐘</option></select></div>
     <label class="switch-row"><input type="checkbox" id="bedOn"> 就寢時間（全家同步）</label>
@@ -1056,34 +1064,18 @@ body{overflow:hidden;overscroll-behavior:none}
     <label class="switch-row"><input type="checkbox" id="quotaOn"> 每天遊玩上限（每台裝置分開算）</label>
     <div class="rest-row"><input type="number" id="quotaMin" min="5" max="240" style="max-width:90px"> 分鐘 <button class="btn small ghost" id="quotaMore">今天多給 10 分鐘</button></div>
     <p class="meta" id="quotaLine"></p>
-
     <h3>音效</h3>
     <label class="switch-row"><input type="checkbox" id="setSound"> 在這台裝置播放音效</label>
     <div class="rest-row"><label for="setVoice">英文發音</label><select id="setVoice" style="max-width:220px"></select><button class="btn small ghost" id="voiceTest">試聽</button></div>
     <label class="switch-row"><input type="checkbox" id="setKidVoice"> 兒童音色（把聲音調高、放慢，像小朋友在唸）</label>
     <p class="meta">選一個聽起來最自然的聲音再開兒童音色。最像小孩的方式是把錄好的兒童發音放到 GitHub 的 audio 資料夾（檔名＝單字，例如 apple.mp3），遊戲會優先播放錄音。</p>
-
-    <h3>備份</h3>
-    <div class="rest-row"><button class="btn small" id="bkSave">下載備份檔</button><label class="btn small ghost" for="bkFile" style="margin:0">從備份還原</label><input type="file" id="bkFile" accept=".json,application/json" hidden></div>
-    <p class="meta">更新網頁前先下載一份最保險。備份包含考卷、道具、大獎、小狗進度。</p>
-
-    <h3>遊戲開發進度</h3>
-    <button class="btn small" id="devOpen">打開開發清單</button>
-    <p class="meta" id="devLine" style="margin-top:4px"></p>
-
-    <h3>家長密碼</h3>
-    <div class="reward-row" style="grid-template-columns:1fr 70px">
-      <input id="pinNew" type="password" inputmode="numeric" maxlength="8" placeholder="輸入新密碼（4～8 位數字）" aria-label="新的家長密碼" autocomplete="new-password">
-      <button class="btn small" id="pinSave">更改</button>
     </div>
-    <p class="meta" style="margin-top:-2px">打開家長設定時要輸入。5 分鐘內再打開不用重輸。</p>
-
+    <div class="ppane" id="pane-prize" data-pane="prize" role="tabpanel" aria-labelledby="ptab-prize" hidden>
     <h3>實體照片</h3>
     <p class="meta" style="margin-top:-4px">把照片上傳到 GitHub 的 dog-home 裡的 <b>photos</b> 資料夾（檔名不限，jpg、png、gif、webp 都可以），再到下面「獎品清單」點每個獎品的「選照片」。抽中時有照片就顯示照片，沒有就播預設動畫。</p>
     <p class="meta" id="photoStatus" style="font-weight:700"></p>
     <div class="photo-grid" id="photoGrid"></div>
     <button class="btn small ghost" id="photoRescan">重新整理照片清單</button>
-
     <h3>扭蛋實體大獎</h3>
     <p class="meta" style="margin-top:-4px">抽到彩虹扭蛋就是實體大獎，抽中後數量減 1，抽完就不會再出現。</p>
     <div class="settings-grid" style="grid-template-columns:1fr 1fr">
@@ -1105,7 +1097,6 @@ body{overflow:hidden;overscroll-behavior:none}
       <select id="pzIcon" aria-label="圖示"></select>
       <button class="btn small" id="pzAdd" aria-label="新增獎品">＋</button>
     </div>
-
     <h3>升級獎勵（實體禮物）</h3>
     <p class="meta" style="margin-top:-4px">小狗升到這個等級時，會跳出「可以跟爸媽領禮物」。孩子領到後按「已領取」。</p>
     <ul class="list" id="rewardList"></ul>
@@ -1114,24 +1105,37 @@ body{overflow:hidden;overscroll-behavior:none}
       <input id="rwName" type="text" placeholder="例如：大耳狗吊飾" aria-label="禮物名稱">
       <button class="btn small" id="rwAdd" aria-label="新增獎勵">＋</button>
     </div>
-
+    </div>
+    <div class="ppane" id="pane-family" data-pane="family" role="tabpanel" aria-labelledby="ptab-family" hidden>
     <h3>家庭代碼</h3>
     <div class="family"><b id="famCode">尚未連結</b><button class="btn small" id="famCopy">複製邀請連結</button></div>
     <p class="meta">在其他裝置打開邀請連結就會共用同一隻小狗。代碼請只給家人。</p>
     <button class="btn small ghost" id="famSwitch">換成別的家庭代碼</button>
-
+    <h3>這台裝置</h3>
+    <label for="setDevice">裝置名字（紀錄裡會顯示是哪台玩的）</label>
+    <input id="setDevice" type="text" maxlength="12">
+    <h3>家長密碼</h3>
+    <div class="reward-row" style="grid-template-columns:1fr 70px">
+      <input id="pinNew" type="password" inputmode="numeric" maxlength="8" placeholder="輸入新密碼（4～8 位數字）" aria-label="新的家長密碼" autocomplete="new-password">
+      <button class="btn small" id="pinSave">更改</button>
+    </div>
+    <p class="meta" style="margin-top:-2px">打開家長設定時要輸入。5 分鐘內再打開不用重輸。</p>
     <h3>活動紀錄</h3>
     <p class="meta" style="margin-top:-4px" id="syncInfo"></p>
     <ul class="log" id="logList"></ul>
     <button class="btn ghost wide" id="logMore" style="margin-top:8px" hidden>顯示更多</button>
-
-    <h3>這台裝置</h3>
-    <label for="setDevice">裝置名字（紀錄裡會顯示是哪台玩的）</label>
-    <input id="setDevice" type="text" maxlength="12">
-
+    </div>
+    <div class="ppane" id="pane-data" data-pane="data" role="tabpanel" aria-labelledby="ptab-data" hidden>
+    <h3>備份</h3>
+    <div class="rest-row"><button class="btn small" id="bkSave">下載備份檔</button><label class="btn small ghost" for="bkFile" style="margin:0">從備份還原</label><input type="file" id="bkFile" accept=".json,application/json" hidden></div>
+    <p class="meta">更新網頁前先下載一份最保險。備份包含考卷、道具、大獎、小狗進度。</p>
+    <h3>遊戲開發進度</h3>
+    <button class="btn small" id="devOpen">打開開發清單</button>
+    <p class="meta" id="devLine" style="margin-top:4px"></p>
     <h3>重新開始</h3>
     <button class="btn danger wide" id="resetAll">清除全部進度</button>
     <p class="meta">考卷、等級、背包和房間都會清空，升級獎勵的清單會保留。</p>
+    </div>
   </section>
 </div>
 
@@ -1489,7 +1493,11 @@ if(DOG_BUILD.beta){var bb=document.getElementById('betaBadge');bb.textContent='B
    ・status：done 完成／doing 進行中／todo 待做／idea 想法（還沒決定要不要做）
    -------------------------------------------------------------------------------------
    【網址】正式版：https://k012727g.github.io/dog-home/
-          測試版（Claude）：https://claude.ai/artifact/82EsPwh73jYEXyEK5yDvec
+          測試版：https://k012727g.github.io/dog-home/beta/index_beta_V3.html（版本號跟著檔名換）
+          舊測試版（Claude Artifact）：https://claude.ai/artifact/82EsPwh73jYEXyEK5yDvec
+            ↑ 2026-11-20 整理時無法確定還能不能用、是不是最新版；建議以 beta/ 網址為準。
+   【測試】改版前後都跑：node tests/smoke_test.js beta/index_beta_V?.html（每個按鈕點進去都要能用），
+          再用 node tests/smoke_test.js --compare 舊.json 新.json 比對，結果要一樣。改了什麼、去哪裡測：tests/TEST_NOTES.md
 
    【整體方向】C＋A：平常在「房間」照顧小狗（C），按地圖鈕出門到「小鎮地圖」（A）。
      以圖像操作為主、文字越少越好；需要文字時字要大、字體要可愛。
@@ -1574,11 +1582,15 @@ if(DOG_BUILD.beta){var bb=document.getElementById('betaBadge');bb.textContent='B
      檔名規則：測試檔叫 index_beta_V3.html／art_beta_V3.js／content_beta_V3.js，放在 beta/，直接開就能測；
        載入器會依自己的檔名去讀同版本的 art 與 content。網址加 ?art=V4 可以只換美術來測。
        測好以後改名成 index.html／art.js／content.js 覆蓋到 repo 最上層就是正式版。
+       覆蓋前：①先跑上面的測試 ②家長設定下載備份檔 ③備份 Firestore 的 families/{家庭代碼} 文件。
+       （2026-11-13 覆蓋 V1 時漏了 PHOTO_RE／PHOTO_CACHE 這一行，照片清單壞掉卻顯示「連不上 GitHub」→ FIX-15）
      測試版：存檔 key 會加 @beta、不連 Firebase，所以不會動到孩子的進度。photos/、audio/ 一律讀 repo 最上層。
      美術規格寫在 art.js 最上面的註解；美術總覽是 gallery_beta_V?.html。
    【版權原則】不畫任何既有角色（包含三麗鷗角色與其二創）；實體商品照片只由家長自行上傳到 photos/。
    ===================================================================================== */
 const DEV_LOG=[ // 變更紀錄：每次修改加一筆（最新在最上面）
+ {date:'2026-11-20',phase:'維護（2026-11）',done:['FIX-15','FIX-16','SET-01','TEST-02','OPS-06'],added:['FIX-15','FIX-16','SET-01','TEST-02','OPS-06'],note:'V3：補回 PHOTO_RE／PHOTO_CACHE（照片清單、用照片新增獎品、選照片恢復）；照片清單失敗時顯示真正原因；家長設定改成 5 個分頁；整理開發筆記（過時的網址與狀態）；新增點擊流程測試 tests/smoke_test.js'},
+ {date:'2026-11-13',phase:'架構拆檔',done:['ARCH-07','OPS-01'],added:[],note:'（2026-11-20 依 git 紀錄 a17841f 補記）V1 覆蓋成正式版。V1 漏了 PHOTO_RE／PHOTO_CACHE，照片清單誤報「連不上 GitHub」，用照片新增獎品看起來像不見了 → FIX-15'},
  {date:'2026-11-12',phase:'架構拆檔',done:['ARCH-01','ARCH-02','ARCH-03','ARCH-04','ARCH-05'],added:['ARCH-01～07'],note:'主程式只留玩法；美術搬到 art.js、單字與 17 本繪本搬到 content.js；檔名帶 _beta_V版本 可直接測試，改名成 index.html／art.js／content.js 就是正式版；測試版用獨立存檔、不連 Firebase'},
  {date:'2026-11-08',phase:'G3 圖書館／廚房',done:['LIB-05'],added:['LIB-05'],note:'再加 10 本公共領域童話（伊索、格林、安徒生、英國民間故事），共 17 本'},
  {date:'2026-11-08',phase:'G3 圖書館／廚房',done:['LIB-02'],added:['LIB-04'],note:'書架加入小紅帽、人魚公主、灰姑娘、睡美人、皮諾丘；龍貓、大耳狗（玉桂狗）、皮卡丘是有版權的角色，不收錄'},
@@ -1591,7 +1603,7 @@ const DEV_LOG=[ // 變更紀錄：每次修改加一筆（最新在最上面）
  {date:'2026-11-05',phase:'impeccable 重構',done:['SHELL-03','SHELL-04','SHELL-06'],added:[],note:'字級、對比、手繪圖示、家長按鈕移到右上角；SHELL-05 依 Kevin 決定刪除'},
  {date:'2026-11-05',phase:'impeccable 重構',done:['SHELL-01','SHELL-02'],added:[],note:'一屏主畫面、扭蛋機'},
 ];
-const DEV_VERSION='2026-11-12 · V1（美術與內容拆檔）· art '+DOGART.version+' · content '+DOGCONTENT.version;
+const DEV_VERSION='2026-11-20 · V3（照片修正、家長設定分頁）· art '+DOGART.version+' · content '+DOGCONTENT.version;
 const DEV_TASKS=[
  {id:'ARCH-01',phase:'架構拆檔',status:'done',title:'美術搬到 art.js（圖示、小狗、單字圖、繪本角色、節奏音符、塗色圖、動畫樣式）'},
  {id:'ARCH-02',phase:'架構拆檔',status:'done',title:'單字與 17 本繪本搬到 content.js'},
@@ -1599,7 +1611,12 @@ const DEV_TASKS=[
  {id:'ARCH-04',phase:'架構拆檔',status:'done',title:'測試版（檔名含 _beta_V 或放在 beta/）使用獨立存檔、不連 Firebase'},
  {id:'ARCH-05',phase:'架構拆檔',status:'done',title:'美術總覽頁 gallery：一頁看完所有圖示、小狗姿勢、單字圖、繪本角色與 136 頁畫面'},
  {id:'ARCH-06',phase:'架構拆檔',status:'todo',title:'家具與裝飾（26 種扭蛋道具）、地圖、扭蛋機的圖也搬到 art.js'},
- {id:'ARCH-07',phase:'架構拆檔',status:'todo',title:'把 beta 測過的版本改名覆蓋成正式版（index.html、art.js、content.js）',note:'Kevin 操作'},
+ {id:'ARCH-07',phase:'架構拆檔',status:'done',title:'把 beta 測過的版本改名覆蓋成正式版（index.html、art.js、content.js）',note:'2026-11-13 已覆蓋 V1（a17841f）；之後的同步見 OPS-06'},
+ {id:'FIX-15',phase:'維護（2026-11）',status:'done',title:'補回 PHOTO_RE／PHOTO_CACHE：照片清單、用照片新增獎品、選照片恢復正常',note:'V1 漏了這一行，錯誤被誤報成「連不上 GitHub」'},
+ {id:'FIX-16',phase:'維護（2026-11）',status:'done',title:'照片清單失敗時顯示真正原因（網路／清單處理），批次新增視窗也看得到'},
+ {id:'SET-01',phase:'維護（2026-11）',status:'done',title:'家長設定改成分頁：小狗與考卷／遊戲與作息／獎品／家庭與裝置／備份與其他；待確認考卷固定在最上面',note:'「獎品」分頁有紅點＝抽中還沒買的大獎'},
+ {id:'TEST-02',phase:'維護（2026-11）',status:'done',title:'點擊流程測試 tests/smoke_test.js：每個入口點進去都要能用，改版前後結果要一樣'},
+ {id:'OPS-06',phase:'維護（2026-11）',status:'done',title:'把 V3 同步成正式版（repo 最上層的 index.html）',note:'2026-11-20 Kevin 要求推上正式版'},
  {id:'SHELL-01',phase:'impeccable 重構',status:'done',title:'一屏遊戲主畫面：上方狀態、中間房間、下方 5 顆按鈕，不再往下捲',note:'背包、課表、考卷移到右上小按鈕，變成全螢幕場景'},
  {id:'SHELL-02',phase:'impeccable 重構',status:'done',title:'扭蛋機場景：選 1／5／10 顆，用手指轉把手（點一下也會自動轉）',note:'下方按鈕列的扭蛋鈕上直接顯示券數'},
  {id:'SHELL-03',phase:'impeccable 重構',status:'done',title:'字級（14/16/20/26/36）與淺色、深色模式對比修正',note:'自動檢查所有文字對比 ≥4.5:1；按鈕改深色字'},
@@ -1682,7 +1699,7 @@ const DEV_TASKS=[
  {id:'CARE-16',phase:'第 1 批：照顧與小鎮',status:'idea',title:'遊玩時間跨裝置合併計算、家長手機遠端加時間'},
  {id:'CARE-11',phase:'第 1 批：照顧與小鎮',status:'done',title:'音效（吃飯、洗澡、撿花、扭蛋、蓋章）',note:'Web Audio 合成，不用音檔；家長設定 → 音效 可以關（每台裝置各自設定）'},
  {id:'CARE-12',phase:'第 1 批：照顧與小鎮',status:'todo',title:'可愛大字體（jf open 粉圓體）',note:'字型檔放 GitHub repo，兒童畫面文字 20px 以上'},
- {id:'OPS-01',phase:'第 1 批：照顧與小鎮',status:'todo',title:'把測試版上傳到正式版 GitHub',note:'正式版目前停在 SHELL-01、02 的版本；要上傳最新 index.html'},
+ {id:'OPS-01',phase:'第 1 批：照顧與小鎮',status:'done',title:'把測試版上傳到正式版 GitHub',note:'2026-11-13 正式版已換成 V1（a17841f）；原註記「停在 SHELL-01、02」已過時'},
  {id:'OPS-02',phase:'第 1 批：照顧與小鎮',status:'done',title:'平板版面（小米 Redmi Pad SE 8.7 直拿／橫拿）',note:'橫拿：房間固定在左、操作區在右；廚房鍋子和食材左右排'},
  {id:'EXAM-01',phase:'登記考卷（A＋B）',status:'done',title:'科目改大字下拉選單'},
  {id:'EXAM-02',phase:'登記考卷（A＋B）',status:'done',title:'家長設定：科目新增、改名、排序、刪除、換圖示'},
@@ -1908,7 +1925,7 @@ $('gateNew').onclick=async()=>{
   $('gateNew').disabled=true;const code=newCode();
   connect(code);addLog('建立了新的家庭');dirty=true;await push();
   $('gateNew').disabled=false;$('gate').hidden=true;
-  openParent(true);toast(`家庭代碼：${code}，在家長設定可以複製邀請連結`);
+  openParent(true);setPtab('family');toast(`家庭代碼：${code}，在家長設定可以複製邀請連結`);
 };
 $('gateJoin').onclick=async()=>{
   const code=$('gateCode').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
@@ -2126,6 +2143,7 @@ function renderAll(){
   $('myWins').innerHTML=open.map(w=>`<li><span class="pz-ic">${iconHTML(prizeItem(w))}</span><div class="grow"><b>${esc(w.name)}</b>
     <div class="meta">${w.status==='ready'?ii('gift')+' 爸爸媽媽準備好了，可以去領囉！':ii('cart')+' 爸爸媽媽準備中，再等一下下～'}</div></div></li>`).join('');
   const nTodo=S.prizeWins.filter(w=>w.status==='won').length+S.pending.filter(p=>p.status==='wait').length;
+  {const nw=S.prizeWins.filter(w=>w.status==='won').length,dt=$('ptabPrizeDot');if(dt){dt.hidden=!nw;dt.textContent=nw;dt.setAttribute('aria-label',`${nw} 個大獎還沒買`)}}
   $('parentFab').innerHTML=`${ii('gear')}家長${nTodo?`<span class="fab-dot" aria-label="${nTodo} 件事等家長處理">${nTodo}</span>`:''}`;
 
   // exams
@@ -2315,6 +2333,7 @@ $('resetAll').onclick=()=>{if(confirm('確定清除全部進度？考卷、等�
 
 /* ===== photos: list GitHub repo's photos/ folder, parent picks per prize ===== */
 const PHOTO_DIR=DOG_BUILD.root+'photos/';
+const PHOTO_RE=/\.(jpe?g|png|gif|webp)$/i,PHOTO_CACHE='exam-pet-photos';
 const GH=(()=>{const h=location.hostname.match(/^([^.]+)\.github\.io$/i);if(!h)return null;
   const seg=location.pathname.split('/').filter(Boolean)[0];
   return{owner:h[1],repo:seg&&!/\.html?$/i.test(seg)?seg:h[1]+'.github.io'}})();
@@ -2335,7 +2354,7 @@ function loadPhotoList(force){
       else if(!r.ok){photoState='err';photoMsg=r.status===403?'GitHub 暫時查不到清單（查太多次了），過一陣子再按重新整理':'讀取照片清單失敗（'+r.status+'）'}
       else{const j=await r.json();photoList=(Array.isArray(j)?j:[]).filter(f=>f&&f.type==='file'&&PHOTO_RE.test(f.name)).map(f=>f.name).sort();
         photoState='ok';photoMsg='';try{localStorage.setItem(PHOTO_CACHE,JSON.stringify({at:Date.now(),list:photoList}))}catch(e){}}
-    }catch(e){photoState='err';photoMsg='連不上 GitHub，請確認網路後再試'}
+    }catch(e){console.error('loadPhotoList',e);photoState='err';photoMsg=e instanceof TypeError?'連不上 GitHub，請確認網路後再試':'照片清單處理失敗：'+(e&&e.message||e)}
     photoLoad=null;renderPhotoParts();return photoList})();
   return photoLoad}
 async function photoFor(name){if(!name)return null;return await probe(photoURL(name),3500)}
@@ -2395,7 +2414,7 @@ let unlockUntil=0,parentReturn=null;
 function openParent(skipPin){
   if(skipPin||Date.now()<unlockUntil){showParent();return}
   $('pinInput').value='';$('pinMsg').textContent='';$('pinModal').hidden=false;setTimeout(()=>$('pinInput').focus(),50)}
-function showParent(){parentReturn=document.activeElement;$('pinModal').hidden=true;$('tab-parent').hidden=false;$('tab-parent').scrollTop=0;
+function showParent(){parentReturn=document.activeElement;$('pinModal').hidden=true;$('tab-parent').hidden=false;setPtab(curPtab());
   document.body.style.overflow='hidden';renderAll();renderPhotoParts();renderDevLine();$('parentClose').focus();
   let age=1e12;try{age=Date.now()-(JSON.parse(localStorage.getItem(PHOTO_CACHE))||{}).at}catch(e){}
   if(!(age<10*60e3))loadPhotoList()}
@@ -2408,6 +2427,16 @@ $('pinOk').onclick=checkPin;
 $('pinInput').onkeydown=e=>{if(e.key==='Enter')checkPin()};
 $('pinCancel').onclick=()=>{$('pinModal').hidden=true;$('parentFab').focus()};
 $('parentClose').onclick=closeParent;
+/* 家長設定分頁（SET-01）：一次只顯示一頁；同一個瀏覽器分頁內，重開會回到上次的分頁 */
+const PTABS=[...document.querySelectorAll('#tab-parent [data-ptab]')].map(b=>b.dataset.ptab);
+function curPtab(){try{const t=sessionStorage.getItem('dog-ptab');return PTABS.includes(t)?t:PTABS[0]}catch(e){return PTABS[0]}}
+function setPtab(t){if(!PTABS.includes(t))t=PTABS[0];
+  document.querySelectorAll('#tab-parent [data-ptab]').forEach(b=>{const on=b.dataset.ptab===t;b.setAttribute('aria-selected',on?'true':'false');b.tabIndex=on?0:-1});
+  document.querySelectorAll('#tab-parent [data-pane]').forEach(p=>{p.hidden=p.dataset.pane!==t});
+  try{sessionStorage.setItem('dog-ptab',t)}catch(e){}$('tab-parent').scrollTop=0}
+$('tab-parent').querySelector('.ptabs').addEventListener('click',e=>{const b=e.target.closest('[data-ptab]');if(b)setPtab(b.dataset.ptab)});
+$('tab-parent').querySelector('.ptabs').addEventListener('keydown',e=>{const d={ArrowRight:1,ArrowLeft:-1}[e.key];if(!d)return;e.preventDefault();
+  const i=(PTABS.indexOf(curPtab())+d+PTABS.length)%PTABS.length;setPtab(PTABS[i]);$('ptab-'+PTABS[i]).focus()});
 document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;
   if(!$('lvPick').hidden){$('lvPick').hidden=true}else if(!$('bpModal').hidden){$('bpModal').hidden=true}else if(!$('stage').hidden){}else if(!$('gachaScene').hidden){$('gachaHome').click()}else if(!$('bagScene').hidden){closeScene('bagScene')}else if(!$('examScene').hidden){closeScene('examScene')}else if(!$('sigModal').hidden){$('sigModal').hidden=true}else if(!$('danceScene').hidden){$('danceHome').click()}else if(!$('libScene').hidden){$('libHome').click()}else if(!$('hallScene').hidden){$('hallHome').click()}else if(!$('salonScene').hidden){$('salonHome').click()}else if(!$('engScene').hidden){$('engHome').click()}else if(!$('artScene').hidden){$('artHome').click()}else if(!$('planScene').hidden){closePlan()}else if(!$('devModal').hidden){$('devModal').hidden=true}else if(!$('kitScene').hidden){closeKitchen()}else if(!$('parkScene').hidden){$('parkHome').click()}else if(!$('bathScene').hidden){closeBath()}else if(!$('mapScene').hidden){closeMap()}else if(!$('picker').hidden){$('picker').hidden=true}else if(!$('pinModal').hidden){$('pinModal').hidden=true}else if(!$('tab-parent').hidden)closeParent()});
 $('pinSave').onclick=()=>{const v=$('pinNew').value.trim();
@@ -3144,6 +3173,7 @@ function openBatchAdd(){bpSel=new Set();$('bpStep1').hidden=false;$('bpStep2').h
   if(!photoList.length||photoState!=='ok')loadPhotoList(true).then(()=>{if(!$('bpModal').hidden)drawBp()})}
 function drawBp(){const used=usedPhotos(),fresh=photoList.filter(n=>!used.has(n));
   $('bpInfo').textContent=photoState==='loading'?'讀取照片清單中…':photoState==='nogh'?'只有在 GitHub 網址打開時才能讀照片清單':
+    photoState==='err'?(photoMsg||'讀取照片清單失敗')+(photoList.length?`（先顯示上次讀到的 ${photoList.length} 張）`:'。請按「重新整理照片」再試一次'):
     `photos 資料夾有 ${photoList.length} 張，還沒變成獎品的有 ${fresh.length} 張。點照片選取。`;
   $('bpGrid').innerHTML=photoList.map(n=>{const u=used.has(n),on=bpSel.has(n);
     return `<button class="bp-ph${u?' used':''}${on?' on':''}" data-n="${esc(n)}"${u?' disabled':''}><img class="ph" src="${esc(photoURL(n))}" alt="${esc(n)}" loading="lazy"><span class="tick">${icon('check')}</span>${u?'<span class="tag">已是獎品</span>':''}</button>`}).join('');

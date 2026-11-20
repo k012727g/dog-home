@@ -1,0 +1,324 @@
+{
+ "target": "beta/index_beta_V3.html",
+ "at": "2026-11-20T12:25:54.323Z",
+ "steps": [
+  {
+   "id": "L01",
+   "name": "開啟頁面、美術與內容檔載入",
+   "ok": true,
+   "detail": "art=true content=true beta=true"
+  },
+  {
+   "id": "L02",
+   "name": "測試版標籤顯示",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "H01",
+   "name": "摸摸小狗",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "H02",
+   "name": "餵食（打開食物盤）",
+   "ok": true,
+   "detail": "tray=true"
+  },
+  {
+   "id": "H03",
+   "name": "玩球",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "H04",
+   "name": "洗澡：進入與回家",
+   "ok": true,
+   "detail": "open=true closed=true"
+  },
+  {
+   "id": "H05",
+   "name": "扭蛋機：進入與回家",
+   "ok": true,
+   "detail": "open=true closed=true"
+  },
+  {
+   "id": "H06",
+   "name": "背包：進入與回家",
+   "ok": true,
+   "detail": "open=true closed=true"
+  },
+  {
+   "id": "H07",
+   "name": "課表：進入與回家",
+   "ok": true,
+   "detail": "open=true closed=true"
+  },
+  {
+   "id": "H08",
+   "name": "登記考卷：輸入 95 分、放進這一疊、送給爸媽",
+   "ok": true,
+   "detail": "open=true score=95 cart=true pending=true"
+  },
+  {
+   "id": "H09",
+   "name": "關燈睡覺、再開燈",
+   "ok": true,
+   "detail": "dark=true light=true"
+  },
+  {
+   "id": "M01",
+   "name": "打開地圖",
+   "ok": true,
+   "detail": "map=true"
+  },
+  {
+   "id": "M02",
+   "name": "公園散步：選第 1 關、進入、回家",
+   "ok": true,
+   "detail": "lvPick=true open=true closed=true"
+  },
+  {
+   "id": "M03",
+   "name": "英文教室：選第 1 關、進入、回家",
+   "ok": true,
+   "detail": "lvPick=true open=true closed=true"
+  },
+  {
+   "id": "M04",
+   "name": "畫室：選第 1 關、進入、回家",
+   "ok": true,
+   "detail": "lvPick=true open=true closed=true"
+  },
+  {
+   "id": "M05",
+   "name": "舞蹈教室：選第 1 關、進入、回家",
+   "ok": true,
+   "detail": "lvPick=true open=true closed=true"
+  },
+  {
+   "id": "M06",
+   "name": "活動中心：選第 1 關、進入、回家",
+   "ok": true,
+   "detail": "lvPick=true open=true closed=true"
+  },
+  {
+   "id": "M07",
+   "name": "圖書館：進入與回家",
+   "ok": true,
+   "detail": "open=true books>0=true closed=true"
+  },
+  {
+   "id": "M08",
+   "name": "美容院：進入與回家",
+   "ok": true,
+   "detail": "open=true closed=true"
+  },
+  {
+   "id": "M09",
+   "name": "地圖：回家",
+   "ok": true,
+   "detail": "closed=true"
+  },
+  {
+   "id": "P01",
+   "name": "家長按鈕 → 密碼視窗",
+   "ok": true,
+   "detail": "pin=true"
+  },
+  {
+   "id": "P02",
+   "name": "輸入錯誤密碼",
+   "ok": true,
+   "detail": "密碼不對喔"
+  },
+  {
+   "id": "P03",
+   "name": "輸入正確密碼 → 家長設定",
+   "ok": true,
+   "detail": "parent=true"
+  },
+  {
+   "id": "P04",
+   "name": "待確認考卷：已簽名，入帳",
+   "ok": true,
+   "detail": "box=true after=true exams+1=true"
+  },
+  {
+   "id": "P05",
+   "name": "小狗名字",
+   "ok": true,
+   "detail": "小橘"
+  },
+  {
+   "id": "P06",
+   "name": "集點規則",
+   "ok": true,
+   "detail": "50/1/1"
+  },
+  {
+   "id": "P07",
+   "name": "遊戲難度報告：自動調難度、報告表",
+   "ok": true,
+   "detail": "toggle=true rows>0=true"
+  },
+  {
+   "id": "P08",
+   "name": "測試關卡：直接玩、回家",
+   "ok": true,
+   "detail": "badge=true scene=mapScene,parkScene back=true"
+  },
+  {
+   "id": "P09",
+   "name": "科目：新增",
+   "ok": true,
+   "detail": "+1"
+  },
+  {
+   "id": "P10",
+   "name": "作息：小睡、就寢、遊玩上限、多給 10 分鐘",
+   "ok": true,
+   "detail": "quotaLine=有"
+  },
+  {
+   "id": "P11",
+   "name": "音效：開關、發音選單、試聽",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "P12",
+   "name": "備份：下載備份檔",
+   "ok": true,
+   "detail": "備份內容正確=true"
+  },
+  {
+   "id": "P13",
+   "name": "遊戲開發清單：打開、關閉",
+   "ok": true,
+   "detail": "open=true items>0=true closed=true"
+  },
+  {
+   "id": "P14",
+   "name": "家長密碼：更改",
+   "ok": true,
+   "detail": "pin 已存"
+  },
+  {
+   "id": "P15",
+   "name": "實體照片：重新整理清單（1.h 要被濾掉）",
+   "ok": true,
+   "detail": "state=ok 照片=26/26"
+  },
+  {
+   "id": "P16",
+   "name": "用照片批次新增：全選 → 取名字 → 新增",
+   "ok": true,
+   "detail": "modal=true 格子=26 下一步=true 名單=26 新增=26 有照片=26"
+  },
+  {
+   "id": "P17",
+   "name": "手動新增獎品＋幫它選照片",
+   "ok": true,
+   "detail": "picker=true 照片=26 已設定=true"
+  },
+  {
+   "id": "P18",
+   "name": "獎品數量 ＋／−、批次刪除開關",
+   "ok": true,
+   "detail": "數量=3 批次刪除=true/true"
+  },
+  {
+   "id": "P19",
+   "name": "扭蛋實體大獎：保底與機率",
+   "ok": true,
+   "detail": "pityLine=有"
+  },
+  {
+   "id": "P20",
+   "name": "升級獎勵：新增",
+   "ok": true,
+   "detail": "+1"
+  },
+  {
+   "id": "P21",
+   "name": "家庭代碼區塊（測試版不連 Firebase）",
+   "ok": true,
+   "detail": "尚未連結"
+  },
+  {
+   "id": "P22",
+   "name": "活動紀錄有內容",
+   "ok": true,
+   "detail": "log>0=true"
+  },
+  {
+   "id": "P23",
+   "name": "這台裝置名字",
+   "ok": true,
+   "detail": "測試平板"
+  },
+  {
+   "id": "P24",
+   "name": "重新開始（確認後清空考卷）",
+   "ok": true,
+   "detail": "exams=0"
+  },
+  {
+   "id": "P25",
+   "name": "關閉家長設定",
+   "ok": true,
+   "detail": "closed=true"
+  },
+  {
+   "id": "Z01",
+   "name": "沒有連到 Firebase／Firestore",
+   "ok": true,
+   "detail": "無"
+  },
+  {
+   "id": "G01",
+   "name": "美術總覽頁開啟（gallery_beta_V3.html）",
+   "ok": true,
+   "detail": "內容區塊>0=true 錯誤框=false"
+  }
+ ],
+ "extra": [
+  {
+   "id": "T01",
+   "name": "家長設定分頁：每個分頁都能切換、一次只顯示一頁",
+   "ok": true,
+   "detail": "分頁=pet,game,prize,family,data"
+  },
+  {
+   "id": "T02",
+   "name": "每個設定區塊都屬於某個分頁（沒有遺漏）",
+   "ok": true,
+   "detail": "全部歸類"
+  },
+  {
+   "id": "T03",
+   "name": "重新打開家長設定會回到上次的分頁",
+   "ok": true,
+   "detail": "上次=data 打開=data"
+  },
+  {
+   "id": "T04",
+   "name": "待確認考卷固定在分頁上方（不用切分頁就看得到）",
+   "ok": true,
+   "detail": "inPane=false"
+  },
+  {
+   "id": "X01",
+   "name": "照片清單讀取失敗時，批次新增視窗顯示原因（不是只寫 0 張）",
+   "ok": true,
+   "detail": "連不上 GitHub，請確認網路後再試（先顯示上次讀到的 26 張）"
+  }
+ ],
+ "pageErrors": [],
+ "dialogs": [
+  "confirm:確定清除全部進度？考卷、等級、背包和房間都會清空。"
+ ]
+}
