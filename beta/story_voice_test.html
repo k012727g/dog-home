@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>故事聲音測試</title>
+<style>
+/* VOICE 給家長快速試聽、比較的小工具
+   IDEA 一本打開的繪本，下面是一排選聲音的按鈕
+   PICTURE 繪本畫面（白雪公主）放最大
+   COLOUR and TYPE 粉彩紙底、深紫褐字，系統圓體
+   LAYOUT 畫面 → 文字 → 選聲音 → 播放鍵 */
+:root{color-scheme:light;--bg:#FFF2F7;--card:#fff;--ink:#4A3140;--soft:#7A5A6A;--pink:#FF9EC4;--line:#F3CFE0}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;overflow-x:clip}
+.w{max-width:760px;margin:auto;padding:14px 14px 40px}
+h1{font-size:28px;line-height:1.1;margin:6px 0 4px}.sub{color:var(--soft);margin:0 0 12px;font-size:15px}
+.scene{background:var(--card);border:3px solid #5A3E4B;border-radius:20px;overflow:hidden}.scene svg{display:block;width:100%;height:auto}
+.text{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px 14px;margin-top:10px}
+.en{font-size:20px;font-weight:700;margin:0}.zh{color:var(--soft);margin:4px 0 0;font-size:17px}
+.pg{display:flex;gap:6px;justify-content:center;margin:10px 0}.pg i{width:10px;height:10px;border-radius:50%;background:#E8D3DE}.pg i.on{background:#E0567F}
+.pick{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-top:12px}
+label{font-weight:700;font-size:15px;display:block;margin-bottom:4px}
+select{width:100%;font-size:16px;padding:10px;border-radius:12px;border:2px solid #5A3E4B;background:#fff;color:var(--ink);min-height:48px}
+.btns{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}
+button{font:inherit;font-weight:700;min-height:56px;border-radius:16px;border:3px solid #5A3E4B;background:#fff;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 #5A3E4B}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 #5A3E4B}button:focus-visible,select:focus-visible{outline:4px solid #8CC8F0;outline-offset:2px}
+button.play{background:#FFD86B}button.on{background:#8FDCC0}
+.row{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}.row select{width:auto;min-width:120px}
+.status{margin-top:10px;font-size:14px;color:var(--soft);min-height:1.5em}
+.note{margin-top:18px;font-size:14px;color:var(--soft);background:#fff;border-radius:14px;padding:10px 14px;border:2px dashed var(--line)}
+@media(max-width:520px){.pick{grid-template-columns:minmax(0,1fr)}.btns{grid-template-columns:repeat(3,minmax(0,1fr))}h1{font-size:24px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<script>document.write('<script src="art_beta_V4.js"><\/script><script src="content_beta_V1.js"><\/script>')</script>
+</head><body><div class="w">
+<h1>故事聲音測試：白雪公主</h1>
+<p class="sub">換一個聲音就會馬上念這一頁。選好喜歡的聲音，告訴我名字就好。</p>
+<div class="scene" id="scene"></div>
+<div class="text"><p class="en" id="en"></p><p class="zh" id="zh"></p></div>
+<div class="pg" id="dots"></div>
+<div class="pick">
+  <div><label for="vEn">英文聲音</label><select id="vEn"></select></div>
+  <div><label for="vZh">中文聲音</label><select id="vZh"></select></div>
+</div>
+<div class="btns">
+  <button id="prev" aria-label="上一頁">◀ 上一頁</button>
+  <button id="pEn" class="play">🔊 英文</button>
+  <button id="pZh" class="play">🔊 中文</button>
+  <button id="pBoth">英＋中</button>
+  <button id="next" aria-label="下一頁">下一頁 ▶</button>
+</div>
+<div class="row"><label for="spd" style="margin:0">速度</label><select id="spd"><option value=".8">慢一點</option><option value=".9">稍慢</option><option value="1" selected>正常</option><option value="1.1">快一點</option></select>
+  <label style="margin:0;font-weight:500"><input type="checkbox" id="auto" checked> 翻頁時自動念</label></div>
+<div class="status" id="st" role="status"></div>
+<div class="note">
+  <b>聲音來源</b><br>
+  ・<b>微軟語音</b>（用 GitHub 上的 edge-tts 工具錄好）：有台灣腔中文和小女孩英文，最自然。微軟的授權沒有公開，只適合家裡自己用。<br>
+  ・<b>Kokoro</b>（GitHub 上的開源語音，Apache-2.0 授權）：可以自由使用。英文很好；中文是大陸口音。<br>
+  ・<b>這台裝置內建</b>：就是遊戲現在用的聲音，可以拿來比較。
+</div>
+</div>
+<script>
+{
+const VOICES={
+ en:[['edge-ana','Ana：美國小女孩（微軟）'],['edge-jenny','Jenny：溫柔姊姊（微軟）'],['edge-maisie','Maisie：英國小女孩（微軟）'],['edge-sonia','Sonia：英國姊姊（微軟）'],['edge-guy','Guy：美國哥哥（微軟）'],
+     ['kokoro-af_heart','Heart：溫暖姊姊（Kokoro 開源）'],['kokoro-af_bella','Bella：活潑姊姊（Kokoro 開源）'],['kokoro-bf_emma','Emma：英國姊姊（Kokoro 開源）'],['kokoro-am_michael','Michael：哥哥（Kokoro 開源）']],
+ zh:[['edge-hsiaochen','曉臻：台灣姊姊（微軟）'],['edge-hsiaoyu','曉雨：台灣姊姊・柔（微軟）'],['edge-yunjhe','雲哲：台灣哥哥（微軟）'],['edge-xiaoxiao','曉曉：說故事姊姊・大陸腔（微軟）'],
+     ['kokoro-zf_xiaobei','小北：姊姊・大陸腔（Kokoro 開源）'],['kokoro-zf_xiaoxiao','小曉：姊姊・大陸腔（Kokoro 開源）'],['kokoro-zm_yunxi','雲希：哥哥・大陸腔（Kokoro 開源）']]};
+const AUD=(/\/beta\//.test(location.pathname)?'../':'')+'audio/snow/';
+const $=id=>document.getElementById(id);
+const st=STORIES.find(s=>s.id==='snow');
+const PAGES=[{en:st.title,zh:st.zh,sc:st.cover},...st.pages];
+let pg=0,audio=new Audio(),queue=[],sysVoices=[];
+const fill=(lang)=>{const sel=$(lang==='en'?'vEn':'vZh');const keep=sel.value;
+  sel.innerHTML=VOICES[lang].map(([k,n])=>`<option value="${k}">${n}</option>`).join('')
+   +sysVoices.filter(v=>v.lang.toLowerCase().startsWith(lang)).map((v,i)=>`<option value="sys:${v.name}">${v.name}（這台裝置內建）</option>`).join('');
+  if(keep&&[...sel.options].some(o=>o.value===keep))sel.value=keep};
+const loadSys=()=>{try{sysVoices=speechSynthesis.getVoices()}catch(e){sysVoices=[]}fill('en');fill('zh')};
+loadSys();try{speechSynthesis.onvoiceschanged=loadSys}catch(e){}
+const show=()=>{const p=PAGES[pg];$('scene').innerHTML=p.sc();$('en').textContent=p.en;$('zh').textContent=p.zh;
+  $('dots').innerHTML=PAGES.map((_,i)=>`<i class="${i===pg?'on':''}"></i>`).join('');$('prev').disabled=pg===0;$('next').disabled=pg===PAGES.length-1};
+const stop=()=>{queue=[];audio.pause();try{speechSynthesis.cancel()}catch(e){}};
+const say=(lang)=>new Promise(res=>{const v=$(lang==='en'?'vEn':'vZh').value,rate=+$('spd').value;
+  const name=$(lang==='en'?'vEn':'vZh').selectedOptions[0].textContent;
+  if(v.startsWith('sys:')){try{const u=new SpeechSynthesisUtterance(PAGES[pg][lang]);u.voice=sysVoices.find(x=>x.name===v.slice(4))||null;u.lang=lang==='en'?'en-US':'zh-TW';u.rate=rate*.9;u.onend=u.onerror=res;speechSynthesis.speak(u);$('st').textContent='播放中：'+name}catch(e){res()}return}
+  audio.src=`${AUD}${v}/${lang}_${pg}.mp3`;audio.playbackRate=rate;audio.preservesPitch=true;
+  audio.onended=res;audio.onerror=()=>{$('st').textContent='這個聲音檔讀不到：'+audio.src;res()};
+  audio.play().then(()=>{$('st').textContent='播放中：'+name}).catch(e=>{$('st').textContent='請再按一次播放鍵（瀏覽器需要先點一下才能出聲）';res()})});
+const play=async(langs)=>{stop();const my=queue=[...langs];for(const l of langs){if(queue!==my)return;await say(l)}if(queue===my)$('st').textContent='念完了'};
+$('pEn').onclick=()=>play(['en']);$('pZh').onclick=()=>play(['zh']);$('pBoth').onclick=()=>play(['en','zh']);
+$('vEn').onchange=()=>play(['en']);$('vZh').onchange=()=>play(['zh']);$('spd').onchange=()=>play(['en']);
+$('prev').onclick=()=>{if(pg>0){pg--;show();$('auto').checked?play(['en','zh']):stop()}};
+$('next').onclick=()=>{if(pg<PAGES.length-1){pg++;show();$('auto').checked?play(['en','zh']):stop()}};
+try{const q=localStorage.getItem('voiceTest');if(q){const o=JSON.parse(q);setTimeout(()=>{if(o.en)$('vEn').value=o.en;if(o.zh)$('vZh').value=o.zh},50)}}catch(e){}
+['vEn','vZh'].forEach(id=>$(id).addEventListener('change',()=>{try{localStorage.setItem('voiceTest',JSON.stringify({en:$('vEn').value,zh:$('vZh').value}))}catch(e){}}));
+show();window.VOICE_TEST={VOICES,AUD,PAGES:PAGES.length};
+}
+</script>
+</body></html>
