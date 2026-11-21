@@ -258,6 +258,14 @@ details.quick summary{font-weight:700;cursor:pointer}
 .gate-card{background:#fff;color:#5A3E4B;border:3px solid #5A3E4B;border-radius:20px;padding:16px;text-align:center}
 .gate-card .meta{color:#A07C8C}.gate-card input{background:#FFF2F7;color:#5A3E4B;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
 .gate-card .btn.ghost{color:#5A3E4B;border-color:#5A3E4B}
+.fam-book{list-style:none;margin:6px 0 8px;padding:0;display:grid;gap:8px}
+.fam-book li{background:var(--sky);border-radius:14px;padding:10px 12px;display:grid;grid-template-columns:52px 1fr;gap:4px 10px;align-items:center}
+.fam-book li.cur{outline:3px solid var(--pink,#FF9EC4)}
+.fam-book .fb-pup{grid-row:span 2;width:52px}.fam-book .fb-pup svg{width:52px;height:auto;display:block}
+.fam-book .fb-name{font-weight:900;font-size:1.05rem}.fam-book .fb-name small{font-weight:700;color:var(--muted);margin-left:6px}
+.fam-book .fb-meta{font-size:.8rem;color:var(--muted)}.fam-book .fb-code{font-family:ui-monospace,Menlo,monospace;font-weight:900;letter-spacing:.08em}
+.fam-book .fb-btns{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}
+.fam-book .fb-tag{display:inline-block;background:var(--pink,#FF9EC4);color:#fff;border-radius:99px;padding:0 8px;font-size:.75rem;margin-left:6px;vertical-align:2px}
 .family{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sky);border-radius:12px;padding:10px 14px}
 .family b{font-size:1.3rem;letter-spacing:.12em}
 .panel,.selbar,.tickets{box-shadow:0 4px 0 rgba(90,62,75,.12)}
@@ -1111,6 +1119,15 @@ body{overflow:hidden;overscroll-behavior:none}
     <div class="family"><b id="famCode">尚未連結</b><button class="btn small" id="famCopy">複製邀請連結</button></div>
     <p class="meta">在其他裝置打開邀請連結就會共用同一隻小狗。代碼請只給家人。</p>
     <button class="btn small ghost" id="famSwitch">換成別的家庭代碼</button>
+    <h3>所有存檔（每個小孩一個）</h3>
+    <p class="meta">用過的家庭代碼都會記在這裡，而且會跟著存檔同步，換手機也找得到。「從清單拿掉」不會刪掉雲端的存檔。</p>
+    <ul class="fam-book" id="famBook"></ul>
+    <div class="reward-row" style="grid-template-columns:1fr 1fr 70px">
+      <input id="fbCode" type="text" maxlength="8" autocapitalize="characters" autocomplete="off" placeholder="加入舊的代碼" aria-label="要加入清單的家庭代碼">
+      <input id="fbNote" type="text" maxlength="8" placeholder="備註，例如：哥哥" aria-label="備註">
+      <button class="btn small" id="fbAdd">加入</button>
+    </div>
+    <p class="meta" id="fbMsg" style="min-height:1.4em"></p>
     <h3>這台裝置</h3>
     <label for="setDevice">裝置名字（紀錄裡會顯示是哪台玩的）</label>
     <input id="setDevice" type="text" maxlength="12">
@@ -1902,20 +1919,26 @@ function listen(){
     if(dirty||pushing)return;
     lastRev=d.rev;S=normalize(structuredClone(d.state));
     try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
-    renderAll();setSync('ok');
+    renderAll();setSync('ok');bookSync(!snap.metadata.fromCache);
   },e=>{setSync(e&&e.code==='permission-denied'?'denied':'err')});
 }
 function connect(code){
   familyCode=code;try{localStorage.setItem(CODE_KEY,code)}catch(e){}
-  dbDoc=fs.doc(fs.db,'families',code);setSync('saving');listen();renderAll();
+  dbDoc=fs.doc(fs.db,'families',code);setSync('saving');listen();renderAll();bookSync(false);
 }
 async function initSync(){
   if(DOG_BUILD.beta){setSync('beta');return}
   if(!configured()){setSync('noconfig');return}
   const h=decodeURIComponent(location.hash.slice(1)).toUpperCase();
+  let prev=null;try{prev=localStorage.getItem(CODE_KEY)}catch(e){}
+  const viaLink=/^[A-Z2-9]{8}$/.test(h)&&h!==prev;
   if(/^[A-Z2-9]{8}$/.test(h)){try{localStorage.setItem(CODE_KEY,h)}catch(e){}history.replaceState(null,'',location.pathname+location.search)}
   let code=null;try{code=localStorage.getItem(CODE_KEY)}catch(e){}
   try{await loadFirebase()}catch(e){setSync('err');toast('連不上 Firebase，先存在這台裝置');return}
+  // 用連結換到「另一個」存檔：先把那份存檔完整讀下來再接上，避免把這台原本的進度蓋過去
+  if(viaLink&&prev){try{localStorage.setItem(CODE_KEY,prev)}catch(e){}familyCode=prev;
+    try{localStorage.setItem(BOOK_KEY,JSON.stringify(bookMerge(bookLocal(),S.familyBook,[{code:prev,seen:new Date().toISOString(),pet:S.pet.name,lv:levelInfo(S.pet.exp||0).lv}])))}catch(e){}
+   await switchFamily(h,{ask:false,fresh:true});return}
   if(code)connect(code);else showGate();
 }
 /* family gate */
@@ -1933,7 +1956,7 @@ $('gateJoin').onclick=async()=>{
   $('gateMsg').textContent='尋找中…';
   try{const snap=await fs.getDoc(fs.doc(fs.db,'families',code));
     if(!snap.exists()){$('gateMsg').textContent='找不到這個家庭，請確認代碼';return}
-    lastRev=null;connect(code);$('gate').hidden=true;toast('已加入家庭，進度同步中');
+    adoptSnap(code,snap);$('gate').hidden=true;toast('已加入家庭，進度同步中');
   }catch(e){$('gateMsg').textContent='連線失敗，請稍後再試'}
 };
 $('gateSkip').onclick=()=>{$('gate').hidden=true;setSync('local')};
@@ -1947,10 +1970,79 @@ $('famSwitch').onclick=()=>{
   if(unsub)unsub();unsub=null;dbDoc=null;familyCode=null;try{localStorage.removeItem(CODE_KEY)}catch(e){}
   if(configured()&&fs)showGate();else toast('請先在 index.html 設定 Firebase');renderAll();
 };
+/* ===== 所有存檔（家庭代碼簿）：記在這台裝置＋跟著每個家庭的存檔同步，避免忘記代碼 ===== */
+const BOOK_KEY='exam-pet-family-book';let bookFetched=0,bookBusy=false;
+const okCode=c=>/^[A-Z2-9]{8}$/.test(c||'');
+function bookLocal(){try{const v=JSON.parse(localStorage.getItem(BOOK_KEY));return Array.isArray(v)?v:[]}catch(e){return[]}}
+function bookMerge(...lists){const m=new Map();
+  for(const l of lists)for(const e of (Array.isArray(l)?l:[])){if(!e||!okCode(e.code))continue;const o=m.get(e.code)||{code:e.code};
+    const late=(a,b)=>[a,b].filter(Boolean).sort().pop()||'';
+    m.set(e.code,{code:e.code,note:(e.noteAt||'')>=(o.noteAt||'')?(e.note??o.note??''):(o.note??''),noteAt:late(o.noteAt,e.noteAt),
+      pet:(e.at||'')>=(o.at||'')?(e.pet||o.pet||''):(o.pet||e.pet||''),lv:(e.at||'')>=(o.at||'')?(e.lv||o.lv||0):(o.lv||e.lv||0),at:late(o.at,e.at),
+      seen:late(o.seen,e.seen),rm:late(o.rm,e.rm),gone:(e.at||'')>=(o.at||'')?!!e.gone:!!o.gone})}
+  return [...m.values()]}
+const bookShown=b=>b.filter(e=>!e.rm||(e.seen||'')>e.rm||(e.noteAt||'')>e.rm);
+function bookWrite(list){try{localStorage.setItem(BOOK_KEY,JSON.stringify(list))}catch(e){}}
+function bookSync(toCloud){if(!familyCode||!okCode(familyCode))return;const now=new Date().toISOString();
+  const cur={code:familyCode,seen:now,pet:S.pet&&S.pet.name||'',lv:levelInfo((S.pet&&S.pet.exp)||0).lv,at:(lastSync&&lastSync.at)||now};
+  const list=bookMerge(bookLocal(),S.familyBook,[cur]);bookWrite(list);
+  const slim=list.map(({code,note,noteAt,rm})=>({code,note:note||'',noteAt:noteAt||'',rm:rm||''}));
+  if(toCloud&&JSON.stringify(slim)!==JSON.stringify(S.familyBook||[])){S.familyBook=slim;save()}
+  renderFamBook()}
+function adoptSnap(code,snap){if(unsub)unsub();unsub=null;clearTimeout(pushT);dirty=false;
+  const d=snap.data();S=normalize(structuredClone(d.state));lastRev=d.rev;lastSync={at:d.updatedAt,device:d.device};
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}connect(code)}
+async function switchFamily(code,{ask=true,fresh=false}={}){
+  if(!fs||!okCode(code)||code===familyCode&&dbDoc)return;
+  const e=bookMerge(bookLocal()).find(x=>x.code===code)||{};
+  if(ask&&!confirm(`要切換到「${e.note||e.pet||code}」的存檔嗎？\n這台裝置會改玩那隻小狗，原本的存檔還在雲端。`))return;
+  $('fbMsg').textContent='切換中…';
+  try{if(dbDoc&&(dirty||pushing)){clearTimeout(pushT);await push()}
+    const snap=await fs.getDoc(fs.doc(fs.db,'families',code));
+    if(snap.exists()){adoptSnap(code,snap);toast(`已切換到「${S.pet.name}」的存檔`)}
+    else if(fresh){if(unsub)unsub();unsub=null;dbDoc=null;S=normalize(DEFAULT());lastRev=null;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+      connect(code);addLog('用連結建立了新的存檔');dirty=true;await push();toast('建立了新的存檔')}
+    else{$('fbMsg').textContent='找不到這個存檔，請確認代碼';return}
+    $('fbMsg').textContent='';renderAll()}
+  catch(err){$('fbMsg').textContent='連線失敗，請稍後再試（沒有切換）';if(familyCode&&!dbDoc)connect(familyCode)}}
+async function bookRefresh(force){if(!fs||bookBusy)return;if(!force&&Date.now()-bookFetched<60000)return;bookBusy=true;bookFetched=Date.now();
+  const list=bookMerge(bookLocal(),S.familyBook);const upd=[];
+  await Promise.all(list.map(async e=>{try{const snap=await fs.getDoc(fs.doc(fs.db,'families',e.code));
+    if(!snap.exists()){upd.push({code:e.code,gone:true,at:new Date().toISOString()});return}
+    const d=snap.data(),st=d.state||{},pet=st.pet||{};upd.push({code:e.code,pet:pet.name||'',lv:levelInfo(pet.exp||0).lv,at:d.updatedAt||'',device:d.device||'',gone:false})}catch(x){}}));
+  const dev=Object.fromEntries(upd.filter(u=>u.device).map(u=>[u.code,u.device]));
+  const merged=bookMerge(list,upd).map(e=>dev[e.code]?{...e,device:dev[e.code]}:{...e,device:(list.find(x=>x.code===e.code)||{}).device});
+  bookWrite(merged);bookBusy=false;renderFamBook()}
+function renderFamBook(){const ul=$('famBook');if(!ul)return;const list=bookShown(bookMerge(bookLocal(),S.familyBook));
+  if(!list.length){ul.innerHTML=`<li><span></span><span class="fb-meta">${dbDoc?'讀取中…':'還沒有連上雲端存檔'}</span></li>`;return}
+  list.sort((a,b)=>(b.code===familyCode)-(a.code===familyCode)||(b.at||'').localeCompare(a.at||''));
+  ul.innerHTML=list.map(e=>{const cur=e.code===familyCode;
+    return `<li class="${cur?'cur':''}"><span class="fb-pup">${pupSVG(e.lv>=10?3:e.lv>=4?2:1)}</span>
+      <span class="fb-name">${esc(e.note||e.pet||'（沒有名字）')}${e.note&&e.pet?`<small>小狗：${esc(e.pet)}</small>`:''}${cur?'<span class="fb-tag">這台正在用</span>':''}</span>
+      <span class="fb-meta"><span class="fb-code">${e.code}</span>${e.lv?`　Lv ${e.lv}`:''}${e.gone?'　⚠️ 雲端找不到':e.at?`　最後更新 ${fmtTime(e.at)}${e.device?`（${esc(e.device)}）`:''}`:''}</span>
+      <span class="fb-btns"><button class="btn small" data-fb-copy="${e.code}">複製連結</button>${cur?'':`<button class="btn small" data-fb-go="${e.code}">切換到這個</button>`}
+        <button class="btn small ghost" data-fb-note="${e.code}">改備註</button>${cur?'':`<button class="btn small ghost" data-fb-rm="${e.code}">從清單拿掉</button>`}</span></li>`}).join('');
+  if(!$('tab-parent').hidden)bookRefresh(false)}
+$('famBook').onclick=async ev=>{const b=ev.target.closest('button');if(!b)return;const now=new Date().toISOString();
+  if(b.dataset.fbCopy){const link=location.origin+location.pathname+'#'+b.dataset.fbCopy;try{await navigator.clipboard.writeText(link);toast('已複製連結')}catch(e){prompt('複製這個連結：',link)}}
+  else if(b.dataset.fbGo)switchFamily(b.dataset.fbGo);
+  else if(b.dataset.fbNote){const code=b.dataset.fbNote,e=bookMerge(bookLocal(),S.familyBook).find(x=>x.code===code)||{};const n=prompt('備註（例如：哥哥、妹妹）',e.note||'');if(n===null)return;
+    bookWrite(bookMerge(bookLocal(),S.familyBook,[{code,note:n.trim().slice(0,8),noteAt:now}]));bookSync(true);renderFamBook()}
+  else if(b.dataset.fbRm){if(!confirm('從清單拿掉這個代碼嗎？雲端的存檔不會被刪掉，之後用「加入舊的代碼」可以再加回來。'))return;
+    bookWrite(bookMerge(bookLocal(),S.familyBook,[{code:b.dataset.fbRm,rm:now}]));bookSync(true);renderFamBook()}};
+$('fbAdd').onclick=async()=>{const code=$('fbCode').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,''),note=$('fbNote').value.trim().slice(0,8);
+  if(!okCode(code)){$('fbMsg').textContent='代碼是 8 個英文字母和數字';return}
+  if(!fs){$('fbMsg').textContent='要先連上雲端才能加入';return}
+  $('fbMsg').textContent='尋找中…';
+  try{const snap=await fs.getDoc(fs.doc(fs.db,'families',code));if(!snap.exists()){$('fbMsg').textContent='雲端找不到這個代碼，請再確認';return}
+    const d=snap.data(),pet=(d.state||{}).pet||{},now=new Date().toISOString();
+    bookWrite(bookMerge(bookLocal(),S.familyBook,[{code,note,noteAt:note?now:'',pet:pet.name||'',lv:levelInfo(pet.exp||0).lv,at:d.updatedAt||'',seen:now}]));
+    $('fbCode').value='';$('fbNote').value='';$('fbMsg').textContent=`已加入「${note||pet.name||code}」`;bookSync(true);renderFamBook()}
+  catch(e){$('fbMsg').textContent='連線失敗，請稍後再試'}};
 function fmtTime(iso){const d=new Date(iso);const p=n=>String(n).padStart(2,'0');
   return `${d.getMonth()+1}/${d.getDate()} ${p(d.getHours())}:${p(d.getMinutes())}`}
 function renderSyncInfo(){$('syncInfo').textContent=lastSync?`最後同步：${fmtTime(lastSync.at)}（${lastSync.device||'某台裝置'}）`:dbDoc?'':'這台裝置沒有連上雲端，紀錄只存在這裡';
-  $('famCode').textContent=familyCode||'尚未連結';$('famCopy').textContent=familyCode?'複製邀請連結':'連結家庭'}
+  $('famCode').textContent=familyCode||'尚未連結';$('famCopy').textContent=familyCode?'複製邀請連結':'連結家庭';renderFamBook()}
 let logShow=30;
 
 const totalScore=(ex=S.exams)=>ex.reduce((a,e)=>a+e.score,0);
