@@ -1,5 +1,5 @@
 /* =====================================================================================
-   📚 小狗的家｜內容檔 content.js　版本 V1
+   📚 小狗的家｜內容檔 content.js　版本 V4（17 本繪本都加長成 12 頁）
    放「文字與題目」：英文單字、相似音分組、17 本繪本（英文、中文、每頁畫面的組合、問答）。
    畫面用 art.js 的 SK / SCN / IC 組合出來，所以要在 art.js 之後載入。
    -------------------------------------------------------------------------------------
@@ -252,4 +252,117 @@ const QPIC={wheat:'🌾',brick:'🧱',straw:'🌾',sticks:'🪵',bear:'🐻',pig
   goose:()=>`<svg viewBox="0 0 100 100">${SK.animal(55,90,'goose',2.2)}</svg>`,donkey:()=>`<svg viewBox="0 0 100 100">${SK.animal(55,92,'donkey',1.8)}</svg>`,red:'c:#E85A5A',blue:'c:#4A90E2',green:'c:#5CC46E',basket:'🧺',book:'📖',sea:'🌊',tree:'🌳',house:'🏠',voice:'i:speaker',shoe:'👠',hat:'🎩',bag:'🎒',pumpkin:'🎃',sun:'☀️',star:'i:star',rose:'🌹',nose:'👃',ear:'👂',foot:'🦶',fish:'🐟',bird:'🐦',wood:'🪵',water:'💧',
   spindle:()=>`<svg viewBox="0 0 100 100">${SK.spindle(50,92)}</svg>`,apple:'🍎',ball:'i:ball',cake:'i:cake',seven:'n:7',three:'n:3',five:'n:5',ten:'n:10',dog:'🐶',cat:'🐱',bed:'🛏️',box:'📦',
   prince:()=>`<svg viewBox="0 0 100 100">${SK.prince(50,95)}</svg>`,queen:()=>`<svg viewBox="0 0 100 100">${SK.queen(50,95)}</svg>`,wolf:()=>`<svg viewBox="0 0 100 100">${SK.wolf(62,90)}</svg>`,clock:()=>`<svg viewBox="0 0 100 100">${SK.clock(50,96)}</svg>`};
-window.DOGCONTENT={version:'V1',books:STORIES.length,words:WORD_BANK.length};
+/* ===== V4：故事加長（每本 12 頁），把故事講完 =====
+   ORDER 裡的數字＝V1 原本的第幾頁（從 0 數），字母＝下面新增的頁。{p:數字,en,zh} 可以改寫原本那頁的文字。 */
+(function(){
+ const P=(o)=>SK.person(o.x,o.y,o);
+ const G={ // 常用角色
+  snow:(x,y,c)=>SK.girl(x,y,c), dw:(i,x,y,c)=>SK.dwarf(x,y,['#E85A5A','#FF9A3C','#FFD23F','#5CC46E','#4A90E2','#9B6BD6','#FF8FB8'][i%7],c),
+  red:(x,y,c)=>P({x,y,hood:'#E53935',col:'#FFF3E2',c}), jack:(x,y,c,s)=>P({x,y,body:'pants',col:'#4A90E2',style:'short',hair:'#9A6A4F',c,s}),
+  mom:(x,y,c)=>P({x,y,col:'#B9A99C',style:'bun',hair:'#9A6A4F',c}), gran:(x,y,c)=>P({x,y,col:'#C9B3F5',style:'bun',hair:'#DDD',glasses:true,c}),
+  hunter:(x,y,c)=>P({x,y,body:'pants',col:'#5CC46E',style:'short',hat:'#3E7A4A',hair:'#9A6A4F',c}),
+  mer:(x,y,c)=>P({x,y,body:'tail',col:'#4A90E2',hair:'#7A4A2B',c}), merLegs:(x,y,c)=>P({x,y,col:'#8CC8F0',hair:'#7A4A2B',c}),
+  prince:(x,y,c)=>SK.prince(x,y,c), witch:(x,y,c)=>P({x,y,col:'#5CC46E',hood:'#3E7A4A',hair:'#5E5462',c}),
+  cin:(x,y,c,col)=>P({x,y,col:col||'#B9A99C',hair:'#E8C26B',c}), sis:(x,y,col,c)=>P({x,y,col,hair:'#9A6A4F',style:'bun',c}),
+  king:(x,y,c)=>P({x,y,body:'pants',col:'#9B6BD6',style:'short',hair:'#9A6A4F',crown:true,beard:true,c}), queen:(x,y,c)=>SK.queen(x,y,c),
+  fairy:(x,y,col,c)=>P({x,y,col:col||'#FFD86B',hair:'#DDD',style:'bun',wings:true,wand:true,c}),
+  pino:(x,y,c,o)=>P(Object.assign({x,y,body:'pants',col:'#5CC46E',style:'short',skin:'#E2B48C',legs:'#D9A066',hair:'#5A3E2B',nose:6,c},o||{})), gep:(x,y,c)=>P({x,y,body:'pants',col:'#9A6A4F',style:'none',beard:true,glasses:true,c}),
+  goldi:(x,y,c)=>P({x,y,col:'#FF9EC4',hair:'#E8C26B',c}), emp:(x,y,c,o)=>P(Object.assign({x,y,body:'pants',col:'#9B6BD6',style:'short',hair:'#9A6A4F',crown:true,c},o||{})),
+  man:(x,y,col,c)=>P({x,y,body:'pants',col,style:'short',hair:'#5A3E2B',c}), kid:(x,y,c)=>P({x,y,body:'pants',col:'#FFB86B',style:'short',hair:'#5A3E2B',s:.8,c}),
+  robber:(x,y,c)=>P({x,y,body:'pants',col:'#3A3A3A',style:'short',hat:'#3A3A3A',mask:true,c}), farmer:(x,y,c)=>P({x,y,body:'pants',col:'#8CC8F0',style:'short',hat:'#FFD86B',hair:'#9A6A4F',c}),
+ };
+ const NIGHT='#2E2A4F',NGROUND='#4B4573',SEA='#BFE3F7',SAND='#F4E3C6',DEEP='#5E7FB0',HOME='#FFF4E0';
+ const TBL=(x,w)=>SK.table(x,150,w);
+ const NEW={
+ snow:{ORDER:[0,1,2,'A',3,4,'B',5,'C',6,'D',7],
+  A:{en:'The queen sent Snow White away into the dark forest.',zh:'皇后把白雪公主趕到黑黑的森林裡。',sc:()=>SCN('#CFE0CC',GRASS,SK.tree(40,150)+SK.tree(110,150)+SK.tree(290,150)+G.snow(200,165,'an-walk'))},
+  B:{en:'The dwarfs went to work. "Do not open the door for anyone!"',zh:'小矮人出門工作：「不要幫別人開門喔！」',sc:()=>SCN(FOREST,GRASS,SK.house(250,150)+G.snow(190,165)+[0,1,2,3].map(i=>G.dw(i,40+i*32,165,'an-walk')+SK.lantern(54+i*32,162)).join(''))},
+  C:{en:'The old woman was really the queen, using magic!',zh:'老婆婆其實是皇后用魔法變的！',sc:()=>SCN(CASTLE,'#E8DDF7',SK.queen(90,165)+SK.magic(160,90)+SK.oldw(230,165,'an-pop'))},
+  D:{en:'The dwarfs were very sad. They put flowers around her.',zh:'小矮人好難過，在她身邊放滿了花。',sc:()=>SCN(FOREST,GRASS,SK.inBed(160,160,'snow')+[60,100,220,262].map((x,i)=>SK.flower(x,170,['#FF9EC4','#FFD86B','#C9B3F5','#8CC8F0'][i])).join('')+G.dw(2,30,175)+G.dw(4,295,175))}},
+ goats:{FIX:{},ORDER:[0,1,'A',2,'B',3,4,5,'C',6,'D',7],
+  A:{en:'Mother Goat went out to find food.',zh:'山羊媽媽出門去找食物。',sc:()=>SCN('#FFF4E0',GRASS,SK.house(70,150)+SK.goat(200,165,1.3,'an-walk')+SK.basket(262,160))},
+  B:{en:'"Your voice is too rough! You are the wolf!"',zh:'「你的聲音好粗！你是大野狼！」',sc:()=>SCN('#FFF4E0',FLOOR,SK.door(120,160)+SK.wolf(240,165,'an-shake')+SK.goat(50,165,.6,'an-shake')+SK.goat(80,165,.6))},
+  C:{en:'The wolf put the goats in a big bag and fell asleep.',zh:'大野狼把小羊裝進大袋子，在樹下睡著了。',sc:()=>SCN(FOREST,GRASS,SK.tree(70,150)+SK.wolf(150,170)+SK.zz(130,80)+SK.sack(250,165,'an-shake'))},
+  D:{en:'Mother Goat opened the bag. Out jumped the little goats!',zh:'山羊媽媽打開袋子，小羊們都跳出來了！',sc:()=>SCN(FOREST,GRASS,SK.goat(60,165,1.3)+SK.sack(190,165)+[0,1,2,3].map(i=>SK.goat(150+i*28,140-(i%2)*14,.55,'an-pop')).join('')+SK.heart(110,60))}},
+ red:{FIX:{4:()=>SCN(HOME,FLOOR,SK.inBed(210,160,'wolf','an-bob')+G.red(80,165)),5:()=>SCN(HOME,FLOOR,SK.inBed(210,160,'wolf','an-shake')+G.red(80,165,'an-shake'))},ORDER:[0,1,2,'A',3,'B','C',4,5,'D',6,7],
+  A:{en:'"Look at the pretty flowers!" said the wolf. She stopped to pick some.',zh:'大野狼說：「你看，好漂亮的花！」她停下來摘花。',sc:()=>SCN(FOREST,GRASS,SK.tree(290,150)+G.red(110,165)+[50,80,150,180].map((x,i)=>SK.flower(x,172,['#FF9EC4','#FFD86B','#C9B3F5','#FF9EC4'][i])).join('')+SK.wolf(260,165,'an-bob'))},
+  B:{en:'The wolf hid Grandma in the closet and got into her bed.',zh:'大野狼把奶奶關進衣櫃，自己躺到床上。',sc:()=>SCN(HOME,FLOOR,SK.closet(60,160,'an-shake')+SK.inBed(200,160,'wolf'))},
+  C:{en:'Knock, knock! "Grandma, it is me!"',zh:'叩叩叩！「奶奶，是我！」',sc:()=>SCN(FOREST,GRASS,SK.house(210,150)+G.red(110,165,'an-knock')+SK.basket(84,130))},
+  D:{en:'"All the better to eat you with!" The wolf jumped out of bed!',zh:'「這樣才好吃掉你！」大野狼跳下床！',sc:()=>SCN(HOME,FLOOR,SK.bed(240,160)+SK.wolf(170,165,'an-shake')+G.red(60,165,'an-shake'))}},
+ mermaid:{FIX:{3:()=>SCN('#9FB5C9','#8CC8F0',SK.storm()+SK.wave(110)+SK.ship(240,150,'an-shake')+SK.prince(130,170)+G.mer(170,175,'an-bob'))},ORDER:[0,'A',1,2,3,'B',4,'C',5,'D',6,7],
+  A:{en:'She loved to look up at the world above the sea.',zh:'她最喜歡抬頭看海上面的世界。',sc:()=>SCN(SEA,'#9FD0EC',SK.wave(30)+SK.seaweed(40,170)+SK.seaweed(280,170)+G.mer(160,175,'an-bob')+SK.fish(90,110,.8,'#FFD86B')+SK.fish(240,130,.7,'#FF8FB8'))},
+  B:{en:'She carried the prince to the beach and swam away.',zh:'她把王子送到沙灘上，就游走了。',sc:()=>SCN('#DDF3FF',SAND,SK.wave(150)+`<g transform="rotate(-90 110 150)">${SK.prince(110,150)}</g>`+G.mer(250,190,'an-bob'))},
+  C:{en:'She swam to the sea witch\'s dark cave.',zh:'她游到海巫婆黑黑的洞穴。',sc:()=>SCN(DEEP,'#4B5E86',SK.seaweed(30,170)+SK.seaweed(300,170)+G.witch(220,165)+SK.potion(270,150)+G.mer(100,175))},
+  D:{en:'The prince found her on the beach. "Who are you?"',zh:'王子在沙灘上發現了她：「你是誰？」',sc:()=>SCN('#DDF3FF',SAND,SK.wave(150)+G.merLegs(120,170,'an-bob')+SK.prince(210,170)+SK.heart(165,70))}},
+ cinder:{ORDER:[0,'A',1,'B',2,3,'C',4,5,6,'D',7],
+  A:{en:'Her stepmother and stepsisters were not kind to her.',zh:'繼母和姊姊們對她一點都不好。',sc:()=>SCN(HOME,FLOOR,G.sis(60,165,'#C9B3F5','an-shake')+G.sis(120,165,'#FFB86B')+G.cin(230,165,'an-bob')+SK.broom(265,165))},
+  B:{en:'The sisters went to the ball. Cinderella had to stay home.',zh:'姊姊們去參加舞會，灰姑娘只能留在家裡。',sc:()=>SCN(NIGHT,NGROUND,SK.stars()+SK.castle(250,150)+G.sis(150,165,'#C9B3F5','an-walk')+G.sis(190,165,'#FFB86B','an-walk')+G.cin(60,165))},
+  C:{en:'Her old clothes became a beautiful dress and glass slippers!',zh:'她的舊衣服變成漂亮的禮服，還有一雙玻璃鞋！',sc:()=>SCN(NIGHT,NGROUND,SK.stars()+G.cin(150,165,'an-bob','#8FDCC0')+SK.magic(150,80)+SK.slipper(210,165)+G.fairy(60,165))},
+  D:{en:'The stepsisters tried the shoe. It was too small!',zh:'姊姊們試穿鞋子，太小了！',sc:()=>SCN(HOME,FLOOR,G.sis(90,165,'#C9B3F5','an-shake')+SK.slipper(140,165)+G.prince(220,165))}},
+ sleep:{FIX:{1:()=>SCN(CASTLE,'#E8DDF7',['#FFD86B','#8FDCC0','#8CC8F0'].map((c,i)=>G.fairy(70+i*90,160,c,'an-bob')+SK.gift(108+i*90,168,['#FFC6DD','#FFF3B0','#C9E6F7'][i])).join('')),4:()=>SCN(CASTLE,'#E8DDF7',SK.inBed(160,160,'beauty')+SK.zz(220,80))},ORDER:[0,1,2,'A','B',3,4,'C',5,6,'D',7],
+  A:{en:'A kind fairy said, "Do not worry. She will only sleep."',zh:'一位好仙女說：「別擔心，她只會睡著。」',sc:()=>SCN(CASTLE,'#E8DDF7',G.fairy(110,165,'#FF9EC4','an-bob')+SK.cradle(210,165)+SK.magic(210,80))},
+  B:{en:'The king took away all the spindles in the land.',zh:'國王把全國的紡錘都收起來了。',sc:()=>SCN(CASTLE,'#E8DDF7',G.king(90,165)+[180,205,230,255].map(x=>SK.spindle(x,165)).join(''))},
+  C:{en:'Everyone in the castle fell asleep — even the dog!',zh:'城堡裡的大家都睡著了，連小狗也睡著了！',sc:()=>SCN(CASTLE,'#E8DDF7',G.king(70,165)+SK.queen(140,165)+SK.animal(240,165,'dog',1.2)+SK.zz(80,70)+SK.zz(150,70)+SK.zz(250,100))},
+  D:{en:'The prince walked into the quiet castle and found the princess.',zh:'王子走進安靜的城堡，找到了公主。',sc:()=>SCN(CASTLE,'#E8DDF7',SK.inBed(110,160,'beauty')+G.prince(250,165,'an-walk')+SK.rose(200,80))}},
+ pino:{ORDER:[0,1,'A',2,3,'B',4,'C','D',{p:5,sc:()=>SCN('#BFE6FF','#8CC8F0',SK.wave(70)+SK.bigfish(212,150)+G.pino(80,170,'an-bob')+G.gep(122,172))},6,7],
+  A:{en:'Geppetto sold his coat to buy Pinocchio a school book.',zh:'老爺爺賣了外套，買了一本課本給皮諾丘。',sc:()=>SCN(HOME,FLOOR,G.gep(110,165)+SK.book(160,110)+G.pino(210,165,'an-bob'))},
+  B:{en:'He went to Toy Land. Oh no! He grew donkey ears!',zh:'他跑去玩具國，糟糕！他長出了驢子耳朵！',sc:()=>SCN('#FFE3EF',GRASS,G.pino(160,165,'an-shake',{ears:'donkey'})+SK.gift(70,165,'#8CC8F0')+SK.gift(250,165,'#FFD86B')+SK.notes(230,50))},
+  C:{en:'Pinocchio jumped into the sea to find Geppetto.',zh:'皮諾丘跳進大海去找老爺爺。',sc:()=>SCN('#DDF3FF','#8CC8F0',SK.wave(120)+G.pino(160,150,'an-bob')+SK.fish(260,170,.8,'#FFD86B'))},
+  D:{en:'Inside the fish, he found Geppetto with a little candle.',zh:'在大魚肚子裡，他找到拿著小蠟燭的老爺爺。',sc:()=>SCN('#3D3552','#5A4E6E',SK.candle(160,150)+G.gep(110,165)+G.pino(220,165,'an-bob')+SK.heart(165,60))}},
+ pigs:{COVER:()=>SCN('#E3F5E8',GRASS,SK.hut(250,150,'brick')+SK.animal(55,165,'pig',.85,'an-bob')+SK.animal(115,165,'pig',.8,'an-bob')+SK.animal(170,165,'pig',.75,'an-bob')),FIX:{0:()=>SCN('#E3F5E8',GRASS,SK.animal(85,165,'pig',1,'an-bob')+SK.animal(160,165,'pig',.95,'an-bob')+SK.animal(235,165,'pig',.9,'an-bob')),7:()=>SCN('#E3F5E8',GRASS,SK.hut(255,150,'brick')+SK.animal(55,165,'pig',.85,'an-bob')+SK.animal(115,165,'pig',.85,'an-bob')+SK.animal(175,165,'pig',.85,'an-bob')+SK.heart(115,60))},ORDER:[0,1,2,3,'A',4,'B',5,'C',6,'D',7],
+  A:{en:'"Little pig, let me come in!" "No, no, no!"',zh:'「小豬小豬，讓我進去！」「不要，不要，不要！」',sc:()=>SCN(FOREST,GRASS,SK.hut(200,150,'straw')+SK.animal(212,120,'pig',.6,'an-shake')+SK.wolf(80,165,'an-knock'))},
+  B:{en:'The first little pig ran to the stick house.',zh:'第一隻小豬跑到木頭屋。',sc:()=>SCN(FOREST,GRASS,SK.hut(240,150,'sticks')+SK.animal(120,165,'pig',1,'an-walk'))},
+  C:{en:'Two little pigs ran to the brick house.',zh:'兩隻小豬一起跑到磚頭屋。',sc:()=>SCN(FOREST,GRASS,SK.hut(240,150,'brick')+SK.animal(90,165,'pig',1,'an-walk')+SK.animal(150,165,'pig',1,'an-walk'))},
+  D:{en:'The wolf came down the chimney — into a pot of hot water! He ran away.',zh:'大野狼從煙囪爬下來，掉進熱水鍋，嚇得逃走了！',sc:()=>SCN(HOME,FLOOR,SK.cauldron(160,165)+SK.wolf(170,90,'an-shake')+SK.animal(60,165,'pig',.9,'an-bob')+SK.animal(270,165,'pig',.9,'an-bob'))}},
+ goldi:{FIX:{5:()=>SCN(HOME,FLOOR,`<g transform="translate(160 160) scale(.85) translate(-160 -160)">${SK.inBed(160,160,'goldi')}</g>`+SK.zz(215,90)),6:()=>SCN(HOME,FLOOR,`<g transform="translate(220 160) scale(.85) translate(-220 -160)">${SK.inBed(220,160,'goldi')}</g>`+SK.animal(60,165,'bear',1.3,'an-shake')+SK.animal(118,165,'bear',.75,'an-shake'))},ORDER:[0,1,2,'A',3,4,'B',5,'C','D',{p:6,en:'"Someone is sleeping in my bed!" said Baby Bear.',zh:'小熊說：「有人睡在我的床上！」'},7],
+  A:{en:'The big bowl was too hot. The middle bowl was too cold.',zh:'大碗太燙了，中碗太涼了。',sc:()=>SCN(HOME,FLOOR,TBL(140,200)+SK.bowl(80,108,1.3)+SK.bowl(140,108,1)+SK.bowl(195,108,.7)+G.goldi(270,165,'an-shake'))},
+  B:{en:'She went upstairs. The big bed was too hard.',zh:'她走上樓，大床太硬了。',sc:()=>SCN(HOME,FLOOR,`<g transform="translate(110 160) scale(1.15) translate(-110 -160)">${SK.bed(110,160)}</g>`+G.goldi(250,165,'an-shake'))},
+  C:{en:'The bears came home. "Someone ate my soup!"',zh:'熊回家了：「有人吃了我的湯！」',sc:()=>SCN(HOME,FLOOR,TBL(110,160)+SK.bowl(70,108,1.2)+SK.bowl(150,108,.8)+SK.animal(240,165,'bear',.9,'an-shake'))},
+  D:{en:'"Someone sat in my chair and broke it!"',zh:'「有人坐壞了我的椅子！」',sc:()=>SCN(HOME,FLOOR,SK.chair(110,165,.8,true)+SK.animal(220,165,'bear',.9,'an-shake')+SK.animal(70,165,'bear',1.4))}},
+ ugly:{FIX:{4:()=>SCN('#E8F1FA','#FFFFFF',SK.snow()+SK.animal(160,165,'ugly',1.1,'an-shake'))},ORDER:['A',0,1,2,3,'B',4,'C',5,'D',6,7],
+  A:{en:'Mother Duck sat on her eggs. Crack, crack!',zh:'鴨媽媽坐在蛋上。喀啦、喀啦！',sc:()=>SCN(FOREST,GRASS,SK.reeds(40,160)+SK.animal(110,165,'duck',1.4)+SK.egg(180,165,1)+SK.egg(210,165)+SK.egg(250,165,1))},
+  B:{en:'He met wild ducks and a cat. Nobody wanted to play.',zh:'他遇到野鴨和貓，大家都不跟他玩。',sc:()=>SCN(FOREST,GRASS,SK.reeds(290,160)+SK.animal(80,165,'ugly',1.1)+SK.animal(170,165,'cat',1)+SK.animal(240,165,'duck',1))},
+  C:{en:'A kind farmer took him home and kept him warm.',zh:'一位好心的農夫把他帶回家，讓他暖暖的。',sc:()=>SCN('#E6EEF6','#FFFFFF',SK.snow()+SK.house(240,150)+G.farmer(120,165)+SK.animal(160,165,'ugly',.8,'an-bob'))},
+  D:{en:'He flapped his wings. He could fly!',zh:'他拍拍翅膀，咦，他會飛了！',sc:()=>SCN('#DDF3FF',GRASS,SK.cloud(70,50)+SK.cloud(250,40,.8)+SK.animal(160,120,'ugly',1.2,'an-bob'))}},
+ race:{ORDER:[0,'A',1,'B',2,3,4,'C',5,6,'D',7],
+  A:{en:'The hare laughed. "You are so slow!"',zh:'兔子笑烏龜：「你好慢喔！」',sc:()=>SCN(FOREST,GRASS,SK.animal(100,165,'hare',1.5,'an-shake')+SK.animal(220,165,'tortoise',1.5))},
+  B:{en:'All the animals came to watch. Ready, set, go!',zh:'動物們都來看比賽。預備，開始！',sc:()=>SCN(FOREST,GRASS,SK.flag(160,165)+SK.animal(130,165,'hare',1)+SK.animal(190,165,'tortoise',1)+SK.animal(50,165,'fox',.9,'an-bob')+SK.animal(280,165,'duck',1,'an-bob'))},
+  C:{en:'The sun was hot, but the tortoise did not stop.',zh:'太陽好熱，可是烏龜沒有停下來。',sc:()=>SCN('#FFF4D6',GRASS,'<circle cx="270" cy="40" r="22" fill="#FFD86B" stroke="#5A3E4B" stroke-width="3"/>'+SK.animal(140,165,'tortoise',1.5,'an-walk'))},
+  D:{en:'All the animals cheered for the tortoise!',zh:'動物們都為烏龜歡呼！',sc:()=>SCN(FOREST,GRASS,SK.flag(160,165)+SK.animal(160,165,'tortoise',1.2,'an-bob')+SK.animal(50,165,'fox',.9,'an-bob')+SK.animal(270,165,'duck',1,'an-bob')+SK.heart(110,60)+SK.heart(210,60))}},
+ jack:{ORDER:[0,1,'A',2,{p:3,sc:()=>SCN('#DDF3FF',GRASS,SK.beanstalk(160)+SK.cloud(170,52,1.3)+G.jack(160,108,'an-bob',.8))},4,'B',5,'C',6,'D',7],
+  A:{en:'Mother was angry and threw the beans out the window.',zh:'媽媽很生氣，把豆子丟出窗外。',sc:()=>SCN(HOME,FLOOR,G.mom(110,165,'an-shake')+G.jack(190,165)+SK.beans(260,110))},
+  B:{en:'"Fee-fi-fo-fum!" shouted the giant. Jack hid.',zh:'巨人大聲說：「我聞到小孩的味道！」傑克趕快躲起來。',sc:()=>SCN('#DDF3FF','#FFFFFF',P({x:110,y:195,body:'pants',col:'#7A6E7E',style:'short',beard:true,hair:'#5A3E2B',s:1.6,c:'an-shake'})+TBL(250,90)+G.jack(250,168,'',.6))},
+  C:{en:'There was also a golden harp that could sing.',zh:'還有一把會唱歌的金色豎琴。',sc:()=>SCN('#DDF3FF','#FFFFFF',SK.harp(150,165)+SK.notes(200,60)+SK.notes(90,70)+G.jack(250,165))},
+  D:{en:'The giant came too! Jack and Mother chopped the beanstalk down.',zh:'巨人追下來了！傑克和媽媽把豆莖砍倒了。',sc:()=>SCN('#DDF3FF',GRASS,`<g transform="rotate(25 200 200)">${SK.beanstalk(200,'')}</g>`+G.mom(70,165)+G.jack(120,165,'an-shake'))}},
+ emperor:{FIX:{4:()=>SCN('#E3F5E8',FLOOR,G.emp(160,165,'an-walk',{body:'undies'})+P({x:60,y:170,col:'#5CC46E',style:'short',s:.8})+P({x:270,y:170,col:'#FF9EC4',style:'bun',s:.8})),5:()=>SCN('#E3F5E8',FLOOR,G.emp(200,165,'',{body:'undies'})+G.kid(90,170,'an-bob')+SK.magic(95,70)),6:()=>SCN('#E3F5E8',FLOOR,G.emp(160,165,'an-shake',{body:'undies',skin:'#FFB8B0'})+P({x:60,y:170,col:'#5CC46E',style:'short',s:.8,c:'an-bob'})+P({x:270,y:170,col:'#FF9EC4',style:'bun',s:.8,c:'an-bob'}))},ORDER:[0,1,2,'A',3,'B',4,'C',5,6,'D',7],
+  A:{en:'The two men pretended to weave all day and night.',zh:'兩個人假裝整天整夜在織布。',sc:()=>SCN(HOME,FLOOR,SK.loom(160,165)+G.man(70,165,'#8FDCC0','an-bob')+G.man(250,165,'#FFB86B','an-bob')+SK.moonTop())},
+  B:{en:'The king looked in the mirror. "What beautiful clothes!"',zh:'國王照鏡子說：「好漂亮的衣服！」',sc:()=>SCN(CASTLE,'#E8DDF7',G.emp(110,165,'an-bob',{body:'undies'})+SK.mirror(230,165))},
+  C:{en:'All the people said, "Wow! How beautiful!"',zh:'大家都說：「哇！好漂亮！」',sc:()=>SCN('#FFF4E0',GRASS,G.man(50,165,'#8CC8F0','an-bob')+P({x:110,y:165,col:'#FF9EC4',hair:'#9A6A4F',c:'an-bob'})+G.emp(200,165,'an-walk',{body:'undies'})+G.man(275,165,'#FFD86B','an-bob'))},
+  D:{en:'The two tricksters ran away with the gold.',zh:'兩個騙子帶著金子逃走了。',sc:()=>SCN(FOREST,GRASS,G.man(130,165,'#8FDCC0','an-walk')+G.man(200,165,'#FFB86B','an-walk')+SK.goldegg(100,140)+SK.goldegg(230,140)+SK.tree(290,150))}},
+ hen:{ORDER:[0,1,2,'A',3,'B',4,'C',5,6,7,'D'],
+  A:{en:'The rain came, the sun came, and the wheat grew tall.',zh:'下雨了，出太陽了，麥子長得好高。',sc:()=>SCN('#DDF3FF',GRASS,'<circle cx="270" cy="40" r="20" fill="#FFD86B" stroke="#5A3E4B" stroke-width="3"/>'+SK.cloud(80,50)+[100,130,160,190,220].map(x=>SK.wheat(x,170)).join('')+SK.animal(50,165,'hen',1))},
+  B:{en:'She cut the wheat and took it to the mill.',zh:'她自己割麥子，拿去磨坊磨成麵粉。',sc:()=>SCN('#DDF3FF',GRASS,SK.mill(230,165)+SK.animal(110,165,'hen',1.2,'an-walk')+SK.wheat(150,170))},
+  C:{en:'She mixed the flour and put the bread in the oven.',zh:'她把麵粉揉一揉，放進烤箱裡。',sc:()=>SCN(HOME,FLOOR,SK.oven(210,165)+SK.animal(90,165,'hen',1.2,'an-bob'))},
+  D:{en:'Next time, her friends said, "We will help you!"',zh:'下一次，朋友們都說：「我們會幫忙！」',sc:()=>SCN('#DDF3FF',GRASS,SK.animal(60,165,'hen',1)+SK.animal(130,165,'duck',1,'an-bob')+SK.animal(200,165,'cat',1,'an-bob')+SK.animal(270,165,'pig',1,'an-bob')+SK.heart(160,60))}},
+ ginger:{ORDER:[0,'D',1,2,3,'A','B',4,5,'C',6,7],
+  D:{en:'He had raisin eyes and a cherry smile.',zh:'他有葡萄乾眼睛和櫻桃嘴巴。',sc:()=>SCN(HOME,FLOOR,`<g transform="translate(160 165) scale(1.8) translate(-160 -165)">${SK.ginger(160,165,'an-bob')}</g>`)},
+  A:{en:'A horse ran after him too. "Stop! Stop!"',zh:'馬也在後面追：「停下來！停下來！」',sc:()=>SCN(FOREST,GRASS,SK.ginger(80,165,'an-walk')+SK.animal(220,165,'horse',1.3,'an-walk'))},
+  B:{en:'The farmers ran after him. But nobody could catch him!',zh:'農夫們也追過來，可是沒有人抓得到他！',sc:()=>SCN(FOREST,GRASS,SK.ginger(60,165,'an-walk')+G.farmer(180,165,'an-walk')+G.farmer(250,165,'an-walk'))},
+  C:{en:'"Jump on my back," said the fox. "It is drier."',zh:'狐狸說：「跳到我的背上，比較不會濕。」',sc:()=>SCN('#DDF3FF',GRASS,SK.river()+SK.animal(160,175,'fox',1.4,'an-bob')+SK.ginger(170,135,'',))}},
+ lion:{ORDER:['A',0,1,2,3,'B',4,5,'C',6,'D',7],
+  A:{en:'In the forest lived a big, strong lion.',zh:'森林裡住著一隻又大又強壯的獅子。',sc:()=>SCN('#FFF4D6',GRASS,SK.tree(60,150)+SK.tree(280,150)+SK.animal(170,165,'lion',1.8,'an-bob'))},
+  B:{en:'Days later, hunters came to the forest.',zh:'過了幾天，獵人來到森林。',sc:()=>SCN(FOREST,GRASS,SK.tree(60,150)+G.hunter(170,165,'an-walk')+G.hunter(240,165,'an-walk'))},
+  C:{en:'"Do not worry! I will help you!"',zh:'「別怕！我來救你！」',sc:()=>SCN(FOREST,GRASS,SK.animal(140,165,'lion',1.5)+SK.net(140,170)+SK.animal(250,165,'mouse',1.4,'an-bob'))},
+  D:{en:'The lion was free! "Thank you, little friend!"',zh:'獅子自由了！「謝謝你，小朋友！」',sc:()=>SCN(FOREST,GRASS,SK.animal(130,165,'lion',1.5,'an-bob')+SK.animal(220,165,'mouse',1.4,'an-bob')+SK.heart(175,70))}},
+ bremen:{FIX:{1:()=>SCN('#E3F5E8',GRASS,SK.animal(60,165,'donkey',1.1)+SK.animal(135,165,'dog',.95,'an-bob')+SK.animal(200,165,'cat',.9,'an-bob')+SK.animal(265,165,'rooster',1,'an-bob')),2:()=>SCN('#E3F5E8',GRASS,SK.animal(60,165,'donkey',1.1,'an-walk')+SK.animal(135,165,'dog',.95,'an-walk')+SK.animal(200,165,'cat',.9,'an-walk')+SK.animal(265,165,'rooster',1,'an-walk')+SK.notes(150,50)+SK.notes(230,40)),7:()=>SCN('#FFF4E0',FLOOR,SK.animal(60,165,'donkey',1.05,'an-bob')+SK.animal(135,165,'dog',.9,'an-bob')+SK.animal(200,165,'cat',.85,'an-bob')+SK.animal(265,165,'rooster',.95,'an-bob')+SK.heart(160,60))},ORDER:[0,1,'A',2,'B',3,{p:4,sc:()=>SCN(HOME,FLOOR,TBL(160,200)+G.robber(90,165,'an-bob')+G.robber(230,165,'an-bob')+SK.bread(130,108)+SK.bread(190,108))},'C',5,{p:6,sc:()=>SCN(NIGHT,NGROUND,SK.moonTop()+G.robber(120,165,'an-walk')+G.robber(200,165,'an-walk'))},'D',7],
+  A:{en:'The dog could bark, the cat could meow, and the rooster could crow.',zh:'狗會汪汪叫，貓會喵喵叫，公雞會喔喔叫。',sc:()=>SCN('#E3F5E8',GRASS,SK.animal(70,165,'dog',1.2,'an-bob')+SK.animal(160,165,'cat',1.1,'an-bob')+SK.animal(250,165,'rooster',1.2,'an-bob')+SK.notes(100,50)+SK.notes(200,50))},
+  B:{en:'It was a long way. Night came, and they were hungry.',zh:'路好遠，天黑了，他們好餓。',sc:()=>SCN(NIGHT,NGROUND,SK.moonTop()+SK.stars()+SK.tree(280,150)+SK.animal(50,165,'donkey',1)+SK.animal(120,165,'dog',.85)+SK.animal(180,165,'cat',.8)+SK.animal(235,165,'rooster',.85))},
+  C:{en:'"Let\'s scare the robbers away!" said the donkey.',zh:'驢子說：「我們把強盜嚇跑吧！」',sc:()=>SCN(NIGHT,NGROUND,SK.moonTop()+SK.house(250,150)+SK.animal(55,165,'donkey',1.05,'an-bob')+SK.animal(125,165,'dog',.85)+SK.animal(180,165,'cat',.8)+SK.animal(178,122,'rooster',.75))},
+  D:{en:'One robber came back. Meow! Woof! He ran away for good!',zh:'一個強盜偷偷回來，喵！汪！他嚇得再也不敢回來了！',sc:()=>SCN(NIGHT,NGROUND,SK.moonTop()+G.robber(220,165,'an-walk')+SK.animal(110,165,'cat',1.1,'an-shake')+SK.animal(60,165,'dog',1.1,'an-shake'))}},
+ };
+ STORIES.find(s=>s.id==='jack').cover=()=>SCN('#DDF3FF',GRASS,SK.beanstalk(160)+SK.cloud(170,56,1.2)+G.jack(100,165,'an-bob'));
+ STORIES.forEach(s=>{const n=NEW[s.id];if(!n)return;const old=s.pages.map((pg,i)=>n.FIX&&n.FIX[i]?Object.assign({},pg,{sc:n.FIX[i]}):pg);if(n.COVER)s.cover=n.COVER;
+  s.pages=n.ORDER.map(k=>typeof k==='number'?old[k]:typeof k==='object'?Object.assign({},old[k.p],k):n[k])});
+})();
+
+window.DOGCONTENT={version:'V4',books:STORIES.length,words:WORD_BANK.length};
