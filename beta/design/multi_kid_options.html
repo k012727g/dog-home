@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>多個小孩怎麼玩</title>
+<style>
+/* VOICE 給家長看的清楚說明，結論先講
+   IDEA 一張張「裝置 → 家庭代碼 → 雲端存檔」的路線圖卡
+   PICTURE 每個方案一張圖：左邊裝置、中間代碼、右邊 Firebase 文件
+   COLOUR and TYPE 遊戲的粉彩紙底與深紫褐字；綠＝可行、黃＝小心、紅＝不建議
+   LAYOUT 結論 → 現在的做法 → 方案卡（不改程式／要改程式）→ 測試紀錄 */
+:root{color-scheme:light dark;--bg:light-dark(#FFF2F7,#2A1E25);--card:light-dark(#fff,#3A2B33);--ink:light-dark(#4A3140,#FBE9F1);--soft:light-dark(#7A5A6A,#D9BFCB);--line:light-dark(#F3CFE0,#5A4250);
+ --ok:#3E9B78;--okb:light-dark(#E6F7EF,#21392F);--warn:#B7791F;--warnb:light-dark(#FFF5DC,#3A3020);--no:#C2385F;--nob:light-dark(#FFE6EC,#3E2229)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;overflow-x:clip}
+.w{max-width:1080px;margin:auto;padding:clamp(18px,4vw,44px) max(4vw,14px) 60px}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.08;margin:0 0 10px;text-wrap:balance}
+h2{font-size:24px;line-height:1.2;margin:38px 0 12px}h3{font-size:19px;margin:0}
+.lead{font-size:17px;max-width:68ch;margin:0 0 18px}
+.sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.sum div{background:var(--card);border-radius:16px;padding:14px 16px;border:2px solid var(--line)}.sum b{display:block;font-size:20px;margin-bottom:2px}
+.fig{background:var(--card);border-radius:18px;border:2px solid var(--line);padding:10px}
+svg{display:block;width:100%;height:auto}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{background:var(--card);border-radius:20px;border:3px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:10px}
+.card.ok{border-color:var(--ok)}.card.warn{border-color:var(--warn)}.card.no{border-color:var(--no)}
+.top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.tag{font-size:14px;font-weight:700;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.ok .tag{background:var(--okb);color:var(--ok)}.warn .tag{background:var(--warnb);color:var(--warn)}.no .tag{background:var(--nob);color:var(--no)}
+.code{font-size:14px;color:var(--soft)}
+ul{margin:0;padding-left:20px}li{margin:2px 0}
+.test{font-size:14px;background:var(--bg);border-radius:12px;padding:8px 12px}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;font-size:15px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--soft);font-size:14px}
+.res{white-space:nowrap;font-weight:700}.res.ok{color:var(--ok)}.res.no{color:var(--no)}
+.note{background:var(--card);border-radius:16px;border:2px dashed var(--line);padding:12px 16px;margin-top:14px}
+.scroll{overflow-x:auto}
+@media(max-width:760px){.cards,.sum{grid-template-columns:minmax(0,1fr)}table{font-size:14px}}
+</style></head><body><div class="w">
+
+<h1>兩個小孩一起玩：你的 Firebase 可以，差別在「怎麼用裝置」</h1>
+<p class="lead">每個家庭代碼在 Firebase 裡就是一份獨立的存檔，數量沒有上限。下面每個方案都<b>不用改 Firebase 的結構</b>（一樣是 <code>families/家庭代碼</code> 一份文件），我也直接對你的資料庫實際測過。</p>
+
+<div class="sum">
+  <div><b>✅ 現在就能用</b>一人一台裝置；或同一台平板用兩個不同的瀏覽器。</div>
+  <div><b>⚠️ 會出錯</b>同一台裝置、同一個瀏覽器，用連結切換兩個小孩。網路慢時，會蓋掉另一個小孩的進度。</div>
+  <div><b>🛠 要改程式才好用</b>在家長設定加「切換小孩」；或一個家庭放好幾隻小狗。</div>
+</div>
+
+<h2>現在的做法</h2>
+<div class="fig" id="nowFig"></div>
+<ul style="margin-top:10px">
+  <li><b>一個家庭代碼＝一隻小狗＝一份存檔</b>，放在 Firebase 的 <code>families/代碼</code>。</li>
+  <li>每台裝置的瀏覽器只記得<b>一個</b>家庭代碼，打開遊戲就自動接上那個家庭。</li>
+  <li>同一個代碼可以給很多台裝置用，進度會同步（例如孩子的平板和你的手機）。</li>
+  <li>安全性：別人沒辦法列出你有哪些家庭（我測試列出清單時，被規則擋下 403），只有知道 8 碼代碼的人才能讀寫。</li>
+</ul>
+
+<h2>不用改程式的方案</h2>
+<div class="cards" id="noCode"></div>
+
+<h2>要改遊戲程式，但不用改 Firebase 結構的方案</h2>
+<div class="cards" id="needCode"></div>
+
+<h2>我對你的資料庫做的測試</h2>
+<div class="scroll"><table id="tests"></table></div>
+<div class="note"><b>測試留下的東西：</b>兩個測試家庭 <code>6CZ5EXUA</code>、<code>BJCHLT29</code>。你的 Firestore 規則不允許刪除（我試過，回 403），這是好事，代表別人也刪不掉你的資料。它們各只有約 2 KB，不影響使用。想清掉的話，可以到 Firebase 主控台 → Firestore → families 手動刪除。<br>第二個小孩的家庭 <code>JGKLWAT7</code> 和你原本的家庭，我都沒有動。</div>
+
+<h2>我的建議</h2>
+<ol>
+  <li><b>現在：</b>第二個小孩如果有自己的平板，就用方案 1（連結已經開好：<a href="https://k012727g.github.io/dog-home/#JGKLWAT7">k012727g.github.io/dog-home/#JGKLWAT7</a>）。如果要共用一台平板，就用方案 2：一個小孩用 Safari，另一個用 Chrome。</li>
+  <li><b>不要</b>在同一個瀏覽器裡用兩個連結切換兩個小孩（方案 3）。</li>
+  <li><b>之後：</b>想要一台平板點一下就切換，建議做方案 5「切換小孩」。這要改遊戲程式（index.html），但不用改 Firebase。</li>
+</ol>
+</div>
+
+<script>
+{
+const ink='#5A3E4B';
+const dev=(x,y,label,col,sub)=>`<g transform="translate(${x} ${y})"><rect x="-34" y="-46" width="68" height="92" rx="12" fill="${col}" stroke="${ink}" stroke-width="3"/><rect x="-26" y="-36" width="52" height="62" rx="5" fill="#fff" stroke="${ink}" stroke-width="2"/><circle cx="0" cy="36" r="4" fill="${ink}"/><text x="0" y="-4" text-anchor="middle" font-size="22">${sub||'🐶'}</text><text x="0" y="68" text-anchor="middle" font-size="15" font-weight="700" fill="${ink}">${label}</text></g>`;
+const brw=(x,y,label,col)=>`<g transform="translate(${x} ${y})"><rect x="-62" y="-24" width="124" height="48" rx="10" fill="${col}" stroke="${ink}" stroke-width="2.5"/><text x="0" y="6" text-anchor="middle" font-size="14" font-weight="700" fill="${ink}">${label}</text></g>`;
+const doc=(x,y,code,pet,col)=>`<g transform="translate(${x} ${y})"><path d="M-44-40h64l24 24v56h-88z" fill="#fff" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/><path d="M20-40v24h24" fill="${col}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/><text x="-10" y="-14" text-anchor="middle" font-size="11" fill="#7A5A6A">families/</text><text x="0" y="6" text-anchor="middle" font-size="14" font-weight="700" fill="${ink}">${code}</text><text x="0" y="30" text-anchor="middle" font-size="13" fill="${ink}">${pet}</text></g>`;
+const arr=(x1,y1,x2,y2,col,dash)=>`<path d="M${x1} ${y1}C${(x1+x2)/2} ${y1} ${(x1+x2)/2} ${y2} ${x2-8} ${y2}" fill="none" stroke="${col||ink}" stroke-width="3" ${dash?'stroke-dasharray="7 6"':''}/><path d="M${x2-12} ${y2-6}l10 6-10 6" fill="none" stroke="${col||ink}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+const cloud=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="20" fill="#E8F4FC" stroke="#8CC8F0" stroke-width="2.5" stroke-dasharray="6 5"/><text x="${x+w/2}" y="${y+22}" text-anchor="middle" font-size="14" font-weight="700" fill="#4A6FA5">你的 Firebase</text>`;
+const bad=(x,y)=>`<g transform="translate(${x} ${y})"><circle r="16" fill="#FFE6EC" stroke="#C2385F" stroke-width="3"/><path d="M-7-7l14 14M7-7l-14 14" stroke="#C2385F" stroke-width="3.5" stroke-linecap="round"/></g>`;
+const svg=(h,inner)=>`<svg viewBox="0 0 520 ${h}" role="img">${inner}</svg>`;
+const A='#FFD6E7',B='#C9EFE0',PINK='#FF9EC4',MINT='#8FDCC0';
+document.getElementById('nowFig').innerHTML=svg(230,cloud(300,14,210,206)+dev(70,100,'孩子的平板',A)+dev(190,100,'你的手機',A,'📱')+arr(104,90,352,116)+arr(224,110,352,124)+doc(405,120,'第一個家庭','小狗：小橘',PINK));
+
+const opts=[
+ {id:1,cls:'ok',tag:'✅ 可行・最安全',t:'一人一台裝置，各自一個家庭代碼',how:'第二個小孩用自己的平板或手機打開他的連結。',fig:svg(300,cloud(300,14,210,276)+dev(70,62,'小孩 A 的平板',A)+dev(70,200,'小孩 B 的平板',B)+arr(104,58,352,90)+arr(104,196,352,210)+doc(405,94,'代碼 A','小狗 A',PINK)+doc(405,214,'JGKLWAT7','小狗 B',MINT)),
+  good:['不用改程式，現在就能用','兩邊互不干擾，各自也能同步到家長手機'],care:['需要兩台裝置'],test:'測試 1：兩台全新裝置各建一個家庭，雲端兩份資料分開 ✅'},
+ {id:2,cls:'ok',tag:'✅ 可行・共用一台',t:'同一台平板，用兩個不同的瀏覽器',how:'小孩 A 用 Safari，小孩 B 用 Chrome（各自「加入主畫面」，就是兩個圖示）。每個瀏覽器各記各的家庭代碼。',fig:svg(250,cloud(300,14,210,226)+`<rect x="14" y="20" width="160" height="210" rx="18" fill="#F4EEF2" stroke="${ink}" stroke-width="3"/><text x="94" y="44" text-anchor="middle" font-size="14" font-weight="700" fill="${ink}">同一台平板</text>`+brw(94,92,'Safari：小孩 A',A)+brw(94,176,'Chrome：小孩 B',B)+arr(156,92,352,76)+arr(156,176,352,180)+doc(405,80,'代碼 A','小狗 A',PINK)+doc(405,180,'代碼 B','小狗 B',MINT)),
+  good:['不用改程式','兩個瀏覽器的存檔是分開的，不會互相蓋掉'],care:['要提醒孩子點自己的圖示','平板要裝第二個瀏覽器（例如 Chrome）'],test:'測試 1、4：不同瀏覽器的存檔各自獨立，雲端兩份資料分開 ✅'},
+ {id:3,cls:'no',tag:'❌ 不建議',t:'同一個瀏覽器，用兩個連結切換',how:'打開 #代碼A 就是小孩 A，打開 #代碼B 就變小孩 B。',fig:svg(250,cloud(300,14,210,226)+dev(70,120,'同一個瀏覽器',A,'🔁')+arr(104,110,352,76)+arr(104,130,352,180,'#C2385F',1)+doc(405,80,'代碼 A','小狗 A',PINK)+doc(405,180,'代碼 B','被蓋成小狗 A',MINT)+bad(470,212)),
+  good:['不用改程式；網路正常時切換是對的（測試 2、3）'],care:['網路慢時，切過去的那幾秒畫面還是上一個小孩；這時孩子一按，上一個小孩的進度就會蓋掉另一個小孩的雲端存檔','同時開兩個分頁也容易搞混'],test:'測試 6：讓網路慢 10 秒、中間按一下 → 雲端的小孩 B 被改成小孩 A ❌（已實際發生）'},
+ {id:4,cls:'warn',tag:'⚠️ 小心使用',t:'家長設定裡「換成別的家庭代碼」',how:'家長設定 → 家庭與裝置 → 換成別的家庭代碼 → 輸入另一個小孩的 8 碼。',fig:svg(250,cloud(300,14,210,226)+dev(70,120,'同一台裝置',A,'⚙️')+arr(104,110,352,76)+arr(104,130,352,180,'#B7791F',1)+doc(405,80,'代碼 A','小狗 A',PINK)+doc(405,180,'代碼 B','小狗 B',MINT)),
+  good:['不用改程式，遊戲已經有這個按鈕'],care:['和方案 3 是同一個切換方式，網路慢時一樣可能蓋掉','每次都要輸入 8 碼，對家長比較麻煩'],test:'用的是和測試 6 同一段程式：輸入代碼後馬上接上，雲端資料還沒下來前存檔，一樣會有風險 ⚠️'},
+];
+const code=[
+ {id:5,cls:'ok',tag:'🛠 建議・要改程式',t:'家長設定加「切換小孩」選單',how:'記住兩個家庭代碼，點名字就切換。切換時先蓋上「載入中」畫面，等雲端資料下來才能玩，就不會蓋錯人。',fig:svg(250,cloud(300,14,210,226)+`<rect x="14" y="40" width="160" height="170" rx="18" fill="#F4EEF2" stroke="${ink}" stroke-width="3"/><text x="94" y="64" text-anchor="middle" font-size="14" font-weight="700" fill="${ink}">切換小孩</text>`+brw(94,104,'👦 小孩 A',A)+brw(94,166,'👧 小孩 B',B)+arr(156,104,352,76)+arr(156,166,352,180)+doc(405,80,'代碼 A','小狗 A',PINK)+doc(405,180,'代碼 B','小狗 B',MINT)),
+  good:['Firebase 完全不用動，還是一個小孩一份文件','一台平板點一下就換，也修好方案 3 的覆蓋問題'],care:['要改 index.html（遊戲程式）'],test:'測試 2、3：用代碼讀取和寫入另一個家庭都可以（讀取 200、寫入成功）✅'},
+ {id:6,cls:'warn',tag:'🛠 可行但要注意',t:'一個家庭代碼放好幾隻小狗',how:'同一份 families/代碼 文件裡放 kids:[小孩A, 小孩B]，在遊戲裡選「我是誰」。',fig:svg(250,cloud(300,14,210,226)+dev(70,120,'任何裝置',A,'👦👧')+arr(104,120,352,130)+`<g transform="translate(405 130)"><path d="M-60-80h88l32 32v128h-120z" fill="#fff" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/><text x="0" y="-52" text-anchor="middle" font-size="12" fill="#7A5A6A">families/代碼</text><rect x="-44" y="-36" width="88" height="40" rx="8" fill="${PINK}" stroke="${ink}" stroke-width="2"/><text x="0" y="-10" text-anchor="middle" font-size="13" font-weight="700" fill="${ink}">小狗 A</text><rect x="-44" y="14" width="88" height="40" rx="8" fill="${MINT}" stroke="${ink}" stroke-width="2"/><text x="0" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="${ink}">小狗 B</text></g>`),
+  good:['Firebase 結構不用改（一樣是 families/代碼 一份文件）','一個代碼管全家，家長只要記一個'],care:['兩個小孩<b>同時</b>在兩台裝置玩，存檔會互相蓋掉（整份文件一起存）','要改的程式最多（存檔格式、選小孩畫面）'],test:'測試 7：把兩個小孩寫進同一份文件，規則允許（200）✅；一個小孩的存檔約 17 KB（紀錄存滿時），一份文件上限 1 MB，放幾十個都夠'},
+ {id:7,cls:'ok',tag:'🛠 加分功能',t:'家長總覽：一頁看所有小孩的進度',how:'家長手機記住幾個代碼，只讀取不寫入，顯示每隻小狗的等級、考卷、星星。',fig:svg(250,cloud(300,14,210,226)+dev(70,120,'家長手機',A,'📊')+arr(104,110,352,76,'#3E9B78',1)+arr(104,130,352,180,'#3E9B78',1)+doc(405,80,'代碼 A','只讀',PINK)+doc(405,180,'代碼 B','只讀',MINT)),
+  good:['只讀取，完全不會蓋到小孩的存檔','可以和方案 1、2、5 一起用'],care:['要做一個新頁面'],test:'用代碼讀取單一家庭可以（不存在回 404、存在回 200）；列出全部家庭會被擋（403），所以一定要知道代碼 ✅'},
+];
+const card=o=>`<div class="card ${o.cls}"><div class="top"><h3>方案 ${o.id}：${o.t}</h3><span class="tag">${o.tag}</span></div>${o.fig}<div>${o.how}</div><ul>${o.good.map(x=>`<li>👍 ${x}</li>`).join('')}${o.care.map(x=>`<li>⚠️ ${x}</li>`).join('')}</ul><div class="test">${o.test}</div></div>`;
+document.getElementById('noCode').innerHTML=opts.map(card).join('');
+document.getElementById('needCode').innerHTML=code.map(card).join('');
+const T=[['1','兩台全新裝置各自建立家庭','兩份資料分開：X＝測試小A、Y＝測試小B','ok','通過'],
+ ['2','同一個瀏覽器用 #Y 連結切換（網路正常）','畫面變成小B，雲端 X、Y 都沒被改','ok','通過'],
+ ['3','再用 #X 切回來','畫面回到小A，雲端都正確','ok','通過'],
+ ['4','同一個瀏覽器開兩個分頁，一個 X、一個 Y','各自顯示正確，存檔沒有串到另一個','ok','通過'],
+ ['6','切到 Y 時網路慢 10 秒，中間按了一下','畫面一直是小A，雲端的 Y 被改成「測試小A」','no','會蓋掉'],
+ ['7','同一份文件放兩個小孩','寫入成功（200），讀回 kids 有 2 個','ok','通過'],
+ ['—','列出所有家庭','被規則擋下（403）：別人看不到你有哪些家庭','ok','安全'],
+ ['—','刪除家庭','被規則擋下（403）：別人刪不掉你的資料','ok','安全'],
+ ['—','存檔大小','一個小孩約 1.7 KB（新的）～17 KB（紀錄存滿），上限 1 MB','ok','很夠']];
+document.getElementById('tests').innerHTML='<tr><th>#</th><th>測了什麼</th><th>結果</th><th></th></tr>'+T.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="res ${r[3]}">${r[4]}</td></tr>`).join('');
+}
+</script>
+</body></html>
