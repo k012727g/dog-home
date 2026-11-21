@@ -61,6 +61,14 @@ th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;verti
 <h2>要改遊戲程式，但不用改 Firebase 結構的方案</h2>
 <div class="cards" id="needCode"></div>
 
+<h2>抽獎照片：兩個小孩會互相影響嗎？</h2>
+<div class="fig" id="photoFig"></div>
+<ul style="margin-top:10px">
+  <li><b>照片檔案放在 GitHub 的 <code>photos/</code> 資料夾，所有家庭共用同一個資料夾。</b>Firebase 只記每個獎品的「檔名」（中獎紀錄一筆約 110 bytes），所以照片再多也不會讓雲端存檔變大。</li>
+  <li><b>每個家庭有自己的獎品清單和剩餘數量</b>，用哪張照片當獎品也是各自選的。</li>
+</ul>
+<div class="cards" id="photoCards"></div>
+<div class="scroll" style="margin-top:14px"><table id="photoTable"></table></div>
 <h2>我對你的資料庫做的測試</h2>
 <div class="scroll"><table id="tests"></table></div>
 <div class="note"><b>測試留下的東西：</b>兩個測試家庭 <code>6CZ5EXUA</code>、<code>BJCHLT29</code>。你的 Firestore 規則不允許刪除（我試過，回 403），這是好事，代表別人也刪不掉你的資料。它們各只有約 2 KB，不影響使用。想清掉的話，可以到 Firebase 主控台 → Firestore → families 手動刪除。<br>第二個小孩的家庭 <code>JGKLWAT7</code> 和你原本的家庭，我都沒有動。</div>
@@ -69,6 +77,7 @@ th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;verti
 <ol>
   <li><b>現在：</b>第二個小孩如果有自己的平板，就用方案 1（連結已經開好：<a href="https://k012727g.github.io/dog-home/#JGKLWAT7">k012727g.github.io/dog-home/#JGKLWAT7</a>）。如果要共用一台平板，就用方案 2：一個小孩用 Safari，另一個用 Chrome。</li>
   <li><b>不要</b>在同一個瀏覽器裡用兩個連結切換兩個小孩（方案 3）。</li>
+  <li><b>抽獎照片：</b>兩個小孩的實體獎品不要放同一個（各挑各的照片）；檔名前面加名字比較好分，例如「小A-樂高.jpg」；換獎品時上傳新照片，不要刪掉或改名還在用的照片。</li>
   <li><b>之後：</b>想要一台平板點一下就切換，建議做方案 5「切換小孩」。這要改遊戲程式（index.html），但不用改 Firebase。</li>
 </ol>
 </div>
@@ -107,6 +116,15 @@ const code=[
 const card=o=>`<div class="card ${o.cls}"><div class="top"><h3>方案 ${o.id}：${o.t}</h3><span class="tag">${o.tag}</span></div>${o.fig}<div>${o.how}</div><ul>${o.good.map(x=>`<li>👍 ${x}</li>`).join('')}${o.care.map(x=>`<li>⚠️ ${x}</li>`).join('')}</ul><div class="test">${o.test}</div></div>`;
 document.getElementById('noCode').innerHTML=opts.map(card).join('');
 document.getElementById('needCode').innerHTML=code.map(card).join('');
+document.getElementById('photoFig').innerHTML=svg(270,`<rect x="10" y="40" width="150" height="190" rx="18" fill="#FFF7EC" stroke="${ink}" stroke-width="3"/><text x="85" y="66" text-anchor="middle" font-size="14" font-weight="700" fill="${ink}">GitHub photos/</text>`+[0,1,2,3].map(i=>`<g transform="translate(${40+(i%2)*60} ${94+Math.floor(i/2)*66})"><rect x="-22" y="-20" width="44" height="44" rx="6" fill="${['#FFD6E7','#C9EFE0','#FFF3B0','#DDEBFA'][i]}" stroke="${ink}" stroke-width="2.5"/><text x="0" y="8" text-anchor="middle" font-size="20">${['🧸','🧩','🚗','🎨'][i]}</text></g>`).join('')+`<text x="85" y="218" text-anchor="middle" font-size="12" fill="#7A5A6A">照片檔案（大家共用）</text>`+cloud(300,10,210,250)+arr(160,110,352,90)+arr(160,150,352,190)+`<g transform="translate(405 92)"><rect x="-56" y="-38" width="112" height="76" rx="10" fill="#fff" stroke="${ink}" stroke-width="3"/><text x="0" y="-16" text-anchor="middle" font-size="13" font-weight="700" fill="${ink}">小孩 A 的獎品</text><text x="0" y="6" text-anchor="middle" font-size="12" fill="${ink}">🧸 剩 1 個</text><text x="0" y="26" text-anchor="middle" font-size="12" fill="${ink}">🧩 剩 2 個</text></g><g transform="translate(405 196)"><rect x="-56" y="-38" width="112" height="76" rx="10" fill="#fff" stroke="${ink}" stroke-width="3"/><text x="0" y="-16" text-anchor="middle" font-size="13" font-weight="700" fill="${ink}">小孩 B 的獎品</text><text x="0" y="6" text-anchor="middle" font-size="12" fill="#C2385F">🧸 剩 1 個 ⚠️</text><text x="0" y="26" text-anchor="middle" font-size="12" fill="${ink}">🚗 剩 1 個</text></g><text x="405" y="252" text-anchor="middle" font-size="12" fill="#C2385F">同一隻 🧸 在兩邊各算 1 個</text>`);
+const pc=[
+ {id:'P-1',cls:'ok',tag:'✅ 不用改程式',t:'每個小孩挑不同的照片當獎品',how:'家長設定 → 獎品 → 用照片批次新增，只勾選要給這個小孩的照片。檔名前面加名字更好分，例如「小A-樂高.jpg」（顯示時會去掉 .jpg）。',good:['兩個小孩的獎品和數量完全分開','現在就能做'],care:['同一個實體獎品不要同時放在兩邊'],test:'測試 P1：同一張照片兩個家庭都能用；所以「不要重複」要靠家長挑選 ✅',fig:''},
+ {id:'P-2',cls:'warn',tag:'⚠️ 注意',t:'換照片：上傳新的，不要刪或改名',how:'照片被刪掉或改名，所有用到它的家庭都會受影響。要換獎品就上傳新照片，再到獎品那裡「換照片」。',good:['就算不小心刪了，遊戲也不會壞：背包顯示禮物圖示，家長設定會提示重選'],care:['兩個小孩的獎品可能同時沒有照片','照片放在公開的 GitHub，知道網址的人看得到；不要放有小孩臉或家裡地址的照片'],test:'測試 P2：刪掉的照片 → 禮物圖示＋「照片不見了，重選」✅',fig:''},
+ {id:'P-3',cls:'ok',tag:'🛠 要改程式・可行',t:'共用獎品庫（兄弟姊妹搶同一批獎品）',how:'多開一個家庭代碼，只用來放「共用獎品和數量」。兩個小孩抽獎時都扣這一份，就不會重複抽到同一個實體獎品。',good:['Firebase 結構不用改（一樣是 families/代碼 一份文件）','真的實體獎品只會被抽走一次'],care:['要改 index.html；兩個小孩同一秒抽獎時，要用 Firestore 的「交易」才不會算錯'],test:'測試 7：families/代碼 可以存任何格式的內容（寫入 200）✅；「交易」還沒實測，要等改程式時再測',fig:''},
+ {id:'P-4',cls:'ok',tag:'🛠 要改程式・可行',t:'每個小孩一個照片子資料夾',how:'photos/小A/、photos/小B/，各自的獎品只從自己的資料夾選。',good:['家長整理照片最清楚','Firebase 不用改'],care:['目前程式只讀 photos/ 最上層，子資料夾會被略過，要改程式'],test:'程式檢查：照片清單只取 type=file，子資料夾會被跳過；GitHub 可以讀子資料夾，所以改了就能用 ✅',fig:''}];
+document.getElementById('photoCards').innerHTML=pc.map(o=>card(o).replace('方案 '+o.id,o.id)).join('');
+const PT=[['方案','抽獎照片怎麼樣'],['1、2、4、5（一個小孩一個家庭）','照片共用、獎品和數量各自一份。要避免兩邊放同一個實體獎品（P-1），或做共用獎品庫（P-3）。'],['3（同瀏覽器切換）','如果蓋錯存檔，獎品數量和中獎紀錄也會一起被蓋掉 ❌'],['6（一個家庭放多隻小狗）','可以讓全家共用一份獎品和數量；但兩個小孩同時在兩台裝置抽獎，會互相蓋掉 ⚠️'],['7（家長總覽）','可以一次看所有小孩的中獎紀錄和剩餘數量，只讀取 ✅']];
+document.getElementById('photoTable').innerHTML=PT.map((r,i)=>i?`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`:`<tr><th>${r[0]}</th><th>${r[1]}</th></tr>`).join('');
 const T=[['1','兩台全新裝置各自建立家庭','兩份資料分開：X＝測試小A、Y＝測試小B','ok','通過'],
  ['2','同一個瀏覽器用 #Y 連結切換（網路正常）','畫面變成小B，雲端 X、Y 都沒被改','ok','通過'],
  ['3','再用 #X 切回來','畫面回到小A，雲端都正確','ok','通過'],
@@ -115,6 +133,10 @@ const T=[['1','兩台全新裝置各自建立家庭','兩份資料分開：X＝�
  ['7','同一份文件放兩個小孩','寫入成功（200），讀回 kids 有 2 個','ok','通過'],
  ['—','列出所有家庭','被規則擋下（403）：別人看不到你有哪些家庭','ok','安全'],
  ['—','刪除家庭','被規則擋下（403）：別人刪不掉你的資料','ok','安全'],
+ ['P1','兩個小孩的獎品用同一張照片（IMG_2766.jpeg）','兩邊的背包都正常顯示照片','ok','通過'],
+ ['P2','獎品的照片被刪掉或改名','背包改顯示禮物圖示；家長設定出現「照片不見了，重選」','ok','有提示'],
+ ['P3','抽中獎品時存了什麼','只存檔名，一筆約 110 bytes','ok','很小'],
+ ['P4','兩個家庭放同一個實體獎品','各算各的數量，兩個小孩都可能抽到同一個','no','要注意'],
  ['—','存檔大小','一個小孩約 1.7 KB（新的）～17 KB（紀錄存滿），上限 1 MB','ok','很夠']];
 document.getElementById('tests').innerHTML='<tr><th>#</th><th>測了什麼</th><th>結果</th><th></th></tr>'+T.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="res ${r[3]}">${r[4]}</td></tr>`).join('');
 }
