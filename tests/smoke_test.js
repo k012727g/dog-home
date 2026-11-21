@@ -17,7 +17,8 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const SITE = 'https://k012727g.github.io/dog-home/';
+// SITE 可以用環境變數換掉，用來模擬「不是 github.io 的預覽網址」（請求一樣全部在本機處理）
+const SITE = process.env.SITE || 'https://k012727g.github.io/dog-home/';
 const API = 'https://api.github.com/repos/k012727g/dog-home/contents/photos';
 const PIN = '0127';
 
@@ -44,7 +45,7 @@ async function runSuite(target) {
     hosts.add(new URL(url).host);
     if (url.startsWith(API)) return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(photoListing()) });
     if (url.startsWith(SITE)) {
-      const rel = decodeURIComponent(new URL(url).pathname.replace('/dog-home/', ''));
+      const rel = decodeURIComponent(url.slice(SITE.length).split(/[?#]/)[0]);
       const f = path.join(ROOT, rel);
       if (f.startsWith(ROOT) && fs.existsSync(f) && fs.statSync(f).isFile())
         return route.fulfill({ status: 200, contentType: MIME[path.extname(f).toLowerCase()] || 'application/octet-stream', body: fs.readFileSync(f) });
@@ -266,7 +267,7 @@ async function runGallery(file) {
   const browser = await chromium.launch(); const page = await browser.newPage(); const errs = [];
   page.on('pageerror', e => errs.push(String(e.message || e)));
   await page.route('**/*', r => { const u = r.request().url(); if (!u.startsWith(SITE)) return r.abort();
-    const f = path.join(ROOT, decodeURIComponent(new URL(u).pathname.replace('/dog-home/', '')));
+    const f = path.join(ROOT, decodeURIComponent(u.slice(SITE.length).split(/[?#]/)[0]));
     return fs.existsSync(f) ? r.fulfill({ status: 200, contentType: MIME[path.extname(f).toLowerCase()] || 'text/plain', body: fs.readFileSync(f) }) : r.fulfill({ status: 404, body: '' }); });
   let ok = false, detail = '';
   try { await page.goto(SITE + file, { waitUntil: 'load' }); await page.waitForTimeout(500);
@@ -301,7 +302,7 @@ function compare(a, b) {
   const target = args[0] || 'beta/index_beta_V2.html';
   const r = await runSuite(target);
   const out = path.join(__dirname, 'results'); fs.mkdirSync(out, { recursive: true });
-  const f = path.join(out, path.basename(target).replace(/\.html$/, '') + '.json');
+  const f = path.join(out, path.basename(target).replace(/\.html$/, '') + (process.env.SITE ? '@preview' : '') + '.json');
   fs.writeFileSync(f, JSON.stringify(r, null, 1));
   console.log(table(r)); console.log('結果檔：' + path.relative(ROOT, f));
   process.exit(r.steps.every(s => s.ok) ? 0 : 1);
