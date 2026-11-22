@@ -1,6 +1,6 @@
 {
  "target": "beta/index_beta_V4.html",
- "at": "2026-11-21T16:48:47.750Z",
+ "at": "2026-11-22T01:53:46.037Z",
  "steps": [
   {
    "id": "L01",
@@ -281,8 +281,8 @@
   {
    "id": "G01",
    "name": "美術總覽頁開啟（gallery_beta_V4.html）",
-   "ok": false,
-   "detail": "EXCEPTION page.evaluate: TypeError: Cannot read properties of null (reading 'children')"
+   "ok": true,
+   "detail": "內容區塊>0=true 錯誤框=false"
   }
  ],
  "extra": [

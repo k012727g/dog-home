@@ -1,0 +1,21 @@
+{
+ "說明": "小狗的家的版本總表。由 node tools/status.js --fix 依實際檔案產生，不要手改。各種檔案的版號各自往上加；測試網址用 ?art=V?&content=V? 組合。最新測試版看 beta/latest.html。",
+ "updated": "2026-11-22",
+ "production": {
+  "index": 4,
+  "art": 4,
+  "content": 4,
+  "gallery": 4
+ },
+ "latest": {
+  "index": 5,
+  "art": 4,
+  "content": 4,
+  "gallery": 4
+ },
+ "next": {
+  "index": 6,
+  "art": 5,
+  "content": 5
+ }
+}

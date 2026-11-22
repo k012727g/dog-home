@@ -255,7 +255,15 @@ async function runSuite(target) {
     const info = await text('#bpInfo'); await click('#bpClose');
     return { ok: !!info && /連不上|失敗|GitHub/.test(info), detail: info }; });
 
-  const gallery = target.replace(/index(_beta_V[\w.-]+)?\.html$/, (m, s) => 'gallery' + (s || '') + '.html');
+  // 美術總覽：同版號的 gallery；沒有的話用最新的 gallery，並帶上同樣的 art／content 版本
+  const [tFile, tQuery = ''] = target.split('?');
+  let gallery = tFile.replace(/index(_beta_V[\w.-]+)?\.html$/, (m, s) => 'gallery' + (s || '') + '.html');
+  if (!fs.existsSync(path.join(ROOT, gallery))) {
+    const dir = path.dirname(tFile), n = (tFile.match(/_beta_V(\d+)/) || [])[1];
+    const g = fs.readdirSync(path.join(ROOT, dir)).map(f => +(f.match(/^gallery_beta_V(\d+)\.html$/) || [])[1]).filter(Boolean).sort((a, b) => a - b).pop();
+    const q = new URLSearchParams(tQuery); if (n) { if (!q.has('art')) q.set('art', 'V' + n); if (!q.has('content')) q.set('content', 'V' + n); }
+    gallery = path.join(dir, `gallery_beta_V${g}.html`) + '?' + q.toString();
+  } else if (tQuery) gallery += '?' + tQuery;
   await browser.close();
   // ===== G 美術總覽頁（另開瀏覽器）=====
   const g = await runGallery(gallery);
@@ -275,7 +283,7 @@ async function runGallery(file) {
     ok = !r.err && r.n > 0 && errs.length === 0; detail = `內容區塊>0=${r.n > 0} 錯誤框=${r.err}${errs.length ? ' JS錯誤:' + errs.join('/').slice(0, 120) : ''}`;
   } catch (e) { detail = 'EXCEPTION ' + e.message.split('\n')[0]; }
   await browser.close();
-  return { id: 'G01', name: '美術總覽頁開啟（' + file.split('/').pop() + '）', ok, detail };
+  return { id: 'G01', name: '美術總覽頁開啟（' + file.split('/').pop().split('?')[0] + '）', ok, detail };
 }
 
 function table(r) {
@@ -302,7 +310,7 @@ function compare(a, b) {
   const target = args[0] || 'beta/index_beta_V2.html';
   const r = await runSuite(target);
   const out = path.join(__dirname, 'results'); fs.mkdirSync(out, { recursive: true });
-  const f = path.join(out, path.basename(target).replace(/\.html$/, '') + (process.env.SITE ? '@preview' : '') + '.json');
+  const f = path.join(out, path.basename(target.split('?')[0]).replace(/\.html$/, '') + (process.env.SITE ? '@preview' : '') + '.json');
   fs.writeFileSync(f, JSON.stringify(r, null, 1));
   console.log(table(r)); console.log('結果檔：' + path.relative(ROOT, f));
   process.exit(r.steps.every(s => s.ok) ? 0 : 1);
