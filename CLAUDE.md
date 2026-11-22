@@ -75,6 +75,7 @@ node tests/smoke_test.js --compare 舊.json 新.json                      # 每�
 | **最新版本** | https://k012727g.github.io/dog-home/beta/latest.html | 永遠指到最新測試版、正式版、美術總覽（讀 versions.json） | 2026-11-22 新增 |
 | 正式版 | https://k012727g.github.io/dog-home/ | 孩子玩的版本（目前 V4），會同步 Firebase | 正常 |
 | 正式版 | https://k012727g.github.io/dog-home/gallery.html | 美術總覽（art V4、content V4） | 正常 |
+| 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V5.html?art=V4&content=V5 | content V5：小紅帽依故事稿重寫（其他 16 本同 V4）；要重錄 red-2～5、7、8、10～12，red-6 用舊的 red-7 | 2026-11-22 新增，等 Kevin 試玩 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V5.html?art=V4&content=V4 | V5：只更新開發筆記與任務 | 等 Kevin 試玩 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V4.html | 和正式版相同的 V4 | 正常 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V3.html | V3：照片修正＋家長設定分頁 | 舊版 |
@@ -83,7 +84,7 @@ node tests/smoke_test.js --compare 舊.json 新.json                      # 每�
 | 測試版 | https://k012727g.github.io/dog-home/beta/gallery_beta_V3.html | V3 美術總覽（V1、V2 也有） | 舊版 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/gallery_beta_V4.html | V4 美術總覽（美術、繪本對話用；可加 ?art=V5、?content=V5） | 2026-11-22 補上，上傳後可開 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/story_voice_test.html | 故事聲音測試（比較不同聲音） | 正常 |
-| 繪本稿 | https://k012727g.github.io/dog-home/beta/story/story_preview.html | 繪本故事稿預覽：寫作規則、美術標注格式、每本的大綱／分鏡／試讀（讀 `beta/story/*.md`） | 2026-11-22 新增（小紅帽 V1） |
+| 繪本稿 | https://k012727g.github.io/dog-home/beta/story/story_preview.html | 繪本故事稿預覽：寫作規則、美術標注格式、每本的大綱／分鏡／試讀（讀 `beta/story/*.md`） | 2026-11-22：17 本故事稿 V1（小紅帽已寫進 content V5，其他 16 本等 Kevin 看） |
 | 設計頁 | https://k012727g.github.io/dog-home/beta/design/art_directions.html | 三個美術方向比較 | 正常 |
 | 設計頁 | https://k012727g.github.io/dog-home/beta/design/art_V4_review.html | 美術 V4 總檢查 | 正常 |
 | 設計頁 | https://k012727g.github.io/dog-home/beta/design/pup_V4_preview.html | 主角小狗 V4 預覽 | 正常 |
