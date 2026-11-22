@@ -71,11 +71,11 @@ th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;verti
 <div class="scroll" style="margin-top:14px"><table id="photoTable"></table></div>
 <h2>我對你的資料庫做的測試</h2>
 <div class="scroll"><table id="tests"></table></div>
-<div class="note"><b>測試留下的東西：</b>兩個測試家庭 <code>6CZ5EXUA</code>、<code>BJCHLT29</code>。你的 Firestore 規則不允許刪除（我試過，回 403），這是好事，代表別人也刪不掉你的資料。它們各只有約 2 KB，不影響使用。想清掉的話，可以到 Firebase 主控台 → Firestore → families 手動刪除。<br>第二個小孩的家庭 <code>JGKLWAT7</code> 和你原本的家庭，我都沒有動。</div>
+<div class="note"><b>測試留下的東西：</b>兩個測試家庭 <code>6C****</code>、<code>BJ****</code>。你的 Firestore 規則不允許刪除（我試過，回 403），這是好事，代表別人也刪不掉你的資料。它們各只有約 2 KB，不影響使用。想清掉的話，可以到 Firebase 主控台 → Firestore → families 手動刪除。<br>第二個小孩的家庭 <code>JG****</code> 和你原本的家庭，我都沒有動。</div>
 
 <h2>我的建議</h2>
 <ol>
-  <li><b>現在：</b>第二個小孩如果有自己的平板，就用方案 1（連結已經開好：<a href="https://k012727g.github.io/dog-home/#JGKLWAT7">k012727g.github.io/dog-home/#JGKLWAT7</a>）。如果要共用一台平板，就用方案 2：一個小孩用 Safari，另一個用 Chrome。</li>
+  <li><b>現在：</b>第二個小孩如果有自己的平板，就用方案 1（連結已經開好：<a href="https://k012727g.github.io/dog-home/#JG****">k012727g.github.io/dog-home/#JG****</a>）。如果要共用一台平板，就用方案 2：一個小孩用 Safari，另一個用 Chrome。</li>
   <li><b>不要</b>在同一個瀏覽器裡用兩個連結切換兩個小孩（方案 3）。</li>
   <li><b>抽獎照片：</b>兩個小孩的實體獎品不要放同一個（各挑各的照片）；檔名前面加名字比較好分，例如「小A-樂高.jpg」；換獎品時上傳新照片，不要刪掉或改名還在用的照片。</li>
   <li><b>之後：</b>想要一台平板點一下就切換，建議做方案 5「切換小孩」。這要改遊戲程式（index.html），但不用改 Firebase。</li>
@@ -96,7 +96,7 @@ const A='#FFD6E7',B='#C9EFE0',PINK='#FF9EC4',MINT='#8FDCC0';
 document.getElementById('nowFig').innerHTML=svg(230,cloud(300,14,210,206)+dev(70,100,'孩子的平板',A)+dev(190,100,'你的手機',A,'📱')+arr(104,90,352,116)+arr(224,110,352,124)+doc(405,120,'第一個家庭','小狗：小橘',PINK));
 
 const opts=[
- {id:1,cls:'ok',tag:'✅ 可行・最安全',t:'一人一台裝置，各自一個家庭代碼',how:'第二個小孩用自己的平板或手機打開他的連結。',fig:svg(300,cloud(300,14,210,276)+dev(70,62,'小孩 A 的平板',A)+dev(70,200,'小孩 B 的平板',B)+arr(104,58,352,90)+arr(104,196,352,210)+doc(405,94,'代碼 A','小狗 A',PINK)+doc(405,214,'JGKLWAT7','小狗 B',MINT)),
+ {id:1,cls:'ok',tag:'✅ 可行・最安全',t:'一人一台裝置，各自一個家庭代碼',how:'第二個小孩用自己的平板或手機打開他的連結。',fig:svg(300,cloud(300,14,210,276)+dev(70,62,'小孩 A 的平板',A)+dev(70,200,'小孩 B 的平板',B)+arr(104,58,352,90)+arr(104,196,352,210)+doc(405,94,'代碼 A','小狗 A',PINK)+doc(405,214,'JG****','小狗 B',MINT)),
   good:['不用改程式，現在就能用','兩邊互不干擾，各自也能同步到家長手機'],care:['需要兩台裝置'],test:'測試 1：兩台全新裝置各建一個家庭，雲端兩份資料分開 ✅'},
  {id:2,cls:'ok',tag:'✅ 可行・共用一台',t:'同一台平板，用兩個不同的瀏覽器',how:'小孩 A 用 Safari，小孩 B 用 Chrome（各自「加入主畫面」，就是兩個圖示）。每個瀏覽器各記各的家庭代碼。',fig:svg(250,cloud(300,14,210,226)+`<rect x="14" y="20" width="160" height="210" rx="18" fill="#F4EEF2" stroke="${ink}" stroke-width="3"/><text x="94" y="44" text-anchor="middle" font-size="14" font-weight="700" fill="${ink}">同一台平板</text>`+brw(94,92,'Safari：小孩 A',A)+brw(94,176,'Chrome：小孩 B',B)+arr(156,92,352,76)+arr(156,176,352,180)+doc(405,80,'代碼 A','小狗 A',PINK)+doc(405,180,'代碼 B','小狗 B',MINT)),
   good:['不用改程式','兩個瀏覽器的存檔是分開的，不會互相蓋掉'],care:['要提醒孩子點自己的圖示','平板要裝第二個瀏覽器（例如 Chrome）'],test:'測試 1、4：不同瀏覽器的存檔各自獨立，雲端兩份資料分開 ✅'},
