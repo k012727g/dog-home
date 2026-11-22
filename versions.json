@@ -10,13 +10,13 @@
  "latest": {
   "index": 7,
   "art": 6,
-  "content": 5,
+  "content": 6,
   "gallery": 4
  },
  "next": {
   "index": 8,
   "art": 7,
-  "content": 6
+  "content": 7
  },
  "indexes": [
   {
@@ -47,12 +47,12 @@
   {
    "v": 6,
    "art": 6,
-   "content": 5
+   "content": 6
   },
   {
    "v": 7,
    "art": 6,
-   "content": 5
+   "content": 6
   }
  ],
  "pages": [

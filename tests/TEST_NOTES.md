@@ -117,3 +117,17 @@ node tests/smoke_test.js --compare tests/results/index_beta_V2.json tests/result
 - 375×667、390×844 手動測：一開始小狗；換小飛龍後首頁、等級名稱、英文動作單字圖、報讀文字都變；重新整理後還是小飛龍；換回小狗正常。
 - **還沒測：同步測試**（兩個家庭互不影響、同一家庭兩台裝置跟著換）。要用正式版模式連 Firebase，寫入測試家庭；自動檢查擋下了，要 Kevin 同意才做。
 - 換正式版時，`index.html`、`art.js`、`content.js` 要一起換成 V7、art V5、content V5（content V5 的小紅帽要先重錄，見 AUD-01）。
+
+# content V6：25 本繪本照故事稿（2026-11-22，繪本對話）
+
+- `beta/content_beta_V6.js`：原本 16 本照故事稿改寫（小紅帽同 V5），新增 8 本（turnip、gruff、porridge、pea、wolfboy、crow、elves、wind）。文字和問答從 `beta/story/<書id>_V1.md` 產生，兩邊一定一樣。
+- 畫面：文字意思沒變的頁沿用 V4 的畫面；新角色（山怪、烏鴉、綿羊、小精靈、北風、太陽、大蘿蔔…）先用現有的圖代替，等美術（ART-05）。
+- QPIC 新增 pot、porridge、pea、wind、mother、girl、sheep（先用現有的圖）。
+- 測試：
+  - 每頁 `sc()` 都畫得出來（art V4、art V5 都試）、每本 12 頁、3 題問答、選項都有圖、英文每頁 ≤ 12 字。
+  - 美術總覽 `gallery_beta_V4.html?art=V5&content=V6`：628 張都正常。
+  - 點擊測試 `index_beta_V6.html?art=V5&content=V6` 47/47，和 content V5 每一步一樣。
+  - 圖書館 25 本都顯示（書架往下捲）；新書（拔蘿蔔）翻完 12 頁進問答，沒有錯誤。
+- 注意：改過字的頁，遊戲還會播舊錄音（AUD-02）；新書沒有錄音，用瀏覽器朗讀。
+- 也用最新組合 `index_beta_V7.html?art=V6&content=V6` 測過：47/47，和 content V5 每一步一樣。
+- 去哪裡測：https://k012727g.github.io/dog-home/beta/index_beta_V7.html?art=V6&content=V6
