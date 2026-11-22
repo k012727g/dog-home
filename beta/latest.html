@@ -18,7 +18,8 @@ h1{font-size:1.5rem;margin:6px 0 2px}h2{font-size:1.05rem;margin:22px 0 8px}
 .card{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 14px;margin:8px 0}
 table{width:100%;border-collapse:collapse;font-size:.95rem}td,th{padding:6px 4px;border-bottom:1px dashed var(--line);text-align:left}
 td:first-child{white-space:nowrap}
-a{color:#C2385F}code{background:var(--sky);padding:0 4px;border-radius:4px}
+.links{margin:6px 0;padding-left:20px}.links li{margin:4px 0}
+a{color:#C2385F}code{word-break:break-all;background:var(--sky);padding:0 4px;border-radius:4px}
 .err{background:#FFEBEE;border:2px solid #E53935;border-radius:12px;padding:10px 14px}
 </style>
 </head>
@@ -36,6 +37,8 @@ a{color:#C2385F}code{background:var(--sky);padding:0 4px;border-radius:4px}
   try{const r=await fetch('../versions.json',{cache:'no-store'});if(!r.ok)throw new Error(r.status);v=await r.json()}
   catch(e){upd.textContent='';out.innerHTML='<p class="err">讀不到 versions.json（'+e.message+'）。請重新整理，或告訴主程式對話。</p>';return}
   const L=v.latest,P=v.production,N=v.next;
+  const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const pg=g=>(v.pages||[]).filter(x=>x.group===g);
   const mix=(L.art!==L.index||L.content!==L.index)?`?art=V${L.art}&content=V${L.content}`:'';
   const test=`index_beta_V${L.index}.html${mix}`;
   const gal=`gallery_beta_V${L.gallery}.html?art=V${L.art}&content=V${L.content}`;
@@ -47,6 +50,18 @@ a{color:#C2385F}code{background:var(--sky);padding:0 4px;border-radius:4px}
   <p class="meta">${same?'和正式版相同。':'這是還沒換上正式版的新版本。'}測試版的存檔分開、不連 Firebase，不會影響孩子的進度。家長密碼預設 0127。</p>
   <a class="big" href="../" style="background:#FFE38F">🏠 正式版（孩子玩的，遊戲 V${P.index}・美術 V${P.art}・繪本 V${P.content}）<small>${SITE}</small></a>
   <a class="big" href="${gal}" style="background:#BFE6FF">🎨 美術總覽（美術 V${L.art}・繪本 V${L.content}）<small>${SITE}beta/${gal}</small></a>
+  <h2>📖 繪本</h2>
+  <a class="big" href="story/story_preview.html#story" style="background:#C9EFE0">✍️ 繪本故事稿預覽（寫作規則、大綱、分鏡、試讀）<small>${SITE}beta/story/story_preview.html</small></a>
+  <div class="card"><table>
+    <tr><th>書</th><th>最新故事稿</th></tr>
+    ${(v.stories||[]).length?(v.stories||[]).map(b=>`<tr><td>${esc(b.zh)}</td><td><a href="story/story_preview.html#story/${b.id}/outline">${b.id}_V${b.v}.md</a></td></tr>`).join(''):'<tr><td colspan="2">還沒有故事稿</td></tr>'}
+  </table></div>
+  <ul class="links">
+    <li><a href="story/story_preview.html#rules">寫作規則（STORY_GUIDE.md）</a></li>
+    ${pg('story').filter(x=>x.path!=='story/story_preview.html').map(x=>`<li><a href="${x.path}">${esc(x.title)}</a></li>`).join('')}
+    <li><a href="${gal}">每本繪本每一頁的畫面（美術總覽）</a></li>
+    <li>在遊戲裡看：最新測試版 → 地圖 → 圖書館</li>
+  </ul>
   <h2>給美術對話、繪本對話的檔案</h2>
   <div class="card"><table>
     <tr><th>給誰</th><th>附上這些最新檔案</th><th>交回的檔名</th></tr>
@@ -60,7 +75,13 @@ a{color:#C2385F}code{background:var(--sky);padding:0 4px;border-radius:4px}
     <tr><td>正式版</td><td>V${P.index}</td><td>V${P.art}</td><td>V${P.content}</td></tr>
     <tr><td>最新測試</td><td>V${L.index}</td><td>V${L.art}</td><td>V${L.content}</td></tr>
     <tr><td>下一版</td><td>V${N.index}</td><td>V${N.art}</td><td>V${N.content}</td></tr>
-  </table></div>`;
+  </table></div>
+  <h2>其他網頁</h2>
+  <ul class="links">${pg('design').concat(pg('tool')).map(x=>`<li><a href="${x.path}">${esc(x.title)}</a> <span class="meta">${x.group==='design'?'設計頁':'工具'}</span></li>`).join('')||'<li>沒有</li>'}</ul>
+  <h2>所有測試版本</h2>
+  <ul class="links">${(v.indexes||[]).slice().reverse().map(x=>{const q=(x.art!==x.v||x.content!==x.v)?`?art=V${x.art}&content=V${x.content}`:'';
+    return `<li><a href="index_beta_V${x.v}.html${q}">遊戲 V${x.v}</a> <span class="meta">美術 V${x.art}・繪本 V${x.content}${x.v===P.index?'・＝正式版':''}${x.v===L.index?'・最新':''}</span></li>`}).join('')}</ul>
+  <p class="meta">網頁清單由 <code>node tools/status.js --fix</code> 依 beta/ 的實際檔案產生，新加的網頁會自動出現在這裡。</p>`;
 })();
 </script>
 </body>

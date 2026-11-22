@@ -1610,6 +1610,7 @@ if(DOG_BUILD.beta){var bb=document.getElementById('betaBadge');bb.textContent='B
    【版權原則】不畫任何既有角色（包含三麗鷗角色與其二創）；實體商品照片只由家長自行上傳到 photos/。
    ===================================================================================== */
 const DEV_LOG=[ // 變更紀錄：每次修改加一筆（最新在最上面）
+ {date:'2026-11-22',phase:'G3 圖書館／廚房、維護（2026-11）',done:['OPS-12'],added:['LIB-08','OPS-12'],note:'繪本對話：故事稿流程（先寫 beta/story/<書id>_V?.md，Kevin 看過再改 content.js）、寫作規則 STORY_GUIDE.md、小紅帽 V1、預覽網頁 story_preview.html、三個對話的開工提示 briefs/start_prompt.md（依 git 630a374 補記）；latest.html 自動列出所有網頁與每本書的最新故事稿，tools/status.js 檢查預覽頁書單'},
  {date:'2026-11-22',phase:'維護（2026-11）',done:['FIX-17','OPS-08','OPS-09'],added:['FIX-17','OPS-08','OPS-09','OPS-10','OPS-11','SEC-01','ART-01','LIB-07'],note:'V5（只改開發筆記）：補記 V4 的改動；版本總表 versions.json＋固定網址 beta/latest.html＋開工檢查 tools/status.js；三個對話（主程式／美術／繪本）分工與說明 briefs/；補上 gallery_beta_V4.html；列出等 Kevin 決定的事'},
  {date:'2026-11-21',phase:'美術 V4、圖書館、家庭',done:['ART-02','LIB-03','LIB-06','FAM-01','FAM-02'],added:['ART-02','LIB-06','FAM-01','FAM-02'],note:'（2026-11-22 依 git 紀錄補記）art V4：遊戲＝A 軟糖貼紙、繪本＝B 蠟筆手繪；17 本繪本全部頁面＋108 個單字改用錄好的聲音；繪本加長成每本 12 頁，正式版換成 V4；多個小孩方案說明頁；家長後台「所有存檔」'},
  {date:'2026-11-20',phase:'維護（2026-11）',done:['FIX-15','FIX-16','SET-01','TEST-02','OPS-06'],added:['FIX-15','FIX-16','SET-01','TEST-02','OPS-06'],note:'V3：補回 PHOTO_RE／PHOTO_CACHE（照片清單、用照片新增獎品、選照片恢復）；照片清單失敗時顯示真正原因；家長設定改成 5 個分頁；整理開發筆記（過時的網址與狀態）；新增點擊流程測試 tests/smoke_test.js'},
@@ -1649,6 +1650,8 @@ const DEV_TASKS=[
  {id:'ART-01',phase:'美術 V4',status:'todo',title:'美術對話的畫風：說明寫「接近三麗鷗」，但規格是「不畫既有角色」',note:'等 Kevin 決定；建議：日系可愛感，但造型原創、不像任何三麗鷗角色'},
  {id:'ART-02',phase:'美術 V4',status:'done',title:'art V4：遊戲＝A 軟糖貼紙、繪本＝B 蠟筆手繪；主角小狗重畫；新增 44 個原創圖示',note:'2026-11-20～21（依 git 紀錄補記）'},
  {id:'LIB-06',phase:'G3 圖書館／廚房',status:'done',title:'17 本繪本加長成每本 12 頁（共 204 頁），補畫新道具',note:'2026-11-21（依 git 紀錄補記）'},
+ {id:'LIB-08',phase:'G3 圖書館／廚房',status:'doing',title:'繪本故事稿：每本書先寫 beta/story/<書id>_V?.md（大綱、12 頁分鏡、角色／背景／道具表），Kevin 看過再寫進 content.js',note:'繪本對話負責；已完成：寫作規則、小紅帽 V1；其他 16 本待寫'},
+ {id:'OPS-12',phase:'維護（2026-11）',status:'done',title:'latest.html 自動列出所有網頁、每本書的最新故事稿與所有測試版本；tools/status.js 檢查繪本預覽頁的書單有沒有指到最新稿'},
  {id:'LIB-07',phase:'G3 圖書館／廚房',status:'todo',title:'繪本英文每頁 12 個字以內（目前 5 頁超過，最多 16 個字）',note:'交給繪本對話；文字改了的頁要重新錄音'},
  {id:'FAM-01',phase:'家庭與多個小孩',status:'done',title:'家長後台「所有存檔」：列出用過的家庭代碼，切換時先讀完整存檔，不蓋掉別人的進度',note:'2026-11-21（依 git 紀錄補記）'},
  {id:'FAM-02',phase:'家庭與多個小孩',status:'done',title:'多個小孩方案說明頁（含 Firebase 實測、抽獎照片的影響）',note:'2026-11-21（依 git 紀錄補記）；頁面有完整家庭代碼，見 SEC-01'},

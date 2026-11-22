@@ -65,7 +65,9 @@ node tests/smoke_test.js --compare 舊.json 新.json                      # 每�
 - 遊戲（`index_beta_V?`）、美術（`art_beta_V?`）、繪本（`content_beta_V?`）**各自編號**，不用一樣。
 - 不同版號用網址參數組合：`index_beta_V5.html?art=V6&content=V5`。美術總覽只留一個檔，用 `?art=` 換版本。
 - `versions.json`：正式版、最新測試、下一版。用 `node tools/status.js --fix` 產生，不要手改。
-- **固定網址 https://k012727g.github.io/dog-home/beta/latest.html**：讀 `versions.json`，永遠顯示最新測試版、正式版、美術總覽，以及要給美術、繪本對話的最新檔案和下一版檔名。Kevin 和其他對話都看這一頁。
+- **固定網址 https://k012727g.github.io/dog-home/beta/latest.html**：讀 `versions.json`，永遠顯示最新測試版、正式版、美術總覽、繪本（故事稿預覽、每本書的最新稿、聲音測試）、其他網頁、所有測試版本，以及要給美術、繪本對話的最新檔案和下一版檔名。Kevin 和其他對話都看這一頁。
+- **新增的網頁不用手動加到 latest.html**：`node tools/status.js --fix` 會掃 `beta/` 裡所有 `.html`（依 `<title>` 命名；`story/` 或標題有「繪本／故事」的歸到繪本）和 `beta/story/<書id>_V?.md`，寫進 `versions.json`。所以網頁一定要有 `<title>`。
+- `tools/status.js` 也會檢查 `beta/story/story_preview.html` 的書單有沒有指到每本書的最新稿；沒有就列 ✗，請繪本對話更新（那是繪本對話的檔案）。
 
 | 種類 | 網址 | 內容 | 狀態（2026-11-21） |
 |---|---|---|---|

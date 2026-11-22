@@ -5,7 +5,9 @@
  *
  * 檢查項目：
  *   1. 版本：beta/ 裡每一種檔案的最新版號、正式版實際是哪一版（逐位元比對）、versions.json 有沒有跟上
- *   2. 開發筆記：正式版 index.html 的 DEV_VERSION 是不是正式版的版號、DEV_LOG 之後還有沒有沒記錄的 commit
+ *   2. 開發筆記：正式版 index.html 的 DEV_VERSION 是不是正式版的版號；最新測試版最後一次更新之後，還有沒有沒寫進 DEV_LOG 的 commit
+ *   2b. 網頁與繪本稿：beta/ 裡所有網頁、每本書最新的故事稿（寫進 versions.json，beta/latest.html 會自動列出）；
+ *       繪本稿預覽頁 story_preview.html 的書單有沒有指到最新稿
  *   3. 任務：DEV_TASKS 各狀態數量、等 Kevin 決定的任務
  *   4. git：main 有沒有新 commit、還沒合併的分支、還沒 commit 的改動
  */
@@ -36,16 +38,45 @@ for (const [k, re] of Object.entries(KINDS)) {
   if (production[k] === null) bad(`正式版 ${PROD[k]} 和 beta/ 裡任何一版都不一樣（是不是直接改了正式版、沒留測試檔？）`);
 }
 const next = { index: latest.index + 1, art: latest.art + 1, content: latest.content + 1 };
-const want = { production, latest, next };
+
+// ---------- 1b. 網頁與繪本稿（給 beta/latest.html 自動列出） ----------
+const walk = d => fs.readdirSync(d, { withFileTypes: true }).flatMap(e => e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]);
+const pages = walk(BETA).map(f => path.relative(BETA, f).split(path.sep).join('/'))
+  .filter(f => f.endsWith('.html') && !/^(index|gallery)_beta_V\d+\.html$/.test(f) && f !== 'latest.html').sort()
+  .map(f => {
+    const t = ((fs.readFileSync(path.join(BETA, f), 'utf8').match(/<title>([^<]*)/) || [])[1] || f).replace(/^小狗的家\s*[｜|:：]?\s*/, '').trim();
+    return { path: f, title: t, group: /^story\//.test(f) || /繪本|故事/.test(t) ? 'story' : /^design\//.test(f) ? 'design' : 'tool' };
+  });
+const storyDir = path.join(BETA, 'story'), drafts = {};
+if (fs.existsSync(storyDir)) for (const f of fs.readdirSync(storyDir)) {
+  const m = f.match(/^([a-z0-9]+)_V(\d+)\.md$/); if (m && (!drafts[m[1]] || +m[2] > drafts[m[1]])) drafts[m[1]] = +m[2];
+}
+let books = [];
+const previewFile = path.join(storyDir, 'story_preview.html');
+if (fs.existsSync(previewFile)) {
+  books = [...fs.readFileSync(previewFile, 'utf8').matchAll(/\{id:'([a-z0-9]+)',zh:'([^']+)'(?:,file:'([^']+)')?\}/g)].map(m => ({ id: m[1], zh: m[2], file: m[3] || '' }));
+  let n = 0;
+  for (const [id, v] of Object.entries(drafts)) {
+    const b = books.find(x => x.id === id), want = `${id}_V${v}.md`;
+    if (!b) bad(`繪本稿 ${want} 不在 story_preview.html 的書單裡（請繪本對話加上）`);
+    else if (b.file !== want) bad(`story_preview.html 的書單：${id} 指到 ${b.file || '（沒有）'}，最新稿是 ${want}（請繪本對話更新）`);
+    else n++;
+  }
+  if (n && n === Object.keys(drafts).length) ok(`繪本稿預覽的書單都指到最新稿（${n} 本）`);
+}
+const stories = Object.entries(drafts).sort().map(([id, v]) => ({ id, zh: (books.find(b => b.id === id) || {}).zh || id, v }));
+const maxLe = (list, n) => list.filter(x => x <= n).pop() || null;
+const indexes = versions.index.map(v => ({ v, art: maxLe(versions.art, v), content: maxLe(versions.content, v) }));
+const want = { production, latest, next, indexes, pages, stories };
 
 let vj = null;
 try { vj = JSON.parse(read('versions.json')); } catch (e) { bad('versions.json 不存在或格式錯誤（跑 node tools/status.js --fix）'); }
-const stale = vj && ['production', 'latest', 'next'].some(g => JSON.stringify(vj[g]) !== JSON.stringify(want[g]));
+const stale = vj && Object.keys(want).some(g => JSON.stringify(vj[g]) !== JSON.stringify(want[g]));
 if (process.argv.includes('--fix')) {
   const out = {
     '說明': '小狗的家的版本總表。由 node tools/status.js --fix 依實際檔案產生，不要手改。各種檔案的版號各自往上加；測試網址用 ?art=V?&content=V? 組合。最新測試版看 beta/latest.html。',
     updated: new Date().toISOString().slice(0, 10),
-    production, latest, next,
+    ...want,
   };
   fs.writeFileSync(path.join(ROOT, 'versions.json'), JSON.stringify(out, null, 1) + '\n');
   ok('已重寫 versions.json');
@@ -73,8 +104,11 @@ const betaDev = devInfo('beta/' + BETA_NAME.index(latest.index));
 if (production.index !== null && !new RegExp(`\\bV${production.index}\\b`).test(prodDev.ver))
   bad(`正式版的 DEV_VERSION 寫「${prodDev.ver.split('·').slice(0, 2).join('·').trim()}」，但正式版是 V${production.index}`);
 else ok(`正式版 DEV_VERSION：${prodDev.ver.split('·').slice(0, 2).join('·').trim()}`);
-const after = sh(`git log origin/main --since="${betaDev.lastLog} 23:59:59" --format="%h %ad %s" --date=short`);
-if (after) bad(`最新測試版的 DEV_LOG 停在 ${betaDev.lastLog}，之後有這些 commit 還沒記錄：\n      ` + after.split('\n').join('\n      '));
+// 最新測試版的 index 最後一次被改（也就是 DEV_LOG 最後一次能被更新）之後的 commit，都還沒寫進 DEV_LOG
+const latestIdx = 'beta/' + BETA_NAME.index(latest.index);
+const base = sh(`git log -1 --format=%H -- ${latestIdx}`);
+const after = base ? sh(`git log ${base}..HEAD --format="%h %ad %s" --date=short`) : '';
+if (after) bad(`${latestIdx} 最後一次更新（DEV_LOG 最新 ${betaDev.lastLog}）之後，這些 commit 還沒寫進 DEV_LOG：\n      ` + after.split('\n').join('\n      '));
 else ok(`DEV_LOG 最新一筆 ${betaDev.lastLog}，之後沒有沒記錄的 commit`);
 
 // ---------- 3. 任務 ----------

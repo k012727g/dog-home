@@ -17,5 +17,71 @@
   "index": 6,
   "art": 5,
   "content": 5
- }
+ },
+ "indexes": [
+  {
+   "v": 1,
+   "art": 1,
+   "content": 1
+  },
+  {
+   "v": 2,
+   "art": 2,
+   "content": 2
+  },
+  {
+   "v": 3,
+   "art": 3,
+   "content": 3
+  },
+  {
+   "v": 4,
+   "art": 4,
+   "content": 4
+  },
+  {
+   "v": 5,
+   "art": 4,
+   "content": 4
+  }
+ ],
+ "pages": [
+  {
+   "path": "design/art_V4_review.html",
+   "title": "美術 V4 總檢查",
+   "group": "design"
+  },
+  {
+   "path": "design/art_directions.html",
+   "title": "三個美術方向",
+   "group": "design"
+  },
+  {
+   "path": "design/multi_kid_options.html",
+   "title": "多個小孩怎麼玩",
+   "group": "design"
+  },
+  {
+   "path": "design/pup_V4_preview.html",
+   "title": "主角小狗 V4 預覽",
+   "group": "design"
+  },
+  {
+   "path": "story/story_preview.html",
+   "title": "繪本故事稿預覽",
+   "group": "story"
+  },
+  {
+   "path": "story_voice_test.html",
+   "title": "故事聲音測試",
+   "group": "story"
+  }
+ ],
+ "stories": [
+  {
+   "id": "red",
+   "zh": "小紅帽",
+   "v": 1
+  }
+ ]
 }
