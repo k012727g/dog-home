@@ -53,9 +53,14 @@
    ④ 怎麼看（見下面）
 
 ## 交付之後（Kevin 和主程式對話會做）
-1. Kevin 把交回的 `art_beta_V?.js` 上傳到 GitHub 的 `beta/` 資料夾，告訴主程式對話。
+1. Kevin 把交回的 `art_beta_V?.js` 上傳到 GitHub 的 `beta/` 資料夾（或 Kevin 說「commit 並 push」後由美術對話推到 `main` 的 `beta/`），告訴主程式對話。
 2. 主程式對話跑點擊測試和美術總覽檢查，給 Kevin 測試網址（也會出現在最新版本頁）。
 3. Kevin 試玩 OK 並說「merge」之後，才會換成正式版。
+
+## 版號與網址（一定要遵守，見 `CLAUDE.md` 第 3 節）
+- **還沒推到 `main` 的檔案，不能給線上網址。** 只能說「還沒上線」，或給預覽頁並寫明是預覽。
+- **版號在推上去那一刻才算數**：推之前 `git fetch`＋`node tools/status.js`，下一版被別的對話用掉就改號（檔名和 `DOGART.version` 一起改）。
+- 給 Kevin 任何網址之前，先跑 `node tools/check_url.js '<網址>'`，全部 ✓ 才給。
 
 ---
 

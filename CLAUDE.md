@@ -25,10 +25,10 @@
 | 2 | Claude | 開分支 `claude/…`；**改之前**先跑點擊測試，記下結果 |
 | 3 | Claude | 在分支上做新的測試檔，版號用 `node tools/status.js` 列出的「下一版」（遊戲、美術、繪本各自編號） |
 | 4 | Claude | 再跑點擊測試，和改之前的結果比對，**要一樣**（新功能的檢查另外列） |
-| 5 | Claude | 只把 `beta/` 的測試檔推到 `main`，給 Kevin 測試網址（正式版不變） |
+| 5 | Claude | 只把 `beta/` 的測試檔推到 `main`（正式版不變），等 1～2 分鐘上線，**跑 `node tools/check_url.js '<網址>'` 全部 ✓ 才給 Kevin 測試網址**（見第 3 節「版號與網址」） |
 | 6 | Kevin | 在平板試玩，回覆 OK 或要改的地方 |
 | 7 | Kevin | 說「merge」 |
-| 8 | Claude | 把測試檔改名覆蓋成正式版（`index.html`、`art.js`、`content.js`），推到 `main`，確認線上網址已換新 |
+| 8 | Claude | 把測試檔改名覆蓋成正式版（`index.html`、`art.js`、`content.js`），推到 `main`，用 `node tools/check_url.js https://k012727g.github.io/dog-home/` 確認線上已換新 |
 | 9 | Claude | 更新任務與筆記（第 7 節），`node tools/status.js --fix` 更新版本總表，跑 `node tools/status.js` 要全部 ✓ |
 
 - **正式版只能在 Kevin 說「merge」之後才改。**
@@ -46,12 +46,19 @@
 - 不確定的事寫「無法確定」，不要猜。
 - 回答 Kevin 用繁體中文；Kevin 說「用 html 回答」時做成網頁。
 
+### 版號與網址（Kevin 2026-11-22：給過壞掉的網址、版號一直跳，所以加這幾條）
+- **沒有推到 `main` 的檔案，不能給線上網址。** 還沒推的時候要明講「還沒上線」；想先讓 Kevin 看，只能給預覽頁（Claude Artifact），並寫明是預覽。
+- **給 Kevin 的每一個網址都要先跑 `node tools/check_url.js '<網址>'`**（測試版、美術總覽、設計頁都一樣）。它會真的打開線上網頁，檢查檔案都讀得到（沒有 404）、`?art=`／`?content=` 的版本和實際載入的一樣、沒有網頁錯誤、首頁有畫出寵物、美術總覽沒有紅色。**全部 ✓ 才給；有 ✗ 就先修，不要先給。** 回報時寫「已用 check_url 檢查 ✓」。
+- **版號在推上去那一刻才算數。** 三個對話會同時出新版，先說出口的版號可能被別人用掉。推之前一定再 `git fetch` 並跑 `node tools/status.js`：「下一版」如果已經被用掉（`main` 上有同名檔案），就改用新的下一版，檔名、檔案裡的版本（`DOGART.version`、`DOGCONTENT.version`）、回報內容一起改。推上去、check_url ✓ 之後，才把版號和網址告訴 Kevin。
+- 寫給別的對話的說明或 prompt，**不要寫死版號**，寫「下一版（用 `node tools/status.js` 確認）」；要指定某個檔案時，寫「`main` 上最新的 `art_beta_V?.js`」。
+
 ## 4. 測試
 
 ```
 node tools/status.js                                                  # 開工、收工都跑
 node tests/smoke_test.js 'beta/index_beta_V5.html?art=V4&content=V4'  # 跑一次，結果在 tests/results/
 node tests/smoke_test.js --compare 舊.json 新.json                      # 每一步都要一樣
+node tools/check_url.js '<線上網址>'                                     # 給 Kevin 網址之前，全部要 ✓
 ```
 
 - 正式版（`index.html`）預期 45/47：L02 不顯示 BETA 標籤、Z01 會載入 Firebase，這 2 步本來就不同。

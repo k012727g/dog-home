@@ -9,13 +9,13 @@
  },
  "latest": {
   "index": 7,
-  "art": 5,
+  "art": 6,
   "content": 5,
   "gallery": 4
  },
  "next": {
   "index": 8,
-  "art": 6,
+  "art": 7,
   "content": 6
  },
  "indexes": [
@@ -46,12 +46,12 @@
   },
   {
    "v": 6,
-   "art": 5,
+   "art": 6,
    "content": 5
   },
   {
    "v": 7,
-   "art": 5,
+   "art": 6,
    "content": 5
   }
  ],
@@ -90,6 +90,11 @@
    "path": "design/pup_V4_preview.html",
    "title": "主角小狗 V4 預覽",
    "group": "design"
+  },
+  {
+   "path": "design/storybook_V6_compare.html",
+   "title": "繪本 V6：顏色與比例修正",
+   "group": "story"
   },
   {
    "path": "story/story_preview.html",

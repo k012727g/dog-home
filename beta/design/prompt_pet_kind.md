@@ -7,9 +7,9 @@
 請在**家長設定**加一個「寵物種類」，可以選**小狗**或**小飛龍**。每個家庭（每個小孩）可以選不同的寵物，選擇跟著存檔一起同步。照 `CLAUDE.md` 第 2 節的流程做（先跑點擊測試、做下一版、比對、只推 beta）。
 
 ## 版本
-- 從 `beta/index_beta_V6.html` 開始改，交付 **`beta/index_beta_V7.html`**（請用 `node tools/status.js` 再確認一次下一版）。
-- 美術用 **`art_beta_V5.js`**，繪本用 **`content_beta_V5.js`**。
-- 測試網址：`beta/index_beta_V7.html?art=V5&content=V5`
+- 從 `main` 上最新的 `beta/index_beta_V?.html` 開始改，交付**下一版**（用 `node tools/status.js` 確認；推之前再確認一次，被用掉就改號）。
+- 美術用 **`art_beta_V5.js` 以後的版本**（有 `petKind()` 的版本），繪本用 `main` 上最新的 `content_beta_V?.js`。
+- 測試網址：`beta/index_beta_V下一版.html?art=V5&content=V5`；給 Kevin 之前先跑 `node tools/check_url.js`，全部 ✓ 才給。
 - 不要改 `art.js`／`content.js`／Firebase 結構（還是 `families/{code}` 一份文件），存檔 key 也不要改。
 
 ## 美術已經準備好的（art_beta_V5.js）
@@ -26,7 +26,7 @@
 - `icon('petHead')` 會自動換成目前寵物的頭像。
 - 小飛龍的翅膀會拍動（`dg-wing`，已經放在 DOGART.css）。
 
-## 要做的事（行號都是 index_beta_V6.html 的）
+## 要做的事（行號是 index_beta_V6.html 的，新版可能差幾行，用文字搜尋）
 1. **存檔欄位** `S.pet.kind`：值是 `'dog'` 或 `'dragon'`。
    - `DEFAULT()` 的 pet 加上 `kind:'dog'`。
    - `normalize()` 裡，值不是這兩個就設成 `'dog'`。
@@ -43,7 +43,7 @@
 5. **美容院**：3181 行顯示毛色名稱、寫紀錄的地方，`COATS[key][3]` 改成 `coatName(key)`。
 6. **文字**：加一個 `petWord()`，回傳 `PET_KINDS[petKind()].name`，然後把孩子看得到的「小狗／狗狗」換掉（清單在下面）。
 
-## 「狗」文字清單（index_beta_V6.html）
+## 「狗」文字清單（行號是 index_beta_V6.html 的）
 **要換成 petWord()：**
 - 933、944、950、951、960、1347：aria-label「小狗的狀態、小狗的房間、摸摸小狗、小狗的畫、照顧小狗、幫小狗洗澡」
 - 1121、1462：「共用同一隻小狗」
@@ -65,7 +65,7 @@
 **請 Kevin 決定：** 家具名稱「狗狗飯碗」（1822）、「狗狗睡墊」（1830）、「城堡狗屋」（1834），要改成「寵物飯碗、寵物睡墊、城堡小屋」，還是照寵物種類顯示。
 
 ## 測試（全部通過才算完成）
-1. 點擊測試：`node tests/smoke_test.js 'beta/index_beta_V7.html?art=V5&content=V5'`，用 `--compare` 和 V6 比對，每一步都要一樣。新功能的檢查另外列。
+1. 點擊測試：`node tests/smoke_test.js 'beta/index_beta_V新版.html?art=V5&content=V5'`，用 `--compare` 和上一版比對，每一步都要一樣。新功能的檢查另外列。
 2. 在 375×667 和 390×844 兩種螢幕上手動測：
    - 一開始是小狗。
    - 換成小飛龍後，首頁、洗澡、地圖頭像、升級畫面、英文動作單字（run、jump）都要馬上變成小飛龍，不用重新整理。
@@ -74,13 +74,13 @@
    - 美容院顯示「薄荷龍」這類名字。
    - 等級名稱顯示「小龍寶寶、小飛龍、大飛龍」。
    - 上面清單裡的文字都換掉了。
-3. **同步測試**：測試版不連 Firebase，所以要把 V7 在本機用正式版模式開（檔名不要有 `_beta_`）。
+3. **同步測試**：測試版不連 Firebase，所以要把新版在本機用正式版模式開（檔名不要有 `_beta_`）。
    - 自己建立兩個**測試用家庭**，不要碰孩子真正的家庭。代碼寫進任何檔案時，只能寫前 2 碼加 `****`。
    - 測：A 家庭選小飛龍、B 家庭選小狗，兩邊互不影響。
    - 測：同一個家庭開兩個瀏覽器，一邊換寵物，另一邊幾秒內也跟著換。
 4. 結果寫進 `tests/TEST_NOTES.md`，`DEV_TASKS` 和 `DEV_LOG` 也要更新。
 
 ## 換正式版（Kevin 說「merge」之後）
-- 三個檔案要**一起換**：`index.html`←V7、`art.js`←`art_beta_V5.js`、`content.js`←`content_beta_V5.js`。
+- 三個檔案要**一起換**：`index.html`←新版 index、`art.js`←有 `petKind()` 的 art、`content.js`←最新 content。
 - 新的 index 會用到 `petKind()` 等新名稱，舊的 art.js 沒有，只換 index 遊戲會壞。
 - 換之前先提醒 Kevin 備份。
