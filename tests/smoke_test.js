@@ -255,6 +255,18 @@ async function runSuite(target) {
     const info = await text('#bpInfo'); await click('#bpClose');
     return { ok: !!info && /連不上|失敗|GitHub/.test(info), detail: info }; });
 
+  await X('X02', '圖書館：看過的書排到下面，沒看過的在上面', async () => {
+    if (await isVisible('#tab-parent')) await click('#parentClose');
+    const ids = await ev(() => STORIES.map(b => b.id));
+    await ev(ids => { S.books = {}; S.books[ids[0]] = 2; S.books[ids[1]] = 1; save(); }, ids);
+    await ev(() => startLibrary()); await page.waitForTimeout(200);
+    const order = await ev(() => [...document.querySelectorAll('#bookShelf .book')].map(b => b.dataset.b));
+    const want = ids.slice(2).concat(ids.slice(0, 2));
+    await click('#libHome');
+    const ok = JSON.stringify(order) === JSON.stringify(want);
+    return { ok, detail: `最上面=${order[0]} 最下面=${order.slice(-2).join(',')}（看過的是 ${ids[0]},${ids[1]}）` };
+  });
+
   // 美術總覽：同版號的 gallery；沒有的話用最新的 gallery，並帶上同樣的 art／content 版本
   const [tFile, tQuery = ''] = target.split('?');
   let gallery = tFile.replace(/index(_beta_V[\w.-]+)?\.html$/, (m, s) => 'gallery' + (s || '') + '.html');

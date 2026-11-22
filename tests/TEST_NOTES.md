@@ -87,3 +87,11 @@ node tests/smoke_test.js --compare tests/results/index_beta_V2.json tests/result
 | 新增最新版本頁 `beta/latest.html` | 打開固定網址，點「最新測試版」應打開 V5 | 本機用瀏覽器打開並點連結 |
 | 補上 `beta/gallery_beta_V4.html` | 最新版本頁 →「美術總覽」 | G01 |
 | 開工檢查 `tools/status.js`、版本總表 `versions.json` | `node tools/status.js` | — |
+
+# V6 修改紀錄與測試位置（2026-11-22）
+
+網址：https://k012727g.github.io/dog-home/beta/latest.html →「最新測試版」（遊戲 V6、美術 V4、繪本 V5）
+
+| 改了什麼 | 手動測試路徑 | 自動測試 |
+|---|---|---|
+| 圖書館書架：沒看過的書在上面，看過的（拿到星星）排到下面，中間虛線隔開（LIB-09） | 地圖 → 圖書館 → 看完一本並回答問題 → 回家 → 再進圖書館，那本應該在虛線下面 | X02；V5 → V6 的 47 步都一樣 |

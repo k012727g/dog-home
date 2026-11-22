@@ -8,13 +8,13 @@
   "gallery": 4
  },
  "latest": {
-  "index": 5,
+  "index": 6,
   "art": 5,
   "content": 5,
   "gallery": 4
  },
  "next": {
-  "index": 6,
+  "index": 7,
   "art": 6,
   "content": 6
  },
@@ -41,6 +41,11 @@
   },
   {
    "v": 5,
+   "art": 5,
+   "content": 5
+  },
+  {
+   "v": 6,
    "art": 5,
    "content": 5
   }
