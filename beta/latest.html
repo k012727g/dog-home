@@ -76,6 +76,7 @@ a{color:#C2385F}code{word-break:break-all;background:var(--sky);padding:0 4px;bo
     <tr><td>最新測試</td><td>V${L.index}</td><td>V${L.art}</td><td>V${L.content}</td></tr>
     <tr><td>下一版</td><td>V${N.index}</td><td>V${N.art}</td><td>V${N.content}</td></tr>
   </table></div>
+  ${(v.extras||[]).length?`<h2>特別測試美術・繪本</h2><ul class="links">${v.extras.map(x=>`<li><a href="index_beta_V${L.index}.html?${x.kind}=${x.name}${x.kind==='art'?`&content=V${L.content}`:`&art=V${L.art}`}">${x.kind==='art'?'美術':'繪本'}：${esc(x.name)}</a> <span class="meta">（${x.kind}_beta_${esc(x.name)}.js，搭配最新遊戲 V${L.index}）</span></li>`).join('')}</ul>`:''}
   <h2>其他網頁</h2>
   <ul class="links">${pg('design').concat(pg('tool')).map(x=>`<li><a href="${x.path}">${esc(x.title)}</a> <span class="meta">${x.group==='design'?'設計頁':'工具'}</span></li>`).join('')||'<li>沒有</li>'}</ul>
   <h2>所有測試版本</h2>

@@ -1610,6 +1610,9 @@ if(DOG_BUILD.beta){var bb=document.getElementById('betaBadge');bb.textContent='B
    【版權原則】不畫任何既有角色（包含三麗鷗角色與其二創）；實體商品照片只由家長自行上傳到 photos/。
    ===================================================================================== */
 const DEV_LOG=[ // 變更紀錄：每次修改加一筆（最新在最上面）
+ {date:'2026-11-22',phase:'G3 圖書館／廚房',done:[],added:['AUD-01'],note:'（依 git 97cee24 補記）繪本對話：小紅帽依故事稿 red_V1.md 寫進 content_beta_V5.js（第 3 題改問 ear），另外 16 本故事稿 V1；預覽頁 17 本都能看'},
+ {date:'2026-11-22',phase:'美術 V4',done:[],added:[],note:'（依 git e53db58、ea13dcf 補記）美術對話：測試版小飛龍改成軟糖貼紙畫風（薄荷綠、彎角、小鰭、會拍的翅膀），新增預覽頁 design/dragon_preview.html；再次合併 claude/wizardly-allen-hr44r9'},
+ {date:'2026-11-22',phase:'美術 V4',done:['ART-04','OPS-14'],added:['ART-03','ART-04','OPS-14'],note:'（依 git 補記）美術對話的分支 claude/wizardly-allen-hr44r9 合併進 main（2f1b66a）：日系文具風三個方向（kawaii_directions.html）、像素風評估（pixel_review.html）、測試美術像素小飛龍 art_beta_dragon.js（?art=dragon）。Kevin 決定：美術先維持 V4；小飛龍改等級名稱的做法維持。latest.html 加列特別測試美術'},
  {date:'2026-11-22',phase:'維護（2026-11）',done:['OPS-13'],added:['OPS-13'],note:'備份資料夾 backup/：雲端存檔 JG**** 的備份（遊戲「從備份還原」可直接讀，已實測）；家庭代碼一律遮住；Kevin 決定放在公開 repo'},
  {date:'2026-11-22',phase:'G3 圖書館／廚房、維護（2026-11）',done:['OPS-12'],added:['LIB-08','OPS-12'],note:'繪本對話：故事稿流程（先寫 beta/story/<書id>_V?.md，Kevin 看過再改 content.js）、寫作規則 STORY_GUIDE.md、小紅帽 V1、預覽網頁 story_preview.html、三個對話的開工提示 briefs/start_prompt.md（依 git 630a374 補記）；latest.html 自動列出所有網頁與每本書的最新故事稿，tools/status.js 檢查預覽頁書單'},
  {date:'2026-11-22',phase:'維護（2026-11）',done:['FIX-17','OPS-08','OPS-09'],added:['FIX-17','OPS-08','OPS-09','OPS-10','OPS-11','SEC-01','ART-01','LIB-07'],note:'V5（只改開發筆記）：補記 V4 的改動；版本總表 versions.json＋固定網址 beta/latest.html＋開工檢查 tools/status.js；三個對話（主程式／美術／繪本）分工與說明 briefs/；補上 gallery_beta_V4.html；列出等 Kevin 決定的事'},
@@ -1651,8 +1654,12 @@ const DEV_TASKS=[
  {id:'ART-01',phase:'美術 V4',status:'todo',title:'美術對話的畫風：說明寫「接近三麗鷗」，但規格是「不畫既有角色」',note:'等 Kevin 決定；建議：日系可愛感，但造型原創、不像任何三麗鷗角色'},
  {id:'ART-02',phase:'美術 V4',status:'done',title:'art V4：遊戲＝A 軟糖貼紙、繪本＝B 蠟筆手繪；主角小狗重畫；新增 44 個原創圖示',note:'2026-11-20～21（依 git 紀錄補記）'},
  {id:'LIB-06',phase:'G3 圖書館／廚房',status:'done',title:'17 本繪本加長成每本 12 頁（共 204 頁），補畫新道具',note:'2026-11-21（依 git 紀錄補記）'},
+ {id:'ART-03',phase:'美術 V4',status:'idea',title:'美術方向提案：日系文具風 1／2／3（kawaii_directions.html）、像素風 A／B／C（pixel_review.html）',note:'Kevin 2026-11-22：先維持 V4；要換方向時再告訴美術對話'},
+ {id:'ART-04',phase:'美術 V4',status:'done',title:'測試美術：小飛龍 art_beta_dragon.js（?art=dragon），3 階段 × 6 姿勢 × 表情；先做像素版，2026-11-22 改成軟糖貼紙畫風（預覽 design/dragon_preview.html）',note:'會在測試版把等級名稱改成小龍寶寶／小飛龍／大飛龍（改到主程式的資料），Kevin 決定維持'},
+ {id:'OPS-14',phase:'維護（2026-11）',status:'done',title:'latest.html 列出特別測試美術（art_beta_<名稱>.js，例如 ?art=dragon）'},
  {id:'OPS-13',phase:'維護（2026-11）',status:'done',title:'備份資料夾 backup/：雲端存檔備份，用「從備份還原」可直接還原，家庭代碼遮住',note:'2026-11-22 備份 JG****；其他小孩的存檔要 Kevin 提供代碼才能備份'},
- {id:'LIB-08',phase:'G3 圖書館／廚房',status:'doing',title:'繪本故事稿：每本書先寫 beta/story/<書id>_V?.md（大綱、12 頁分鏡、角色／背景／道具表），Kevin 看過再寫進 content.js',note:'繪本對話負責；已完成：寫作規則、小紅帽 V1；其他 16 本待寫'},
+ {id:'LIB-08',phase:'G3 圖書館／廚房',status:'doing',title:'繪本故事稿：每本書先寫 beta/story/<書id>_V?.md（大綱、12 頁分鏡、角色／背景／道具表），Kevin 看過再寫進 content.js',note:'繪本對話負責；17 本故事稿 V1 都寫好；已寫進 content：小紅帽（content V5）；其他 16 本等 Kevin 看稿'},
+ {id:'AUD-01',phase:'G3 圖書館／廚房',status:'todo',title:'重錄小紅帽：red-2、3、4、5、7、8、10、11、12（content V5 文字改了）；red-6 改用舊的 red-7',note:'主程式對話負責；content V5 上正式版前要錄好，否則朗讀和文字對不上'},
  {id:'OPS-12',phase:'維護（2026-11）',status:'done',title:'latest.html 自動列出所有網頁、每本書的最新故事稿與所有測試版本；tools/status.js 檢查繪本預覽頁的書單有沒有指到最新稿'},
  {id:'LIB-07',phase:'G3 圖書館／廚房',status:'todo',title:'繪本英文每頁 12 個字以內（目前 5 頁超過，最多 16 個字）',note:'交給繪本對話；文字改了的頁要重新錄音'},
  {id:'FAM-01',phase:'家庭與多個小孩',status:'done',title:'家長後台「所有存檔」：列出用過的家庭代碼，切換時先讀完整存檔，不蓋掉別人的進度',note:'2026-11-21（依 git 紀錄補記）'},

@@ -57,6 +57,11 @@
    "group": "design"
   },
   {
+   "path": "design/dragon_preview.html",
+   "title": "小飛龍（軟糖貼紙）預覽",
+   "group": "design"
+  },
+  {
    "path": "design/kawaii_directions.html",
    "title": "日系文具風三個方向",
    "group": "design"
@@ -172,6 +177,12 @@
    "id": "ugly",
    "zh": "醜小鴨",
    "v": 1
+  }
+ ],
+ "extras": [
+  {
+   "kind": "art",
+   "name": "dragon"
   }
  ]
 }

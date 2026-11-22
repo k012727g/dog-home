@@ -67,7 +67,9 @@ if (fs.existsSync(previewFile)) {
 const stories = Object.entries(drafts).sort().map(([id, v]) => ({ id, zh: (books.find(b => b.id === id) || {}).zh || id, v }));
 const maxLe = (list, n) => list.filter(x => x <= n).pop() || null;
 const indexes = versions.index.map(v => ({ v, art: maxLe(versions.art, v), content: maxLe(versions.content, v) }));
-const want = { production, latest, next, indexes, pages, stories };
+// 特別測試美術／繪本：檔名不是數字版號（例如 art_beta_dragon.js），用 ?art=名稱 測
+const extras = files.map(f => f.match(/^(art|content)_beta_([A-Za-z][\w-]*)\.js$/)).filter(m => m && !/^V\d+$/.test(m[2])).map(m => ({ kind: m[1], name: m[2] }));
+const want = { production, latest, next, indexes, pages, stories, extras };
 
 let vj = null;
 try { vj = JSON.parse(read('versions.json')); } catch (e) { bad('versions.json 不存在或格式錯誤（跑 node tools/status.js --fix）'); }
