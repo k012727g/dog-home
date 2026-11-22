@@ -17,7 +17,8 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const SITE = 'https://k012727g.github.io/dog-home/';
+// SITE 可以用環境變數換掉，用來模擬「不是 github.io 的預覽網址」（請求一樣全部在本機處理）
+const SITE = process.env.SITE || 'https://k012727g.github.io/dog-home/';
 const API = 'https://api.github.com/repos/k012727g/dog-home/contents/photos';
 const PIN = '0127';
 
@@ -44,7 +45,7 @@ async function runSuite(target) {
     hosts.add(new URL(url).host);
     if (url.startsWith(API)) return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(photoListing()) });
     if (url.startsWith(SITE)) {
-      const rel = decodeURIComponent(new URL(url).pathname.replace('/dog-home/', ''));
+      const rel = decodeURIComponent(url.slice(SITE.length).split(/[?#]/)[0]);
       const f = path.join(ROOT, rel);
       if (f.startsWith(ROOT) && fs.existsSync(f) && fs.statSync(f).isFile())
         return route.fulfill({ status: 200, contentType: MIME[path.extname(f).toLowerCase()] || 'application/octet-stream', body: fs.readFileSync(f) });
@@ -254,7 +255,15 @@ async function runSuite(target) {
     const info = await text('#bpInfo'); await click('#bpClose');
     return { ok: !!info && /連不上|失敗|GitHub/.test(info), detail: info }; });
 
-  const gallery = target.replace(/index(_beta_V[\w.-]+)?\.html$/, (m, s) => 'gallery' + (s || '') + '.html');
+  // 美術總覽：同版號的 gallery；沒有的話用最新的 gallery，並帶上同樣的 art／content 版本
+  const [tFile, tQuery = ''] = target.split('?');
+  let gallery = tFile.replace(/index(_beta_V[\w.-]+)?\.html$/, (m, s) => 'gallery' + (s || '') + '.html');
+  if (!fs.existsSync(path.join(ROOT, gallery))) {
+    const dir = path.dirname(tFile), n = (tFile.match(/_beta_V(\d+)/) || [])[1];
+    const g = fs.readdirSync(path.join(ROOT, dir)).map(f => +(f.match(/^gallery_beta_V(\d+)\.html$/) || [])[1]).filter(Boolean).sort((a, b) => a - b).pop();
+    const q = new URLSearchParams(tQuery); if (n) { if (!q.has('art')) q.set('art', 'V' + n); if (!q.has('content')) q.set('content', 'V' + n); }
+    gallery = path.join(dir, `gallery_beta_V${g}.html`) + '?' + q.toString();
+  } else if (tQuery) gallery += '?' + tQuery;
   await browser.close();
   // ===== G 美術總覽頁（另開瀏覽器）=====
   const g = await runGallery(gallery);
@@ -266,7 +275,7 @@ async function runGallery(file) {
   const browser = await chromium.launch(); const page = await browser.newPage(); const errs = [];
   page.on('pageerror', e => errs.push(String(e.message || e)));
   await page.route('**/*', r => { const u = r.request().url(); if (!u.startsWith(SITE)) return r.abort();
-    const f = path.join(ROOT, decodeURIComponent(new URL(u).pathname.replace('/dog-home/', '')));
+    const f = path.join(ROOT, decodeURIComponent(u.slice(SITE.length).split(/[?#]/)[0]));
     return fs.existsSync(f) ? r.fulfill({ status: 200, contentType: MIME[path.extname(f).toLowerCase()] || 'text/plain', body: fs.readFileSync(f) }) : r.fulfill({ status: 404, body: '' }); });
   let ok = false, detail = '';
   try { await page.goto(SITE + file, { waitUntil: 'load' }); await page.waitForTimeout(500);
@@ -274,7 +283,7 @@ async function runGallery(file) {
     ok = !r.err && r.n > 0 && errs.length === 0; detail = `內容區塊>0=${r.n > 0} 錯誤框=${r.err}${errs.length ? ' JS錯誤:' + errs.join('/').slice(0, 120) : ''}`;
   } catch (e) { detail = 'EXCEPTION ' + e.message.split('\n')[0]; }
   await browser.close();
-  return { id: 'G01', name: '美術總覽頁開啟（' + file.split('/').pop() + '）', ok, detail };
+  return { id: 'G01', name: '美術總覽頁開啟（' + file.split('/').pop().split('?')[0] + '）', ok, detail };
 }
 
 function table(r) {
@@ -301,7 +310,7 @@ function compare(a, b) {
   const target = args[0] || 'beta/index_beta_V2.html';
   const r = await runSuite(target);
   const out = path.join(__dirname, 'results'); fs.mkdirSync(out, { recursive: true });
-  const f = path.join(out, path.basename(target).replace(/\.html$/, '') + '.json');
+  const f = path.join(out, path.basename(target.split('?')[0]).replace(/\.html$/, '') + (process.env.SITE ? '@preview' : '') + '.json');
   fs.writeFileSync(f, JSON.stringify(r, null, 1));
   console.log(table(r)); console.log('結果檔：' + path.relative(ROOT, f));
   process.exit(r.steps.every(s => s.ok) ? 0 : 1);

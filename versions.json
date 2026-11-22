@@ -1,0 +1,188 @@
+{
+ "說明": "小狗的家的版本總表。由 node tools/status.js --fix 依實際檔案產生，不要手改。各種檔案的版號各自往上加；測試網址用 ?art=V?&content=V? 組合。最新測試版看 beta/latest.html。",
+ "updated": "2026-11-22",
+ "production": {
+  "index": 4,
+  "art": 4,
+  "content": 4,
+  "gallery": 4
+ },
+ "latest": {
+  "index": 5,
+  "art": 4,
+  "content": 5,
+  "gallery": 4
+ },
+ "next": {
+  "index": 6,
+  "art": 5,
+  "content": 6
+ },
+ "indexes": [
+  {
+   "v": 1,
+   "art": 1,
+   "content": 1
+  },
+  {
+   "v": 2,
+   "art": 2,
+   "content": 2
+  },
+  {
+   "v": 3,
+   "art": 3,
+   "content": 3
+  },
+  {
+   "v": 4,
+   "art": 4,
+   "content": 4
+  },
+  {
+   "v": 5,
+   "art": 4,
+   "content": 5
+  }
+ ],
+ "pages": [
+  {
+   "path": "design/art_V4_review.html",
+   "title": "美術 V4 總檢查",
+   "group": "design"
+  },
+  {
+   "path": "design/art_directions.html",
+   "title": "三個美術方向",
+   "group": "design"
+  },
+  {
+   "path": "design/dragon_preview.html",
+   "title": "小飛龍（軟糖貼紙）預覽",
+   "group": "design"
+  },
+  {
+   "path": "design/kawaii_directions.html",
+   "title": "日系文具風三個方向",
+   "group": "design"
+  },
+  {
+   "path": "design/multi_kid_options.html",
+   "title": "多個小孩怎麼玩",
+   "group": "design"
+  },
+  {
+   "path": "design/pixel_review.html",
+   "title": "像素風評估",
+   "group": "design"
+  },
+  {
+   "path": "design/pup_V4_preview.html",
+   "title": "主角小狗 V4 預覽",
+   "group": "design"
+  },
+  {
+   "path": "story/story_preview.html",
+   "title": "繪本故事稿預覽",
+   "group": "story"
+  },
+  {
+   "path": "story_voice_test.html",
+   "title": "故事聲音測試",
+   "group": "story"
+  }
+ ],
+ "stories": [
+  {
+   "id": "bremen",
+   "zh": "布萊梅樂隊",
+   "v": 1
+  },
+  {
+   "id": "cinder",
+   "zh": "灰姑娘",
+   "v": 1
+  },
+  {
+   "id": "emperor",
+   "zh": "國王的新衣",
+   "v": 1
+  },
+  {
+   "id": "ginger",
+   "zh": "薑餅人",
+   "v": 1
+  },
+  {
+   "id": "goats",
+   "zh": "大野狼與七隻小羊",
+   "v": 1
+  },
+  {
+   "id": "goldi",
+   "zh": "金髮女孩與三隻熊",
+   "v": 1
+  },
+  {
+   "id": "hen",
+   "zh": "小紅母雞",
+   "v": 1
+  },
+  {
+   "id": "jack",
+   "zh": "傑克與魔豆",
+   "v": 1
+  },
+  {
+   "id": "lion",
+   "zh": "獅子與老鼠",
+   "v": 1
+  },
+  {
+   "id": "mermaid",
+   "zh": "人魚公主",
+   "v": 1
+  },
+  {
+   "id": "pigs",
+   "zh": "三隻小豬",
+   "v": 1
+  },
+  {
+   "id": "pino",
+   "zh": "皮諾丘",
+   "v": 1
+  },
+  {
+   "id": "race",
+   "zh": "龜兔賽跑",
+   "v": 1
+  },
+  {
+   "id": "red",
+   "zh": "小紅帽",
+   "v": 1
+  },
+  {
+   "id": "sleep",
+   "zh": "睡美人",
+   "v": 1
+  },
+  {
+   "id": "snow",
+   "zh": "白雪公主",
+   "v": 1
+  },
+  {
+   "id": "ugly",
+   "zh": "醜小鴨",
+   "v": 1
+  }
+ ],
+ "extras": [
+  {
+   "kind": "art",
+   "name": "dragon"
+  }
+ ]
+}

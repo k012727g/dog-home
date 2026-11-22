@@ -75,3 +75,15 @@ node tests/smoke_test.js --compare tests/results/index_beta_V2.json tests/result
 - 標成 doing 的任務（GAME-02、LEARN-06、TOWN-04、PET-01、ANIM-05、ACT-03、ACT-07）：無法從程式確定完成到哪裡，所以沒有改狀態。建議 Kevin 試玩後再更新。
 - 等 Kevin 決定的任務（GAME-00、AI-01）：沒有動。
 - art 和 content 的 V3 檔是 V2 的原樣複本，檔頭註解還寫「版本 V1」，因為內容沒有改。
+
+# V5 修改紀錄與測試位置（2026-11-22）
+
+最新測試版一律從固定網址進：https://k012727g.github.io/dog-home/beta/latest.html
+（V5 只有遊戲檔，美術、繪本沿用 V4，網址是 `beta/index_beta_V5.html?art=V4&content=V4`）
+
+| 改了什麼 | 手動測試路徑 | 自動測試 |
+|---|---|---|
+| 只更新開發筆記與任務：補記 V4 的改動、新增等 Kevin 決定的任務（SEC-01、OPS-10、OPS-11、ART-01、LIB-07） | 家長 → 備份與其他 → 打開開發清單 | P13；V4 → V5 每一步都一樣（47/47） |
+| 新增最新版本頁 `beta/latest.html` | 打開固定網址，點「最新測試版」應打開 V5 | 本機用瀏覽器打開並點連結 |
+| 補上 `beta/gallery_beta_V4.html` | 最新版本頁 →「美術總覽」 | G01 |
+| 開工檢查 `tools/status.js`、版本總表 `versions.json` | `node tools/status.js` | — |
