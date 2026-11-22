@@ -95,3 +95,11 @@ node tests/smoke_test.js --compare tests/results/index_beta_V2.json tests/result
 | 改了什麼 | 手動測試路徑 | 自動測試 |
 |---|---|---|
 | 圖書館書架：沒看過的書在上面，看過的（拿到星星）排到下面，中間虛線隔開（LIB-09） | 地圖 → 圖書館 → 看完一本並回答問題 → 回家 → 再進圖書館，那本應該在虛線下面 | X02；V5 → V6 的 47 步都一樣 |
+
+# 繪本故事稿：新書 8 本＋待辦清單（2026-11-22，繪本對話）
+
+- 新增 8 本書的故事稿 V1：`beta/story/{turnip,gruff,porridge,pea,wolfboy,crow,elves,wind}_V1.md`（還沒寫進 content.js，等 Kevin 看稿）。
+- `beta/story/story_preview.html`：書單 25 本，分成「原本的 17 本／新書」兩組（新書另外列在 `NEW_IDS`，書單格式不變，`tools/status.js` 讀得到）。
+- `beta/index_beta_V6.html`：只改開發筆記，新增任務 LIB-10～14、ART-05、AUD-02，更新 LIB-07、LIB-08；DEV_LOG 加一筆。
+- 測試：`beta/index_beta_V6.html?art=V4&content=V5` 點擊測試 47/47，和改之前每一步都一樣。
+- 去哪裡看：https://k012727g.github.io/dog-home/beta/story/story_preview.html（「故事」→「新書」）；任務在家長設定 →「遊戲開發進度」。

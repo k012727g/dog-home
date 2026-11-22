@@ -18,6 +18,7 @@ h1{font-size:clamp(24px,4.5vw,34px);margin:0 0 4px;line-height:1.2}
 .tabs button:disabled{opacity:.4;cursor:default;border-style:dashed}
 .t1 button{font-size:18px;padding:8px 18px}
 .t2{background:var(--acc2);border-radius:18px;padding:8px}
+.tg button{font-size:15px;background:#FFF7F0}.tg button[aria-selected=true]{background:#E07A5F;border-color:#E07A5F}
 .t3 button{font-size:15px;border-width:1.5px}
 .panel{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:clamp(12px,3vw,24px)}
 .panel h2{font-size:22px;margin:22px 0 8px;line-height:1.3}.panel h2:first-child{margin-top:0}
@@ -74,8 +75,20 @@ const BOOKS=[
  {id:'hen',zh:'小紅母雞',file:'hen_V1.md'},
  {id:'ginger',zh:'薑餅人',file:'ginger_V1.md'},
  {id:'lion',zh:'獅子與老鼠',file:'lion_V1.md'},
- {id:'bremen',zh:'布萊梅樂隊',file:'bremen_V1.md'}
+ {id:'bremen',zh:'布萊梅樂隊',file:'bremen_V1.md'},
+ {id:'turnip',zh:'拔蘿蔔',file:'turnip_V1.md'},
+ {id:'gruff',zh:'三隻山羊嘎啦嘎啦',file:'gruff_V1.md'},
+ {id:'porridge',zh:'甜粥',file:'porridge_V1.md'},
+ {id:'pea',zh:'豌豆公主',file:'pea_V1.md'},
+ {id:'wolfboy',zh:'放羊的孩子',file:'wolfboy_V1.md'},
+ {id:'crow',zh:'烏鴉喝水',file:'crow_V1.md'},
+ {id:'elves',zh:'小精靈與鞋匠',file:'elves_V1.md'},
+ {id:'wind',zh:'北風與太陽',file:'wind_V1.md'}
 ];
+// 新書：另外列 id（書單每一行要維持 {id,zh,file} 的格式，tools/status.js 才讀得到）
+const NEW_IDS=['turnip','gruff','porridge','pea','wolfboy','crow','elves','wind'];
+BOOKS.forEach(b=>{if(NEW_IDS.includes(b.id))b.grp='new'});
+const GRPS=[['old','原本的 17 本'],['new','新書']];
 const TOP=[['story','📖 故事'],['rules','✍️ 寫作規則'],['art','🎨 美術標注格式'],['progress','📋 進度']];
 const SUB=[['outline','大綱'],['pages','分鏡 12 頁'],['read','試讀'],['design','角色・背景・道具'],['quiz','問答・待辦']];
 
@@ -140,7 +153,8 @@ async function render(){
     if(st.top==='progress'){M.innerHTML=`<div class="panel">${await progress()}</div>`;return}
     // 故事：第二層＝哪一本，第三層＝看哪一部分
     const bk=BOOKS.find(b=>b.id===st.book);
-    let h=`<div class="t2">${tabs(BOOKS.map(b=>[b.id,b.zh]),st.book,'tb',null,k=>!BOOKS.find(b=>b.id===k).file)}`;
+    const grp=bk.grp||'old',inG=BOOKS.filter(b=>(b.grp||'old')===grp);
+    let h=`<div class="t2">${tabs(GRPS.map(([k,t])=>[k,t+'（'+BOOKS.filter(b=>(b.grp||'old')===k).length+'）']),grp,'tg')}${tabs(inG.map(b=>[b.id,b.zh]),st.book,'tb',null,k=>!BOOKS.find(b=>b.id===k).file)}`;
     h+=tabs(SUB,st.sub,'t3')+'</div><div style="height:12px"></div>';
     const S=sections(await load(bk.file));
     const pages=parsePages(pick(S,'每一頁'));
@@ -151,7 +165,7 @@ async function render(){
     if(st.sub==='quiz')body=md(pick(S,'問答','給美術','錄音'));
     if(st.sub==='read')body=reader(pages);
     M.innerHTML=h+`<div class="panel">${body}</div>`;
-    bind('.tb',k=>go({book:k,p:0}));bind('.t3',k=>go({sub:k}));
+    bind('.tb',k=>go({book:k,p:0}));bind('.tg',k=>go({book:BOOKS.find(b=>(b.grp||'old')===k&&b.file).id,p:0}));bind('.t3',k=>go({sub:k}));
     if(st.sub==='read'){const pv=document.getElementById('pv'),nx=document.getElementById('nx');
       pv.onclick=()=>go({p:st.p-1});nx.onclick=()=>go({p:st.p+1});}
   }catch(e){M.innerHTML=`<div class="err">${esc(e.message)}<br>（這頁要用網址開，例如 GitHub Pages 或本機伺服器；直接點開檔案會讀不到 .md）</div>`}
@@ -175,10 +189,10 @@ async function progress(){
   for(const b of BOOKS){
     let s='未寫',n='',rec='',inc='';
     if(b.file){try{const S=sections(await load(b.file));const p=parsePages(pick(S,'每一頁'));s='已寫（'+b.file+'）';n=p.length;
-      rec=p.filter(x=>/要重錄/.test(x.f['聲音']||'')).length+' 頁';inc=(pick(S,'已寫進').match(/content_beta_V\d+\.js/)||['等 Kevin 看'])[0];}catch(e){s='讀不到檔案'}}
-    rows+=`<tr><td>${b.zh}</td><td><code>${b.id}</code></td><td>${s}</td><td>${n}</td><td>${rec}</td><td>${inc}</td></tr>`;
+      rec=p.filter(x=>/要重錄|新錄/.test(x.f['聲音']||'')).length+' 頁';inc=(pick(S,'已寫進').match(/content_beta_V\d+\.js/)||['等 Kevin 看'])[0];}catch(e){s='讀不到檔案'}}
+    rows+=`<tr><td>${b.grp==='new'?'🆕 ':''}${b.zh}</td><td><code>${b.id}</code></td><td>${s}</td><td>${n}</td><td>${rec}</td><td>${inc}</td></tr>`;
   }
-  return `<h2>17 本進度</h2><table><tr><th>書</th><th>ID</th><th>故事稿</th><th>頁數</th><th>要重錄</th><th>寫進 content</th></tr>${rows}</table>
+  return `<h2>${BOOKS.length} 本進度</h2><table><tr><th>書</th><th>ID</th><th>故事稿</th><th>頁數</th><th>要錄音</th><th>寫進 content</th></tr>${rows}</table>
    <p>寫好一本：在 <code>beta/story/</code> 放 <code>&lt;id&gt;_V1.md</code>，再把這頁 BOOKS 清單裡那本的 <code>file</code> 填上。</p>`;
 }
 window.addEventListener('keydown',e=>{if(st.top==='story'&&st.sub==='read'){if(e.key==='ArrowRight')go({p:st.p+1});if(e.key==='ArrowLeft'&&st.p)go({p:st.p-1})}});
