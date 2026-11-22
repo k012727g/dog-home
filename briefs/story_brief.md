@@ -40,6 +40,11 @@
 - 不能用有版權的角色或電影版的情節、造型（例如迪士尼版）。只用公共領域版本或原創。
 - 不要有嚇人或暴力的畫面（例如大野狼吃掉人）。結局要溫和。
 
+## 先寫故事稿，再改 content.js
+- 每本書先寫故事稿：`beta/story/<書id>_V?.md`（大綱、12 頁分鏡、給美術的角色／背景／道具表）。格式和寫法見 `beta/story/STORY_GUIDE.md`，範例 `beta/story/red_V1.md`。
+- Kevin 在 https://k012727g.github.io/dog-home/beta/story/story_preview.html 看過、說 OK，才寫進 `content_beta_V?.js`。
+- 新寫好一本，要在 `story_preview.html` 的 `BOOKS` 清單填上檔名。
+
 ## 寫故事的規格
 - 每本 **12 頁**（錄音是照頁碼存的，頁數不能隨便改，改了要整本重錄）。
 - 英文：每頁 **12 個字以內**，用國小一、二年級的簡單字，一頁一件事。

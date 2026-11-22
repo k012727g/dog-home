@@ -29,6 +29,7 @@
 - 在 SK、IC 裡新增角色、動物、道具或圖示。
 - 在 DOGART.css 裡新增動畫。
 - 繪本對話會列出「需要的新角色或道具」，請照它給的名稱和參數畫。
+- 繪本的故事稿在 `beta/story/<書id>_V?.md`，裡面的 CHAR（角色）、BG（背景）、PROP（道具）表和每頁的「畫面／角色／道具」就是要畫的清單；網頁版：https://k012727g.github.io/dog-home/beta/story/story_preview.html
 
 ## 絕對不能做的事
 - 不能改名、刪除，或改變任何現有函式與物件的名稱和參數（L2、IC、icon、ii、pupSVG、COATS、CLIPS、recolor、wordPic、ART、NOTE_COL、ARR、noteSVG、K、SK、SCN、CASTLE、FOREST、GRASS、FLOOR、FRIENDS、DOGART）。主程式靠這些名稱運作，改了遊戲就會壞。

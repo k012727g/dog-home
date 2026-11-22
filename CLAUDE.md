@@ -80,6 +80,7 @@ node tests/smoke_test.js --compare 舊.json 新.json                      # 每�
 | 測試版 | https://k012727g.github.io/dog-home/beta/gallery_beta_V3.html | V3 美術總覽（V1、V2 也有） | 舊版 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/gallery_beta_V4.html | V4 美術總覽（美術、繪本對話用；可加 ?art=V5、?content=V5） | 2026-11-22 補上，上傳後可開 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/story_voice_test.html | 故事聲音測試（比較不同聲音） | 正常 |
+| 繪本稿 | https://k012727g.github.io/dog-home/beta/story/story_preview.html | 繪本故事稿預覽：寫作規則、美術標注格式、每本的大綱／分鏡／試讀（讀 `beta/story/*.md`） | 2026-11-22 新增（小紅帽 V1） |
 | 設計頁 | https://k012727g.github.io/dog-home/beta/design/art_directions.html | 三個美術方向比較 | 正常 |
 | 設計頁 | https://k012727g.github.io/dog-home/beta/design/art_V4_review.html | 美術 V4 總檢查 | 正常 |
 | 設計頁 | https://k012727g.github.io/dog-home/beta/design/pup_V4_preview.html | 主角小狗 V4 預覽 | 正常 |
@@ -100,6 +101,8 @@ node tests/smoke_test.js --compare 舊.json 新.json                      # 每�
 | 繪本對話 | `content.js` 的 `STORIES`、`QPIC` | 書的 `id`、資料欄位名稱、`index.html`、`art.js` | `content_beta_V?.js` |
 
 - 給它們的說明在 `briefs/art_brief.md`、`briefs/story_brief.md`。合約或流程改了，要同步更新這兩份。
+- 三個對話開工時共用的提示：`briefs/start_prompt.md`（Kevin 貼給新對話用）。
+- **繪本先寫故事稿**：繪本對話先在 `beta/story/<書id>_V?.md` 寫大綱、分鏡和角色／背景／道具表（格式見 `beta/story/STORY_GUIDE.md`），Kevin 在 `beta/story/story_preview.html` 看過說 OK，美術對話照稿裡的表畫圖，最後繪本對話才寫進 `content_beta_V?.js`。故事稿是設計文件，可以直接推到 `main` 的 `beta/story/`。
 - 它們交付後：Kevin 把檔案上傳到 `beta/`，告訴主程式對話。主程式對話照第 2 節的流程測試，給測試網址：
   - 只換美術：`beta/index_beta_V4.html?art=V5`、`beta/gallery_beta_V4.html?art=V5`
   - 只換繪本：`beta/index_beta_V4.html?content=V5`

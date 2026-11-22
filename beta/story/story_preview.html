@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>小狗的家｜繪本故事稿預覽</title>
+<style>
+/* 內容不寫在這裡：讀同一個資料夾的 .md 檔（STORY_GUIDE.md、<id>_V<n>.md），改 .md 這頁就跟著變 */
+:root{color-scheme:light;--bg:#FFF6EC;--card:#fff;--ink:#4A3140;--soft:#7A5A6A;--line:#F0D9C8;--acc:#E53935;--acc2:#FFE3D6}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 "PingFang TC","Noto Sans TC",sans-serif}
+.w{max-width:1000px;margin:auto;padding:18px max(4vw,12px) 60px}
+h1{font-size:clamp(24px,4.5vw,34px);margin:0 0 4px;line-height:1.2}
+.sub{color:var(--soft);margin:0 0 14px;font-size:15px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.tabs button{font:inherit;font-weight:700;border:2px solid #5A3E4B;background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+.tabs button[aria-selected=true]{background:#5A3E4B;color:#FFF3E2}
+.tabs button:disabled{opacity:.4;cursor:default;border-style:dashed}
+.t1 button{font-size:18px;padding:8px 18px}
+.t2{background:var(--acc2);border-radius:18px;padding:8px}
+.t3 button{font-size:15px;border-width:1.5px}
+.panel{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:clamp(12px,3vw,24px)}
+.panel h2{font-size:22px;margin:22px 0 8px;line-height:1.3}.panel h2:first-child{margin-top:0}
+.panel h3{font-size:18px;margin:16px 0 6px}
+table{width:100%;border-collapse:collapse;margin:8px 0 14px;font-size:15px;display:block;overflow-x:auto}
+td,th{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#FFF1E6;color:var(--soft);white-space:nowrap}
+code{background:#F6EEE8;border-radius:5px;padding:0 5px;font-size:.9em}
+pre{background:#F6EEE8;border-radius:12px;padding:10px 12px;overflow-x:auto;font-size:14px}pre code{background:none;padding:0}
+hr{border:0;border-top:2px dashed var(--line);margin:18px 0}
+.pg{border:2px solid var(--line);border-radius:16px;padding:12px 14px;margin:0 0 12px}
+.pg .no{display:inline-block;background:var(--acc);color:#fff;border-radius:999px;padding:0 10px;font-weight:800;margin-right:8px}
+.pg .en{font-size:19px;font-weight:700;margin:6px 0 0}.pg .zh{color:var(--soft);margin:0 0 6px}
+.pg dl{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;margin:0;font-size:15px}
+.pg dt{color:var(--soft);font-weight:700}.pg dd{margin:0}
+.turn{background:#FFE9A8;border-radius:6px;padding:0 6px;font-weight:700}
+.rec-new{color:#C0392B;font-weight:700}.rec-keep{color:#2E8B57;font-weight:700}
+/* 試讀 */
+.book{text-align:center}
+.sheet{border:3px solid #5A3E4B;border-radius:22px;padding:26px 18px;min-height:300px;display:flex;flex-direction:column;justify-content:center;gap:10px;background:#FFFDF8}
+.sheet .en{font-size:clamp(22px,4.5vw,32px);font-weight:800;line-height:1.35}
+.sheet .zh{font-size:clamp(18px,3.5vw,24px);color:var(--soft)}
+.sheet .pic{font-size:14px;color:var(--soft);background:#F6EEE8;border-radius:12px;padding:8px 10px;text-align:left;margin-top:10px}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px}
+.nav button{font:inherit;font-weight:800;font-size:20px;border:2px solid #5A3E4B;border-radius:16px;background:var(--card);padding:10px 22px;cursor:pointer}
+.nav button:disabled{opacity:.3}
+.empty{color:var(--soft);text-align:center;padding:30px}
+.err{background:#FFE3E3;border-radius:12px;padding:12px}
+</style>
+</head>
+<body>
+<div class="w">
+  <h1>📚 繪本故事稿預覽</h1>
+  <p class="sub">寫故事的人和美術共用。內容來自 <code>beta/story/</code> 裡的 .md 檔。</p>
+  <div class="tabs t1" id="t1" role="tablist"></div>
+  <div id="main"></div>
+</div>
+<script>
+/* ---------- 書單：寫好一本就把 file 填上（檔名 <id>_V<版本>.md） ---------- */
+const BOOKS=[
+ {id:'red',zh:'小紅帽',file:'red_V1.md'},
+ {id:'snow',zh:'白雪公主'},{id:'goats',zh:'大野狼與七隻小羊'},{id:'mermaid',zh:'人魚公主'},
+ {id:'cinder',zh:'灰姑娘'},{id:'sleep',zh:'睡美人'},{id:'pino',zh:'皮諾丘'},{id:'pigs',zh:'三隻小豬'},
+ {id:'goldi',zh:'金髮女孩與三隻熊'},{id:'ugly',zh:'醜小鴨'},{id:'race',zh:'龜兔賽跑'},{id:'jack',zh:'傑克與魔豆'},
+ {id:'emperor',zh:'國王的新衣'},{id:'hen',zh:'小紅母雞'},{id:'ginger',zh:'薑餅人'},{id:'lion',zh:'獅子與老鼠'},{id:'bremen',zh:'布萊梅樂隊'}
+];
+const TOP=[['story','📖 故事'],['rules','✍️ 寫作規則'],['art','🎨 美術標注格式'],['progress','📋 進度']];
+const SUB=[['outline','大綱'],['pages','分鏡 12 頁'],['read','試讀'],['design','角色・背景・道具'],['quiz','問答・待辦']];
+
+/* ---------- 小小 markdown 轉換（只做這幾份檔案用得到的：標題、表格、清單、程式碼、粗體） ---------- */
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const inl=s=>esc(s).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
+function md(src){
+  const L=src.split('\n');let h='',i=0;
+  while(i<L.length){
+    const l=L[i];
+    if(/^```/.test(l)){let c=[];i++;while(i<L.length&&!/^```/.test(L[i]))c.push(L[i++]);i++;h+=`<pre><code>${esc(c.join('\n'))}</code></pre>`;continue}
+    if(/^\|/.test(l)){let r=[];while(i<L.length&&/^\|/.test(L[i]))r.push(L[i++]);
+      const cells=x=>x.replace(/^\||\|$/g,'').split('|').map(c=>c.trim());
+      h+='<table><tr>'+cells(r[0]).map(c=>`<th>${inl(c)}</th>`).join('')+'</tr>'+r.slice(2).map(x=>'<tr>'+cells(x).map(c=>`<td>${inl(c)}</td>`).join('')+'</tr>').join('')+'</table>';continue}
+    if(/^(- |\d+\. )/.test(l)){const ol=/^\d/.test(l);let it=[];while(i<L.length&&/^(- |\d+\. )/.test(L[i]))it.push(L[i++].replace(/^(- |\d+\. )/,''));
+      h+=(ol?'<ol>':'<ul>')+it.map(x=>`<li>${inl(x)}</li>`).join('')+(ol?'</ol>':'</ul>');continue}
+    let m;
+    if(m=l.match(/^(#{1,4}) (.*)/)){const n=Math.min(m[1].length+1,4);h+=`<h${n}>${inl(m[2])}</h${n}>`;i++;continue}
+    if(/^---\s*$/.test(l)){h+='<hr>';i++;continue}
+    if(!l.trim()){i++;continue}
+    let p=[];while(i<L.length&&L[i].trim()&&!/^(#|\||- |\d+\. |```|---)/.test(L[i]))p.push(L[i++]);
+    h+=`<p>${p.map(inl).join('<br>')}</p>`;
+  }
+  return h;
+}
+/* 依「## 標題」切段 */
+function sections(src){const out={_head:''};let k='_head';for(const l of src.split('\n')){const m=l.match(/^## (.*)/);if(m){k=m[1].trim();out[k]='';}out[k]+=l+'\n';}return out}
+const pick=(S,...keys)=>Object.keys(S).filter(k=>keys.some(x=>k.startsWith(x))).map(k=>S[k]).join('\n');
+/* 「### P01」每頁 → {no, 欄位} */
+function parsePages(txt){
+  return txt.split(/^### /m).slice(1).filter(b=>/^P\d+/.test(b)).map(b=>{
+    const [no,...rest]=b.split('\n');const f={};
+    rest.forEach(l=>{const m=l.match(/^([^:：]{1,8})[:：]\s?(.*)$/);if(m)f[m[1].trim()]=m[2]});
+    return {no:no.trim(),f};
+  });
+}
+
+/* ---------- 讀檔 ---------- */
+const cache={};
+async function load(file){
+  if(cache[file])return cache[file];
+  const r=await fetch(file+'?t='+Date.now());if(!r.ok)throw new Error(file+' 讀不到（'+r.status+'）');
+  return cache[file]=await r.text();
+}
+
+/* ---------- 分頁狀態放在網址 #story/red/pages，重新整理不會跑掉 ---------- */
+let st={top:'story',book:'red',sub:'outline',p:0};
+function readHash(){const [a,b,c]=location.hash.slice(1).split('/');if(TOP.some(t=>t[0]===a))st.top=a;if(BOOKS.some(x=>x.id===b&&x.file))st.book=b;if(SUB.some(t=>t[0]===c))st.sub=c}
+function go(o){Object.assign(st,o);history.replaceState(null,'','#'+[st.top,st.book,st.sub].join('/'));render()}
+function tabs(list,cur,cls,fn,dis){return `<div class="tabs ${cls}" role="tablist">`+list.map(([k,t])=>`<button role="tab" aria-selected="${k===cur}" ${dis&&dis(k)?'disabled':''} data-k="${k}">${t}</button>`).join('')+'</div>'}
+function bind(sel,fn){document.querySelectorAll(sel+' button').forEach(b=>b.onclick=()=>fn(b.dataset.k))}
+
+async function render(){
+  document.getElementById('t1').outerHTML=tabs(TOP,st.top,'t1').replace('class="tabs t1"','class="tabs t1" id="t1"');
+  bind('#t1',k=>go({top:k}));
+  const M=document.getElementById('main');
+  try{
+    if(st.top==='rules'||st.top==='art'){
+      const S=sections(await load('STORY_GUIDE.md'));
+      M.innerHTML=`<div class="panel">${md(st.top==='rules'?pick(S,'1.','3.'):pick(S,'2.'))}</div>`;return;
+    }
+    if(st.top==='progress'){M.innerHTML=`<div class="panel">${await progress()}</div>`;return}
+    // 故事：第二層＝哪一本，第三層＝看哪一部分
+    const bk=BOOKS.find(b=>b.id===st.book);
+    let h=`<div class="t2">${tabs(BOOKS.map(b=>[b.id,b.zh]),st.book,'tb',null,k=>!BOOKS.find(b=>b.id===k).file)}`;
+    h+=tabs(SUB,st.sub,'t3')+'</div><div style="height:12px"></div>';
+    const S=sections(await load(bk.file));
+    const pages=parsePages(pick(S,'每一頁'));
+    let body='';
+    if(st.sub==='outline')body=md(S._head)+md(pick(S,'劇情大綱','這一版','和 V'));
+    if(st.sub==='pages')body=pages.map(pageCard).join('');
+    if(st.sub==='design')body=md(pick(S,'CHAR','BG','PROP'));
+    if(st.sub==='quiz')body=md(pick(S,'問答','給美術','錄音'));
+    if(st.sub==='read')body=reader(pages);
+    M.innerHTML=h+`<div class="panel">${body}</div>`;
+    bind('.tb',k=>go({book:k,p:0}));bind('.t3',k=>go({sub:k}));
+    if(st.sub==='read'){const pv=document.getElementById('pv'),nx=document.getElementById('nx');
+      pv.onclick=()=>go({p:st.p-1});nx.onclick=()=>go({p:st.p+1});}
+  }catch(e){M.innerHTML=`<div class="err">${esc(e.message)}<br>（這頁要用網址開，例如 GitHub Pages 或本機伺服器；直接點開檔案會讀不到 .md）</div>`}
+}
+function pageCard({no,f}){
+  const skip=['EN','ZH'];
+  const val=(k,v)=>{v=inl(v);if(k==='翻頁'&&/有/.test(v))v=`<span class="turn">${v}</span>`;
+    if(k==='聲音')v=v.replace(/要重錄/,'<span class="rec-new">要重錄</span>').replace(/沿用/,'<span class="rec-keep">沿用</span>');return v};
+  return `<div class="pg"><span class="no">${no}</span><p class="en">${inl(f.EN||'')}</p><p class="zh">${inl(f.ZH||'')}</p><dl>`+
+    Object.entries(f).filter(([k])=>!skip.includes(k)).map(([k,v])=>`<dt>${esc(k)}</dt><dd>${val(k,v)}</dd>`).join('')+'</dl></div>';
+}
+function reader(pages){
+  if(!pages.length)return '<p class="empty">還沒有分鏡</p>';
+  st.p=Math.max(0,Math.min(st.p,pages.length-1));const {no,f}=pages[st.p];
+  return `<div class="book"><div class="sheet"><div class="en">${inl(f.EN||'')}</div><div class="zh">${inl(f.ZH||'')}</div>
+   <div class="pic">🖼️ ${inl(f['畫面']||'')}<br>👤 ${inl(f['角色']||'')}${f['翻頁']&&/有/.test(f['翻頁'])?'<br>👉 <b>翻頁驚喜</b>':''}</div></div>
+   <div class="nav"><button id="pv" ${st.p?'':'disabled'}>◀</button><span>${no}　${st.p+1} / ${pages.length}</span><button id="nx" ${st.p<pages.length-1?'':'disabled'}>▶</button></div></div>`;
+}
+async function progress(){
+  let rows='';
+  for(const b of BOOKS){
+    let s='未寫',n='',rec='';
+    if(b.file){try{const S=sections(await load(b.file));const p=parsePages(pick(S,'每一頁'));s='已寫（'+b.file+'）';n=p.length;
+      rec=p.filter(x=>/要重錄/.test(x.f['聲音']||'')).length+' 頁';}catch(e){s='讀不到檔案'}}
+    rows+=`<tr><td>${b.zh}</td><td><code>${b.id}</code></td><td>${s}</td><td>${n}</td><td>${rec}</td></tr>`;
+  }
+  return `<h2>17 本進度</h2><table><tr><th>書</th><th>ID</th><th>故事稿</th><th>頁數</th><th>要重錄</th></tr>${rows}</table>
+   <p>寫好一本：在 <code>beta/story/</code> 放 <code>&lt;id&gt;_V1.md</code>，再把這頁 BOOKS 清單裡那本的 <code>file</code> 填上。</p>`;
+}
+window.addEventListener('keydown',e=>{if(st.top==='story'&&st.sub==='read'){if(e.key==='ArrowRight')go({p:st.p+1});if(e.key==='ArrowLeft'&&st.p)go({p:st.p-1})}});
+window.addEventListener('hashchange',()=>{readHash();render()});
+readHash();render();
+</script>
+</body>
+</html>
