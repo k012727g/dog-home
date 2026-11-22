@@ -9,13 +9,13 @@
  },
  "latest": {
   "index": 5,
-  "art": 4,
+  "art": 5,
   "content": 5,
   "gallery": 4
  },
  "next": {
   "index": 6,
-  "art": 5,
+  "art": 6,
   "content": 6
  },
  "indexes": [
@@ -41,7 +41,7 @@
   },
   {
    "v": 5,
-   "art": 4,
+   "art": 5,
    "content": 5
   }
  ],
