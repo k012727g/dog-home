@@ -492,87 +492,79 @@ const DOGART={version:'V4',css:String.raw`.wa-run{animation:waRun .5s ease-in-ou
 window.DOGART=DOGART;
 
 /* =====================================================================================
-   🐉 測試版：寵物換成「小飛龍」（像素風）。只在 art_beta_dragon.js 裡，正式版不受影響。
-   名稱、參數、畫布 120×110 都和 pupSVG 一樣；身體用同一組顏色碼，所以換毛色、換髮夾色都能用（翅膀＝髮夾色）。
+   🐉 測試版：寵物換成「小飛龍」（方向 A 軟糖貼紙）。只在 art_beta_dragon.js，正式版不受影響。
+   名稱、參數、畫布 120×110 和 pupSVG 一樣；身體用同一組顏色碼（可換毛色），翅膀＝髮夾色。
    ===================================================================================== */
-const _PX=(function(){const O='#5A3E4B';
- function Grid(W,H){const g=Array.from({length:H},()=>Array(W).fill(null));
-  const inS=(s,x,y)=>{const px=x+.5,py=y+.5;
-    if(s.t==='e')return ((px-s.cx)/s.rx)**2+((py-s.cy)/s.ry)**2<=1;
-    if(s.t==='r')return px>=s.x&&px<s.x+s.w&&py>=s.y&&py<s.y+s.h;
-    if(s.t==='p'){let c=false;const P=s.pts;for(let i=0,j=P.length-1;i<P.length;j=i++){const [xi,yi]=P[i],[xj,yj]=P[j];if((yi>py)!==(yj>py)&&px<(xj-xi)*(py-yi)/(yj-yi)+xi)c=!c}return c}
-    if(s.t==='u')return s.list.some(q=>inS(q,x,y));return false};
-  const api={part(s,fill,line=O){const m=[];for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(inS(s,x,y))m.push([x,y]);const set=new Set(m.map(([x,y])=>x+','+y));
-      for(const [x,y] of m){g[y][x]=[[1,0],[-1,0],[0,1],[0,-1]].some(([dx,dy])=>!set.has((x+dx)+','+(y+dy)))&&line?line:fill}return api},
-    paint(s,fill,on){for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(inS(s,x,y)&&(!on||on.includes(g[y][x])))g[y][x]=fill;return api},
-    px(list,c){for(const [x,y] of list)if(y>=0&&y<H&&x>=0&&x<W)g[y][x]=c;return api},
-    svg(sc,ox,oy){const by={};for(let y=0;y<H;y++){let x=0;while(x<W){const c=g[y][x];if(!c){x++;continue}let e=x;while(e+1<W&&g[y][e+1]===c)e++;(by[c]=by[c]||[]).push(`M${x} ${y}h${e-x+1}v1h${-(e-x+1)}z`);x=e+1}}
-      return `<g transform="translate(${ox} ${oy}) scale(${sc})" shape-rendering="crispEdges">${Object.entries(by).map(([c,d])=>`<path fill="${c}" d="${d.join('')}"/>`).join('')}</g>`}};
-  return api}
- return {Grid,O,E:(cx,cy,rx,ry)=>({t:'e',cx,cy,rx,ry}),R:(x,y,w,h)=>({t:'r',x,y,w,h}),P:pts=>({t:'p',pts}),U:(...list)=>({t:'u',list})}})();
-const _DRAGON=(function(){const {Grid,O,E,R,P,U}=_PX;
- const F='#F9BF8C',SH='#F2A773',CR='#FFF3E2',WG='#FF9EC5',HORN='#FFD86B',PK='#FF9EC4',W='#FFFFFF',SC='#FF8FB8',GOLD='#FFD24A',MUD='#A8805F';
- const SCALE=3.75,OY=0,o=(x,y)=>`${(x*SCALE).toFixed(1)}px ${(y*SCALE+OY).toFixed(1)}px`;
- const mirror=pts=>pts.map(([x,y])=>[32-x,y]);
- const cache=new Map();
- function face(g,ex,dy,closed){const sh=L=>L.map(([x,y])=>[x,y+dy]);
-   if(ex.yawn||closed)g.px(sh([[9,11],[10,12],[11,12],[12,11],[19,11],[20,12],[21,12],[22,11]]),O);
-   else if(ex.happy)g.px(sh([[9,11],[10,10],[11,10],[12,11],[19,11],[20,10],[21,10],[22,11]]),O);
-   else{g.px(sh([[10,9],[11,9],[12,9],[10,10],[11,10],[12,10],[10,11],[11,11],[12,11],[19,9],[20,9],[21,9],[19,10],[20,10],[21,10],[19,11],[20,11],[21,11]]),O);g.px(sh([[10,9],[19,9],[11,10],[20,10]]),W);
-     if(ex.sad)g.px(sh([[8,7],[9,7],[10,8],[22,7],[23,7],[21,8]]),O)}
-   return g}
- function mouth(g,ex,dy,pose){const sh=L=>L.map(([x,y])=>[x,y+dy]);
-   if(ex.yawn)g.px(sh([[14,16],[15,16],[16,16],[17,16],[14,17],[17,17],[15,18],[16,18]]),O).px(sh([[15,17],[16,17]]),'#E0567F');
-   else if(pose==='eat')g.px(sh([[15,16],[16,16],[14,17],[17,17],[15,18],[16,18]]),O).px(sh([[15,17],[16,17]]),'#E0567F');
-   else if(ex.sad)g.px(sh([[14,17],[15,16],[16,16],[17,17]]),O);
-   else g.px(sh([[13,16],[14,17],[15,17],[16,17],[17,17],[18,16]]),O).px(sh([[16,18]]),W);  // 笑臉＋小虎牙
-   g.px(sh([[8,13],[9,13],[22,13],[23,13]]),PK)}
- function head(stage,ex,dy,pose,closed){const g=Grid(32,29);const d=(L)=>L.map(([x,y])=>[x,y+dy]);
-   g.part(E(16,11.8+dy,9.8,8.2),F);g.paint(E(16,18.8+dy,9,2),SH,[F]);g.paint(E(16,16+dy,5,3),CR,[F,SH]);
-   const fin=[[6.8,9.2],[1.6,6.6],[2.6,12.6],[6.8,13.8]];g.part(P(d(fin)),SH);g.part(P(d(mirror(fin))),SH);                  // 側邊小鰭（在臉的兩側）
-   const horn=[[10.2,6.4],[9.2,1.4],[11.4,1.2],[15,5.2]];g.part(P(d(horn)),HORN);g.part(P(d(mirror(horn))),HORN);                  // 角（在頭上面）
-   if(stage<3)g.part(P(d([[14.6,4.4],[16,1.6],[17.4,4.4]])),SH);
-   g.px(d([[10,6],[11,6],[9,7]]),W);
-   mouth(g,ex,dy,pose);if(ex.dirty)g.px(d([[7,9],[8,9],[8,10],[23,16],[24,16]]),MUD);
-   if(stage>=3)g.part(P(d([[11.8,7],[12,1.2],[14.2,3.8],[16,0.4],[17.8,3.8],[20,1.2],[20.2,7]])),GOLD).px(d([[16,4],[13,5],[19,5]]),PK);
-   const eyes=face(Grid(32,29),ex,dy,closed);
-   return `<g class="head"><g style="transform-origin:${o(16,20+dy)}">${g.svg(SCALE,0,OY)}<g class="eyes" style="transform-origin:${o(16,10.5+dy)}">${eyes.svg(SCALE,0,OY)}</g></g></g>`}
- function wing(side,up,dy){const g=Grid(32,29);
-   const L=up?[[10,18],[1,6.4],[2.4,12],[0.6,14.6],[4,16],[2.4,19],[9.8,21.6]]:[[10,19],[1.4,11],[2.6,16],[0.8,18.6],[4.4,19.6],[3,22.4],[9.8,23.2]];
-   const pts=(side<0?L:mirror(L)).map(([x,y])=>[x,y+dy]);g.part(P(pts),WG);
-   const rib=up?[[2,10],[3,11],[4,12],[5,13],[6,14],[3,16],[4,17],[5,18],[6,19]]:[[3,15],[4,16],[5,17],[6,18],[3,19],[4,20],[5,20],[6,21]];
-   g.px(rib.map(([x,y])=>[side<0?x:31-x,y+dy]),'#E0789E');
-   return `<g class="ear ${side<0?'ear-l':'ear-r'}" style="transform-origin:${o(side<0?10:22,19+dy)};animation-duration:${(2.6+Math.random()).toFixed(2)}s">${g.svg(SCALE,0,OY)}</g>`}
- function tail(dy,curl){const g=Grid(32,29);
-   g.part(curl?E(22,26.5,7,1.8):U(E(24.5,24.5,4.2,2),E(27.4,21.6,1.8,2.6)),F);
-   g.part(curl?P([[27.5,24.4],[30.4,25.8],[28.2,28.4]]):P([[26.5,17.4],[28.6,15],[30.4,17.8],[28.4,19.8]]),SH);
-   return `<g class="tail" style="transform-origin:${o(20,24+dy)}">${g.svg(SCALE,0,OY)}</g>`}
- function body(stage,ex,dy,fly){const g=Grid(32,29);
-   g.part(E(16,22.6+dy,7.6,5.4),F);g.paint(E(16,26.4+dy,7.6,2.2),SH,[F]);g.paint(E(16,23.6+dy,4.4,3.7),CR,[F,SH]);
-   g.px([[14,22],[15,22],[16,22],[17,22],[13,24],[14,24],[15,24],[16,24],[17,24],[18,24]].map(([x,y])=>[x,y+dy]),'#F6DCC0');  // 肚子鱗片
-   g.part(E(10.3,21.6+dy,1.8,2.4),F);g.part(E(21.7,21.6+dy,1.8,2.4),F);                       // 小手
-   if(ex.dirty)g.px([[11,25],[12,25],[20,23],[21,23]].map(([x,y])=>[x,y+dy]),MUD);
-   if(stage>=2){g.part(R(10,18.6+dy,12,2.5),SC);g.px([[12,19],[16,19],[20,19]].map(([x,y])=>[x,y+dy]),W);g.part(P([[18,20.4],[21.6,20.4],[20.8,24.4],[19,23.6]].map(([x,y])=>[x,y+dy])),SC)}
-   const feet=Grid(32,29);
-   if(fly){feet.part(E(12.6,27.4+dy,2,1.5),SH);feet.part(E(19.4,27.4+dy,2,1.5),SH)}
-   else{feet.part(E(12,27.4,2.9,1.6),SH);feet.part(E(20,27.4,2.9,1.6),SH)}
-   const legs=fly?`<g class="legs"><g class="leg a" style="transform-origin:${o(12.6,26+dy)}">${feet.svg(SCALE,0,OY)}</g></g>`:feet.svg(SCALE,0,OY);
-   return `<g class="bodyg" style="transform-origin:${o(16,27)}">${g.svg(SCALE,0,OY)}</g>${legs}`}
- function curled(stage,ex){const g=Grid(32,29);                                                  // 趴著／睡覺：縮成一團
-   g.part(E(18,22.5,12,5.8),F);g.paint(E(18,26.6,12,2),SH,[F]);g.part(P([[16,17],[22,10.6],[24,17]]),WG);g.part(P([[21,17],[27,11.4],[28.6,17.6]]),WG);
-   if(stage>=2)g.part(R(9,20.4,7,2.2),SC);if(ex.dirty)g.px([[22,22],[23,22],[25,24]],MUD);
-   return `<g class="bodyg" style="transform-origin:${o(18,27)}">${g.svg(SCALE,0,OY)}</g>`}
- return function(stage,m={}){const pose=m.pose||'stand',closed=pose==='sleep';
-   const key=JSON.stringify([stage,pose,!!m.happy,!!m.sad,!!m.dirty,!!m.yawn]);
-   if(!cache.has(key)){let svg;
-     if(pose==='lie'||pose==='sleep')svg=tail(0,true)+curled(stage,m)+`<g transform="translate(-3 15) scale(.86)">${head(stage,m,0,pose,closed)}</g>`;
-     else if(pose==='sit'||pose==='eat'||pose==='belly'){const mm=pose==='belly'?{...m,happy:true}:m;svg=wing(-1,false,0)+wing(1,false,0)+tail(0)+body(stage,mm,0,false)+head(stage,mm,0,pose,false)}
-     else{const dy=0;svg=`<ellipse cx="60" cy="106" rx="24" ry="3" fill="#5A3E4B" opacity=".14"/>`+wing(-1,true,dy)+wing(1,true,dy)+tail(dy)+body(stage,m,dy,true)+head(stage,m,dy,pose,false)}
-     cache.set(key,svg)}
-   return recolor(`<svg viewBox="0 0 120 110" aria-hidden="true">${cache.get(key)}</svg>`,m.look)}})();
-pupSVG=_DRAGON;
-// 地圖上的寵物頭像也換成小龍
-IC.petHead=_dogStk(_PX.Grid(16,16).part(_PX.P([[4.6,4.5],[3.4,0.8],[6.6,3.2]]),'#FFD86B').part(_PX.P([[11.4,4.5],[12.6,0.8],[9.4,3.2]]),'#FFD86B').part(_PX.E(8,8.4,6.6,5.6),'#F9BF8C').paint(_PX.E(8,10.6,3.4,2),'#FFF3E2',['#F9BF8C']).px([[5,7],[5,8],[10,7],[10,8],[7,10],[9,10]],'#5A3E4B').px([[4,10],[11,10]],'#FF9EC4').svg(3,0,0),.92);
-// 測試版：把等級名稱換成小飛龍（正式版不會載入這個檔案）
+function _dragonSVG(stage,m={}){
+  // 測試版小飛龍（方向 A 軟糖貼紙）：彎角、小鰭、背上小翅膀（＝髮夾色）、尾巴尖、小虎牙
+  const pose=m.pose||'stand',closed=pose==='sleep',D='#5A3E4B',ln=w=>`fill="none" stroke="${D}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"`;
+  const O=w=>`stroke="${D}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
+  // ---- 頭（頭部座標：中心 150,72、半徑 52，之後縮小放到身體上） ----
+  const eyes=m.yawn||closed?`<path d="M119 76q12 10 24 0M157 76q12 10 24 0" ${ln(6.5)}/>`
+    :m.happy?`<path d="M119 80q12-15 24 0M157 80q12-15 24 0" ${ln(6.5)}/>`
+    :`<ellipse cx="131" cy="74" rx="10" ry="12.5" fill="${D}"/><ellipse cx="169" cy="74" rx="10" ry="12.5" fill="${D}"/><circle cx="135" cy="68.5" r="4.2" fill="#fff"/><circle cx="173" cy="68.5" r="4.2" fill="#fff"/><circle cx="128" cy="80" r="2" fill="#fff"/><circle cx="166" cy="80" r="2" fill="#fff"/>`;
+  const brows=m.sad?`<path d="M114 54l20 7M186 54l-20 7" ${ln(6)}/>`:'';
+  const mouth=m.yawn?`<ellipse cx="150" cy="108" rx="12" ry="14" fill="#E0567F" ${O(5)}/><ellipse cx="150" cy="115" rx="7" ry="4.5" fill="#FF9EC4"/>`
+    :m.sad?`<path d="M138 110q12-10 24 0" ${ln(5.5)}/>`
+    :pose==='eat'?`<ellipse cx="150" cy="106" rx="10" ry="8" fill="#E0567F" ${O(5)}/>`
+    :closed?`<path d="M143 104q7 5 14 0" ${ln(5)}/>`
+    :`<path d="M144 106q6 12 12 0z" fill="#FF8FB8" ${O(3.5)}/><path d="M134 102q8 8 16 0q8 8 16 0" ${ln(5)}/><path d="M158 104l3 7 3-7z" fill="#fff" ${O(2.5)}/>`;
+  const rnd=(a,b)=>(a+Math.random()*(b-a)).toFixed(2);
+  const headIn=`<g class="ear ear-l" style="transform-origin:112px 52px;animation-duration:${rnd(6,9)}s"><path d="M110 64C98 62 90 54 88 44C94 46 96 40 94 32C101 36 104 32 104 24C110 34 114 42 118 50Z" fill="#F2A773" ${O(6.5)}/></g>
+    <g class="ear ear-r" style="transform-origin:188px 52px;animation-duration:${rnd(7,11)}s"><path d="M190 64C202 62 210 54 212 44C206 46 204 40 206 32C199 36 196 32 196 24C190 34 186 42 182 50Z" fill="#F2A773" ${O(6.5)}/></g>
+    <circle cx="150" cy="72" r="52" fill="#F9BF8C" ${O(6.5)}/>
+    <path d="M132 34C120 22 122 10 132 6C131 14 136 22 146 26Z" fill="#FFE38F" ${O(6)}/><path d="M168 34C180 22 178 10 168 6C169 14 164 22 154 26Z" fill="#FFE38F" ${O(6)}/>
+    ${stage<3?`<path d="M143 24l7-12 7 12z" fill="#F2A773" ${O(5)}/>`:''}
+    <ellipse cx="150" cy="98" rx="27" ry="19" fill="#FFF3E2"/>
+    <ellipse cx="134" cy="38" rx="14" ry="7" fill="#fff" opacity=".45" transform="rotate(-20 134 38)"/>
+    ${brows}<g class="eyes" style="transform-origin:150px 74px;animation-duration:${rnd(3.5,5.5)}s;animation-delay:-${rnd(0,3)}s">${eyes}</g>
+    <ellipse cx="143" cy="90" rx="2.6" ry="2" fill="${D}"/><ellipse cx="157" cy="90" rx="2.6" ry="2" fill="${D}"/>${mouth}
+    <ellipse cx="113" cy="96" rx="11" ry="6.5" fill="#FF9EC4" opacity=".8"/><ellipse cx="187" cy="96" rx="11" ry="6.5" fill="#FF9EC4" opacity=".8"/>
+    ${m.dirty?`<ellipse cx="124" cy="46" rx="8" ry="5" fill="#A8805F" opacity=".55"/>`:''}
+    ${stage>=3?`<path d="M134 30L137 10L145 19L150 4L155 19L163 10L166 30Z" fill="#FFD24A" ${O(6)}/><circle cx="150" cy="20" r="4" fill="#FF9EC4"/>`:''}
+    `;
+  // 頭的位置 [x, y, 旋轉, 縮放]
+  const HP={stand:[78,46,0,.56],sit:[66,44,0,.56],lie:[60,50,0,.56],sleep:[60,52,4,.56],belly:[80,74,-18,.5],eat:[80,70,24,.5],sniff:[78,64,14,.52]}[pose]||[78,46,0,.56];
+  const tail=(d,o,sx,sy,r=0)=>`<g class="tail" style="transform-origin:${o}"><path d="${d}" ${ln(12)}/><path d="${d}" fill="none" stroke="#F9BF8C" stroke-width="6.5" stroke-linecap="round"/><path transform="translate(${sx} ${sy}) rotate(${r})" d="M0-9l-8 8 8 7 8-7z" fill="#F2A773" ${O(3.5)}/></g>`;
+  const wing=(x,y,s,far)=>`<g transform="translate(${x} ${y}) scale(${s})"><g class="dg-wing" style="transform-origin:0px 0px;animation-delay:${far?'-.3s':'0s'}"><path d="M0 0C-2-16-14-30-34-32C-28-26-29-20-24-16C-32-14-33-7-27-3C-31 1-28 7-21 6Z" fill="#FF9EC5" ${O(3.5)}/><path d="M-3-3L-27-27M-5-1L-25-13M-7 2L-22 2" fill="none" stroke="#E0789E" stroke-width="2.4" stroke-linecap="round"/></g></g>`;
+  const leg=(x,y,h)=>`<rect x="${x-7}" y="${y}" width="14" height="${h}" rx="7" fill="#F2A773" ${O(3.5)}/>`;
+  const paw=(x,y)=>`<ellipse cx="${x}" cy="${y}" rx="10" ry="5.5" fill="#F2A773" ${O(3.5)}/>`;
+  const scarf=(dx,dy)=>stage>=2?`<g transform="translate(${dx} ${dy})"><path d="M58 62q17 12 36 0l2 8q-19 14-40 0z" fill="#FF8FB8" ${O(3)}/><path d="M64 70l-4 13 10-5z" fill="#FF8FB8" ${O(3)}/><circle cx="70" cy="69" r="1.6" fill="#fff"/><circle cx="82" cy="70" r="1.6" fill="#fff"/></g>`:'';
+  const dirt=(dx,dy)=>m.dirty?`<g transform="translate(${dx} ${dy})" fill="#A8805F" opacity=".55"><ellipse cx="36" cy="68" rx="6" ry="4"/><ellipse cx="60" cy="84" rx="5" ry="3.5"/><ellipse cx="70" cy="64" rx="4" ry="3"/></g>`:'';
+  let body;
+  if(pose==='sit'){
+    body=tail('M30 96q-15 1-17-10','30px 96px',13,85,-20)+wing(50,62,.7,1)
+      +`<path d="M30 98C22 80 28 58 50 52L72 56C80 72 80 88 74 98Z" fill="#F9BF8C" ${O(3.5)}/>`
+      +`<circle cx="40" cy="84" r="16" fill="#F9BF8C" ${O(3.5)}/>`+paw(52,98)
+      +`<path d="M58 64c7 5 9 15 7 26" fill="none" stroke="#FFF3E2" stroke-width="10" stroke-linecap="round"/>`
+      +wing(44,64,.8)+leg(62,68,30)+leg(75,68,30)+scarf(-14,-10)+dirt(2,12);
+  }else if(pose==='lie'||pose==='sleep'){
+    body=tail('M96 94q10-4 8-16','96px 94px',104,77,20)+wing(70,66,.6,1)
+      +`<g class="bodyg" style="transform-origin:60px 99px"><path d="M16 99c0-24 19-38 44-38s44 14 44 38z" fill="#F9BF8C" ${O(3.5)}/><path d="M40 99c0-10 9-16 20-16s20 6 20 16" fill="#FFF3E2"/>${dirt(0,18)}</g>`+wing(60,68,.7)
+      +paw(48,98)+paw(72,98)+scarf(-17,8);
+  }else if(pose==='belly'){
+    body=tail('M22 92q-9 0-9-9','22px 92px',13,82,-30)+wing(34,78,.55,1)+[26,38,54,66].map(x=>leg(x,58,22)).join('')
+      +`<ellipse cx="50" cy="86" rx="36" ry="17" fill="#F9BF8C" ${O(3.5)}/><ellipse cx="50" cy="79" rx="25" ry="8" fill="#FFF3E2"/><circle cx="50" cy="81" r="2" fill="#E8B9A0"/>`+dirt(-4,14);
+  }else{
+    const dx=pose==='eat'||pose==='sniff'?-2:0;
+    const lg=(x,c)=>`<g class="leg ${c}" style="transform-origin:${x}px 84px">${leg(x,80,22)}</g>`;
+    body=tail(`M24 66q-12-8-9-22`,'22px 62px',15,43,-10)+wing(60+dx,58,.7,1)+`<g class="legs">${lg(30+dx,'a')+lg(44+dx,'b')+lg(60+dx,'b')+lg(74+dx,'a')}</g>`
+      +`<g class="bodyg"><ellipse cx="${52+dx}" cy="74" rx="31" ry="20" fill="#F9BF8C" ${O(3.5)}/><ellipse cx="${55+dx}" cy="83" rx="17" ry="8" fill="#FFF3E2"/><path d="M${46+dx} 80q9 3 18 0M${48+dx} 86q7 2 14 0" fill="none" stroke="#5A3E4B" stroke-opacity=".22" stroke-width="2.4" stroke-linecap="round"/>${scarf(dx,0)}${dirt(dx,0)}</g>`+wing(50+dx,60,.8);
+  }
+  // 貼紙邊：同一份圖畫成「影子」和「白邊」墊在下面（保留 class，動畫會一起動）
+  const sil=(s,c,w)=>s.replace(/fill="(?!none)[^"]*"/g,`fill="${c}"`).replace(/stroke="[^"]*"/g,`stroke="${c}"`).replace(/stroke-width="([\d.]+)"/g,(a,v)=>`stroke-width="${(+v+w).toFixed(1)}"`).replace(/ opacity="[^"]*"/g,'');
+  const headWrap=inner=>`<g class="head"><g transform="translate(${HP[0]} ${HP[1]}) rotate(${HP[2]}) scale(${HP[3]}) translate(-150 -72)">${inner}</g></g>`;
+  const k=6/HP[3];
+  const back=(c,w,kk)=>sil(body,c,w)+headWrap(sil(headIn,c,kk));
+  return _dragonColor(`<svg viewBox="0 0 120 110" aria-hidden="true"><g stroke-linejoin="round" stroke-linecap="round"><g transform="translate(0 2.5)" opacity=".16">${back(D,6,k)}</g>${back('#fff',6,k)}</g>${body}${headWrap(headIn)}</svg>`,m.look);
+}
+// 小飛龍自己的顏色：美容院的五種毛色對應成五種龍（翅膀＝髮夾色）
+const DRAGON_COATS={aka:['#A8E0C0','#7FCBA4','#FFF6D8','薄荷龍'],cream:['#D9C9F7','#B9A3EE','#FFF6EE','薰衣草龍'],sesame:['#A9D6F5','#82BFEA','#FFF6E8','天空龍'],kuro:['#7A6A9A','#5E4F80','#F3E6FF','夜空龍'],shiro:['#FFFDF8','#E8E4F0','#FFFFFF','雪白龍']};
+function _dragonColor(svg,look){const L0=look||(typeof S!=='undefined'&&S.pet&&S.pet.look)||{};const c=DRAGON_COATS[L0.coat]||DRAGON_COATS.aka,clip=CLIPS.includes(L0.clip)?L0.clip:CLIPS[0];
+  return svg.replace(/#F9BF8C/g,c[0]).replace(/#F2A773/g,c[1]).replace(/#FFF3E2/g,c[2]).replace(/#FF9EC5/g,clip)}
+pupSVG=_dragonSVG;
+IC.petHead=_dogStk(`<path d="M11 24C4 22 2 14 5 10c2 5 5 8 9 8zM37 24c7-2 9-10 6-14-2 5-5 8-9 8z" fill="#7FCBA4" ${L2}/><circle cx="24" cy="26" r="15" fill="#A8E0C0" ${L2}/><path d="M17 14c-5-5-4-10 1-12-1 4 1 8 5 10zM31 14c5-5 4-10-1-12 1 4-1 8-5 10z" fill="#FFE38F" ${L2}/><ellipse cx="24" cy="32" rx="8" ry="5.5" fill="#FFF6D8"/><ellipse cx="18.5" cy="25" rx="2.6" ry="3.3" fill="#5A3E4B"/><ellipse cx="29.5" cy="25" rx="2.6" ry="3.3" fill="#5A3E4B"/><circle cx="19.5" cy="23.6" r="1" fill="#fff"/><circle cx="30.5" cy="23.6" r="1" fill="#fff"/><path d="M20 33q2 2 4 0q2 2 4 0" fill="none" stroke="#5A3E4B" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="13" cy="30" rx="2.8" ry="1.7" fill="#FF9EC4"/><ellipse cx="35" cy="30" rx="2.8" ry="1.7" fill="#FF9EC4"/>`);
+DOGART.css+=`\n.dg-wing{animation:dgFlap 1.4s ease-in-out infinite alternate}@keyframes dgFlap{from{transform:rotate(4deg)}to{transform:rotate(-16deg)}}`;
+(function(){try{const st=document.getElementById('dogart-css');if(st)st.textContent=DOGART.css}catch(e){}})();
 window.addEventListener('DOMContentLoaded',()=>{try{if(typeof STAGES!=='undefined'){STAGES[0].name='小龍寶寶';STAGES[1].name='小飛龍';STAGES[2].name='大飛龍';if(typeof renderAll==='function')renderAll()}}catch(e){}});
 DOGART.version='dragon-test';
