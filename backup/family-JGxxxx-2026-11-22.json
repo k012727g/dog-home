@@ -1,0 +1,803 @@
+{
+ "app": "dog-home",
+ "v": 1,
+ "at": "2026-11-22T02:26:48.514Z",
+ "note": "雲端存檔備份（Firestore families/JG****）。家長 → 備份與其他 →「從備份還原」可以直接讀這個檔。家庭代碼已遮住，還原時用不到。",
+ "cloud": {
+  "updatedAt": "2026-11-21T17:06:51.650Z",
+  "rev": "mwqnubuqbgmsj",
+  "device": "iPhone"
+ },
+ "state": {
+  "log": [
+   {
+    "t": "2026-11-21T14:48:32.516Z",
+    "d": "iPhone",
+    "text": "🛒 已買好大獎：髮圈"
+   },
+   {
+    "d": "iPhone",
+    "text": "🛒 已買好大獎：毛毛小物",
+    "t": "2026-11-21T14:48:32.253Z"
+   },
+   {
+    "text": "🛒 已買好大獎：立體貼紙",
+    "t": "2026-11-21T14:48:30.964Z",
+    "d": "iPhone"
+   },
+   {
+    "t": "2026-11-21T14:48:30.515Z",
+    "d": "iPhone",
+    "text": "🛒 已買好大獎：卡套"
+   },
+   {
+    "d": "iPhone",
+    "text": "🛒 已買好大獎：鑰匙圈",
+    "t": "2026-11-21T14:48:28.334Z"
+   },
+   {
+    "t": "2026-11-21T13:01:08.764Z",
+    "text": "🎰 單抽：鑰匙圈🎁",
+    "d": "iPhone"
+   },
+   {
+    "t": "2026-11-21T13:01:02.244Z",
+    "text": "🎰 單抽：金魚缸",
+    "d": "iPhone"
+   },
+   {
+    "d": "iPhone",
+    "text": "🎰 單抽：小凳子",
+    "t": "2026-11-21T13:00:56.177Z"
+   },
+   {
+    "text": "🎉 升到 Lv 6",
+    "d": "iPhone",
+    "t": "2026-11-21T13:00:53.347Z"
+   },
+   {
+    "t": "2026-11-21T13:00:34.682Z",
+    "text": "🎰 單抽：卡套🎁",
+    "d": "iPhone"
+   },
+   {
+    "d": "iPhone",
+    "t": "2026-11-21T13:00:24.284Z",
+    "text": "🎰 單抽：藍天壁紙"
+   },
+   {
+    "t": "2026-11-21T13:00:18.034Z",
+    "text": "🎰 單抽：星空壁紙★",
+    "d": "iPhone"
+   },
+   {
+    "text": "🎉 升到 Lv 5，可以領：大耳狗吊飾",
+    "t": "2026-11-21T13:00:14.919Z",
+    "d": "iPhone"
+   },
+   {
+    "t": "2026-11-21T13:00:13.534Z",
+    "d": "iPhone",
+    "text": "🎰 單抽：城堡狗屋★"
+   },
+   {
+    "text": "🎰 單抽：立體貼紙🎁",
+    "d": "iPhone",
+    "t": "2026-11-21T13:00:00.024Z"
+   },
+   {
+    "t": "2026-11-21T12:59:56.940Z",
+    "d": "iPhone",
+    "text": "🎉 升到 Lv 4"
+   },
+   {
+    "d": "iPhone",
+    "text": "🎰 單抽：毛毛小物🎁",
+    "t": "2026-11-21T12:59:39.143Z"
+   },
+   {
+    "t": "2026-11-21T12:59:31.301Z",
+    "d": "iPhone",
+    "text": "🎰 單抽：草地地板"
+   },
+   {
+    "d": "iPhone",
+    "t": "2026-11-21T12:59:25.450Z",
+    "text": "🎰 單抽：格子地板"
+   },
+   {
+    "d": "iPhone",
+    "text": "🎉 升到 Lv 3，可以領：小狗貼紙",
+    "t": "2026-11-21T12:59:19.942Z"
+   },
+   {
+    "d": "iPhone",
+    "t": "2026-11-21T12:59:16.894Z",
+    "text": "🎰 單抽：窗戶"
+   },
+   {
+    "text": "🎰 單抽：髮圈🎁",
+    "t": "2026-11-21T12:59:03.752Z",
+    "d": "iPhone"
+   },
+   {
+    "d": "iPhone",
+    "text": "🎉 升到 Lv 2",
+    "t": "2026-11-21T12:58:59.984Z"
+   },
+   {
+    "t": "2026-11-21T12:58:56.830Z",
+    "text": "🎰 單抽：掛鐘",
+    "d": "iPhone"
+   },
+   {
+    "text": "🎰 單抽：粉紅點點壁紙",
+    "t": "2026-11-21T12:58:51.412Z",
+    "d": "iPhone"
+   },
+   {
+    "t": "2026-11-21T12:58:26.884Z",
+    "d": "iPhone",
+    "text": "📷 用照片批次新增 15 個實體大獎"
+   },
+   {
+    "text": "批次刪除 5 個實體大獎",
+    "d": "iPhone",
+    "t": "2026-11-21T12:57:21.774Z"
+   },
+   {
+    "d": "iPhone",
+    "text": "刪除實體大獎：星星湯匙",
+    "t": "2026-11-21T12:57:11.302Z"
+   },
+   {
+    "text": "🎰 單抽：掛鐘",
+    "d": "iPhone",
+    "t": "2026-11-21T12:56:42.780Z"
+   },
+   {
+    "d": "iPhone",
+    "text": "✍️ 家長當場簽名，登記 16 張考卷：國語 100、數學 100、英文 100、生活 100、自然 100、社會 100、社會 100、社會 100、社會 100、社會 100、社會 100、社會 100、社會 100、社會 100、社會 100、社會 100（+16 張券）",
+    "t": "2026-11-21T12:56:25.428Z"
+   },
+   {
+    "text": "📖 小橘讀完《白雪公主》",
+    "d": "iPhone",
+    "t": "2026-11-21T12:53:51.854Z"
+   },
+   {
+    "d": "iPhone",
+    "t": "2026-11-21T12:53:51.853Z",
+    "text": "📚 小橘上了閱讀課"
+   },
+   {
+    "text": "小橘吃了飼料",
+    "d": "iPhone",
+    "t": "2026-11-21T12:50:14.965Z"
+   },
+   {
+    "d": "iPhone",
+    "text": "🍳 做了草莓鬆餅",
+    "t": "2026-11-21T12:50:00.269Z"
+   },
+   {
+    "text": "幫小橘洗香香",
+    "d": "iPhone",
+    "t": "2026-11-21T12:49:14.091Z"
+   },
+   {
+    "d": "iPhone",
+    "t": "2026-11-21T12:48:33.077Z",
+    "text": "🎮 英文教室 第 2 關：過關 3 顆星"
+   },
+   {
+    "text": "📚 小橘上了英文課",
+    "d": "iPhone",
+    "t": "2026-11-21T12:48:33.077Z"
+   },
+   {
+    "text": "🎮 英文教室 第 1 關：過關 3 顆星",
+    "t": "2026-11-21T12:47:38.166Z",
+    "d": "iPhone"
+   },
+   {
+    "t": "2026-11-21T12:47:38.165Z",
+    "d": "iPhone",
+    "text": "📚 小橘上了英文課"
+   },
+   {
+    "t": "2026-11-21T12:45:28.703Z",
+    "d": "iPhone",
+    "text": "🎮 活動中心 第 3 關：沒過"
+   },
+   {
+    "d": "iPhone",
+    "t": "2026-11-21T12:45:28.703Z",
+    "text": "🎈 小橘去活動中心和朋友玩，找到 1 次"
+   },
+   {
+    "text": "🎮 活動中心 第 2 關：過關 3 顆星",
+    "d": "iPhone",
+    "t": "2026-11-21T12:45:03.478Z"
+   },
+   {
+    "text": "🎈 小橘去活動中心和朋友玩，找到 3 次",
+    "t": "2026-11-21T12:45:03.478Z",
+    "d": "iPhone"
+   },
+   {
+    "t": "2026-11-21T12:44:41.234Z",
+    "d": "iPhone",
+    "text": "🎮 活動中心 第 1 關：過關 3 顆星"
+   },
+   {
+    "d": "iPhone",
+    "t": "2026-11-21T12:44:41.233Z",
+    "text": "🎈 小橘去活動中心和朋友玩，找到 3 次"
+   }
+  ],
+  "subjects": [
+   {
+    "n": "國語",
+    "i": "📖"
+   },
+   {
+    "i": "🔢",
+    "n": "數學"
+   },
+   {
+    "i": "🔤",
+    "n": "英文"
+   },
+   {
+    "n": "生活",
+    "i": "🌱"
+   },
+   {
+    "n": "自然",
+    "i": "🔬"
+   },
+   {
+    "i": "🌏",
+    "n": "社會"
+   }
+  ],
+  "signs": [
+   {
+    "at": "2026-11-21T12:56:24.526Z",
+    "id": "mwqew8umav3ru",
+    "path": "M242 100L260 86L273 84L288 78L301 71L313 65L324 58L333 51L337 45L336 40L319 33L303 28L291 22L284 17L280 15L277 13L278 25L283 45L289 70L293 95L297 117L303 136L313 150L320 158L323 158L318 153L315 144L314 131L311 116L306 101L305 90L305 83L302 81L297 81L291 89L280 103L269 119L260 135L251 150L242 162L241 169L245 165L253 150L263 134L275 123L289 118L301 116L310 116L316 116L319 116L319 121L319 129L316 141L316 154L312 165L304 175L296 185L288 193L281 200L276 202L273 202L273 198L278 186L291 173L303 160L316 144L327 131L337 122L348 115L362 109L373 102L381 95L383 89L384 86L384 96L378 101L375 105L381 107L387 110L396 118L401 130L408 142L416 153L419 161L422 166L413 161L409 156L409 150L409 142L419 134L424 127L428 123L432 121L432 125L422 133L413 143L405 149L405 145L420 125L438 97L453 71L465 51L474 38L481 34L483 40L483 56L483 73L482 89L482 101L482 109L484 112L487 113L490 113L492 118L492 128L485 138L479 143L476 143L475 125L484 106L496 90L509 80L520 77L528 77L533 78L536 87L537 97L537 109L533 120L526 125L523 127L522 120L522 116L527 116L538 121L549 133L559 146L565 159L567 166"
+   }
+  ],
+  "pet": {
+   "lastPet": "",
+   "exp": 276,
+   "name": "小橘"
+  },
+  "floorFood": null,
+  "wordStats": {
+   "purple": {
+    "ok": 1,
+    "bad": 0
+   },
+   "bed": {
+    "bad": 0,
+    "ok": 1
+   },
+   "tree": {
+    "bad": 0,
+    "ok": 2
+   },
+   "flower": {
+    "ok": 2,
+    "bad": 0
+   },
+   "star": {
+    "bad": 0,
+    "ok": 1
+   },
+   "big": {
+    "ok": 1,
+    "bad": 1
+   },
+   "moon": {
+    "ok": 1,
+    "bad": 0
+   }
+  },
+  "care": {
+   "food": 77,
+   "energy": 44,
+   "fun": 100,
+   "clean": 100,
+   "at": 1795265631852
+  },
+  "spent": 16,
+  "lessonDone": {
+   "list": [],
+   "date": "2026-11-21"
+  },
+  "prizes": [
+   {
+    "icon": "gift",
+    "name": "盒裝小物",
+    "left": 1,
+    "total": 1,
+    "id": "mwqeyv9gb8ht3",
+    "photo": "IMG_2766.jpeg"
+   },
+   {
+    "total": 1,
+    "id": "mwqeyv9gz3of6",
+    "icon": "gift",
+    "name": "毛毛吊飾",
+    "photo": "IMG_2773.jpeg",
+    "left": 1
+   },
+   {
+    "icon": "gift",
+    "name": "毛毛手套",
+    "left": 1,
+    "total": 1,
+    "photo": "IMG_2782.jpeg",
+    "id": "mwqeyv9gc0i3m"
+   },
+   {
+    "left": 1,
+    "photo": "IMG_2788.jpeg",
+    "total": 1,
+    "icon": "gift",
+    "id": "mwqeyv9g1vzrt",
+    "name": "原子筆"
+   },
+   {
+    "left": 3,
+    "id": "mwqeyv9gwxtzq",
+    "photo": "IMG_2789.jpeg",
+    "icon": "gift",
+    "name": "髮圈",
+    "total": 4
+   },
+   {
+    "id": "mwqeyv9greolr",
+    "left": 1,
+    "photo": "IMG_2791.jpeg",
+    "icon": "gift",
+    "name": "鈴鐺鑰匙圈",
+    "total": 1
+   },
+   {
+    "total": 1,
+    "name": "卡套",
+    "photo": "IMG_2785.jpeg",
+    "icon": "gift",
+    "id": "mwqeyv9gjfep2",
+    "left": 0
+   },
+   {
+    "id": "mwqeyv9gahl9u",
+    "left": 0,
+    "photo": "IMG_2783.jpeg",
+    "icon": "gift",
+    "name": "鑰匙圈",
+    "total": 1
+   },
+   {
+    "name": "立體貼紙",
+    "id": "mwqeyv9g6fvm1",
+    "icon": "gift",
+    "total": 1,
+    "photo": "IMG_2784.jpeg",
+    "left": 0
+   },
+   {
+    "total": 1,
+    "id": "mwqeyv9gfncln",
+    "icon": "gift",
+    "name": "小毯子",
+    "photo": "IMG_2771.jpeg",
+    "left": 1
+   },
+   {
+    "icon": "gift",
+    "name": "拖鞋",
+    "left": 1,
+    "total": 1,
+    "id": "mwqeyv9gv5onk",
+    "photo": "IMG_2776.jpeg"
+   },
+   {
+    "icon": "gift",
+    "total": 1,
+    "photo": "IMG_2780.jpeg",
+    "name": "大玩偶",
+    "id": "mwqeyv9g3iza2",
+    "left": 1
+   },
+   {
+    "icon": "gift",
+    "total": 1,
+    "photo": "IMG_2774.jpeg",
+    "name": "襪子",
+    "left": 1,
+    "id": "mwqeyv9gcyzal"
+   },
+   {
+    "total": 1,
+    "icon": "gift",
+    "name": "毛毛髮帶",
+    "photo": "IMG_2769.jpeg",
+    "id": "mwqeyv9g6d66r",
+    "left": 1
+   },
+   {
+    "total": 4,
+    "name": "毛毛小物",
+    "photo": "IMG_2793.jpeg",
+    "icon": "gift",
+    "left": 3,
+    "id": "mwqeyv9gi4r8u"
+   }
+  ],
+  "settings": {
+   "per": 1,
+   "autoDiff": true,
+   "cost": 1,
+   "quota": {
+    "on": false,
+    "min": 30
+   },
+   "threshold": 100,
+   "napMin": 2,
+   "pin": "0127",
+   "prizeRate": 10,
+   "bed": {
+    "to": "07:00",
+    "on": false,
+    "from": "21:00"
+   },
+   "pityN": 5
+  },
+  "placed": [],
+  "familyBook": [
+   {
+    "code": "JG****",
+    "note": "希",
+    "noteAt": "2026-11-21T17:06:13.048Z",
+    "rm": ""
+   }
+  ],
+  "dishes": {
+   "dPancake": 1
+  },
+  "paintings": [],
+  "books": {
+   "snow": 3
+  },
+  "rewards": [
+   {
+    "name": "小狗貼紙",
+    "claimed": false,
+    "level": 3,
+    "id": "mwq1steb0m0zh"
+   },
+   {
+    "claimed": false,
+    "level": 5,
+    "id": "mwq1stecqrbkh",
+    "name": "大耳狗吊飾"
+   },
+   {
+    "name": "大耳狗吊飾（第二個）",
+    "id": "mwq1stec8o4b1",
+    "claimed": false,
+    "level": 10
+   }
+  ],
+  "owned": {
+   "w_stars": 1,
+   "castle": 1,
+   "f_tile": 1,
+   "f_grass": 1,
+   "w_dots": 1,
+   "w_sky": 1,
+   "fish": 1,
+   "stool": 1,
+   "window": 1,
+   "clock": 2
+  },
+  "pending": [],
+  "wall": "",
+  "plan": {},
+  "friends": {
+   "hedge": 2,
+   "cloud": 2,
+   "chick": 3
+  },
+  "prizeWins": [
+   {
+    "photo": "IMG_2783.jpeg",
+    "at": "2026-11-21T13:01:08.764Z",
+    "readyAt": "2026-11-21T14:48:28.334Z",
+    "status": "ready",
+    "icon": "gift",
+    "id": "mwqf2c64pz5p7",
+    "name": "鑰匙圈"
+   },
+   {
+    "readyAt": "2026-11-21T14:48:30.515Z",
+    "at": "2026-11-21T13:00:34.682Z",
+    "icon": "gift",
+    "photo": "IMG_2785.jpeg",
+    "status": "ready",
+    "name": "卡套",
+    "id": "mwqf1lveb4qcz"
+   },
+   {
+    "name": "立體貼紙",
+    "id": "mwqf0v4o3g4i9",
+    "icon": "gift",
+    "at": "2026-11-21T13:00:00.024Z",
+    "photo": "IMG_2784.jpeg",
+    "status": "ready",
+    "readyAt": "2026-11-21T14:48:30.964Z"
+   },
+   {
+    "at": "2026-11-21T12:59:39.143Z",
+    "photo": "IMG_2793.jpeg",
+    "readyAt": "2026-11-21T14:48:32.253Z",
+    "status": "ready",
+    "icon": "gift",
+    "id": "mwqf0f0nxrmx3",
+    "name": "毛毛小物"
+   },
+   {
+    "id": "mwqeznpkasrk7",
+    "readyAt": "2026-11-21T14:48:32.516Z",
+    "icon": "gift",
+    "name": "髮圈",
+    "photo": "IMG_2789.jpeg",
+    "status": "ready",
+    "at": "2026-11-21T12:59:03.752Z"
+   }
+  ],
+  "skills": {
+   "art": 0,
+   "read": 0,
+   "english": 0,
+   "dance": 0
+  },
+  "levels": {
+   "dance": {
+    "fails": 0,
+    "adj": 0,
+    "u": 1,
+    "b": {},
+    "h": []
+   },
+   "art": {
+    "u": 1,
+    "adj": 0,
+    "h": [],
+    "b": {},
+    "fails": 0
+   },
+   "hall": {
+    "h": [
+     {
+      "t": 19,
+      "ok": true,
+      "s": 3,
+      "at": 1795265081234,
+      "lv": 1
+     },
+     {
+      "t": 18,
+      "at": 1795265103478,
+      "lv": 2,
+      "s": 3,
+      "ok": true
+     },
+     {
+      "at": 1795265128703,
+      "s": 0,
+      "t": 22,
+      "lv": 3,
+      "ok": false
+     }
+    ],
+    "b": {
+     "1": 3,
+     "2": 3
+    },
+    "u": 3,
+    "fails": 1,
+    "adj": 1
+   },
+   "english": {
+    "b": {
+     "1": 3,
+     "2": 3
+    },
+    "h": [
+     {
+      "ok": true,
+      "lv": 1,
+      "s": 3,
+      "t": 41,
+      "at": 1795265258166
+     },
+     {
+      "t": 52,
+      "at": 1795265313077,
+      "lv": 2,
+      "s": 3,
+      "ok": true
+     }
+    ],
+    "u": 3,
+    "adj": 1,
+    "fails": 0
+   },
+   "park": {
+    "b": {},
+    "fails": 0,
+    "h": [],
+    "u": 1,
+    "adj": 0
+   }
+  },
+  "exams": [
+   {
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "sig": "mwqew8umav3ru",
+    "subject": "國語",
+    "how": "sign",
+    "id": "mwqetm2yqi4an",
+    "score": 100,
+    "date": "2026-11-21"
+   },
+   {
+    "subject": "數學",
+    "sig": "mwqew8umav3ru",
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "score": 100,
+    "how": "sign",
+    "date": "2026-11-21",
+    "id": "mwqetpzcexy8t"
+   },
+   {
+    "how": "sign",
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "score": 100,
+    "date": "2026-11-21",
+    "subject": "英文",
+    "sig": "mwqew8umav3ru",
+    "id": "mwqetr2qtx2co"
+   },
+   {
+    "sig": "mwqew8umav3ru",
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "subject": "生活",
+    "score": 100,
+    "how": "sign",
+    "date": "2026-11-21",
+    "id": "mwqets2up00xm"
+   },
+   {
+    "score": 100,
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "sig": "mwqew8umav3ru",
+    "id": "mwqett08a3v7s",
+    "subject": "自然",
+    "how": "sign",
+    "date": "2026-11-21"
+   },
+   {
+    "subject": "社會",
+    "score": 100,
+    "id": "mwqettwlnp2a4",
+    "how": "sign",
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "date": "2026-11-21",
+    "sig": "mwqew8umav3ru"
+   },
+   {
+    "date": "2026-11-21",
+    "how": "sign",
+    "subject": "社會",
+    "score": 100,
+    "sig": "mwqew8umav3ru",
+    "id": "mwqetuqrnkvgq",
+    "okAt": "2026-11-21T12:56:25.427Z"
+   },
+   {
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "sig": "mwqew8umav3ru",
+    "id": "mwqetvkwx83jk",
+    "score": 100,
+    "subject": "社會",
+    "date": "2026-11-21",
+    "how": "sign"
+   },
+   {
+    "sig": "mwqew8umav3ru",
+    "date": "2026-11-21",
+    "score": 100,
+    "subject": "社會",
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "how": "sign",
+    "id": "mwqetwfyjz5dr"
+   },
+   {
+    "sig": "mwqew8umav3ru",
+    "id": "mwqetx5xk9z72",
+    "date": "2026-11-21",
+    "subject": "社會",
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "score": 100,
+    "how": "sign"
+   },
+   {
+    "date": "2026-11-21",
+    "how": "sign",
+    "score": 100,
+    "subject": "社會",
+    "sig": "mwqew8umav3ru",
+    "id": "mwqetxy7dmhqj",
+    "okAt": "2026-11-21T12:56:25.427Z"
+   },
+   {
+    "score": 100,
+    "id": "mwqetz4by5vmu",
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "sig": "mwqew8umav3ru",
+    "subject": "社會",
+    "how": "sign",
+    "date": "2026-11-21"
+   },
+   {
+    "id": "mwqetzv7hjjwn",
+    "date": "2026-11-21",
+    "how": "sign",
+    "score": 100,
+    "subject": "社會",
+    "sig": "mwqew8umav3ru",
+    "okAt": "2026-11-21T12:56:25.427Z"
+   },
+   {
+    "sig": "mwqew8umav3ru",
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "score": 100,
+    "how": "sign",
+    "subject": "社會",
+    "id": "mwqeu0l4yf8j6",
+    "date": "2026-11-21"
+   },
+   {
+    "score": 100,
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "sig": "mwqew8umav3ru",
+    "id": "mwqeu17d1obq8",
+    "subject": "社會",
+    "how": "sign",
+    "date": "2026-11-21"
+   },
+   {
+    "sig": "mwqew8umav3ru",
+    "okAt": "2026-11-21T12:56:25.427Z",
+    "subject": "社會",
+    "score": 100,
+    "how": "sign",
+    "date": "2026-11-21",
+    "id": "mwqeu2nb90rs5"
+   }
+  ],
+  "floor": "",
+  "pity": 0,
+  "walk": {
+   "date": "",
+   "n": 0
+  }
+ }
+}

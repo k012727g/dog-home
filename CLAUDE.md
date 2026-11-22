@@ -41,6 +41,7 @@
 - 換正式版之前，提醒 Kevin：①家長設定 →「備份與其他」下載備份檔 ②備份 Firestore 的 `families/{家庭代碼}` 文件。
 - **家庭代碼不能完整寫出來**：輸出、網頁、commit、文件都只寫前 2 碼加 `****`。repo 是公開的。
 - 不要顯示完整的 Firebase 設定。
+- **備份放 `backup/`**（Kevin 2026-11-22 決定放公開 repo）：檔案用「從備份還原」的格式（`{app:'dog-home',v:1,at,state}`），完整家庭代碼一律遮住，推之前用 `grep -rE '\b[A-Z2-9]{8}\b' backup/` 確認沒有完整代碼。說明與備份紀錄在 `backup/README.md`。
 - 存檔 key（`exam-pet-v1`、`exam-pet-family`、`exam-pet-family-book`）和 Firestore 路徑（`families/{code}`）不能改。測試版存檔會自動加 `@beta`，也不連 Firebase。
 - 不確定的事寫「無法確定」，不要猜。
 - 回答 Kevin 用繁體中文；Kevin 說「用 html 回答」時做成網頁。
@@ -88,6 +89,7 @@ node tests/smoke_test.js --compare 舊.json 新.json                      # 每�
 | 設計頁 | https://k012727g.github.io/dog-home/beta/design/pup_V4_preview.html | 主角小狗 V4 預覽 | 正常 |
 | 設計頁 | https://k012727g.github.io/dog-home/beta/design/multi_kid_options.html | 多個小孩怎麼玩 | **有完整家庭代碼，待處理** |
 | 文件 | https://github.com/k012727g/dog-home/blob/main/tests/TEST_NOTES.md | 改了什麼、去哪裡測 | 正常 |
+| 備份 | https://github.com/k012727g/dog-home/tree/main/backup | 存檔備份（公開，代碼已遮住）與還原方法 | 2026-11-22 新增 |
 | 程式碼 | https://github.com/k012727g/dog-home | GitHub repo（公開） | 正常 |
 | 程式碼 | https://github.com/k012727g/dog-home/branches | 所有分支 | 正常 |
 | 舊討論頁 | https://claude.ai/artifact/82EsPwh73jYEXyEK5yDvec | 舊測試版（Claude Artifact） | 無法確定還能不能開 |
