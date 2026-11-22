@@ -103,3 +103,17 @@ node tests/smoke_test.js --compare tests/results/index_beta_V2.json tests/result
 - `beta/index_beta_V6.html`：只改開發筆記，新增任務 LIB-10～14、ART-05、AUD-02，更新 LIB-07、LIB-08；DEV_LOG 加一筆。
 - 測試：`beta/index_beta_V6.html?art=V4&content=V5` 點擊測試 47/47，和改之前每一步都一樣。
 - 去哪裡看：https://k012727g.github.io/dog-home/beta/story/story_preview.html（「故事」→「新書」）；任務在家長設定 →「遊戲開發進度」。
+
+# V7 修改紀錄與測試位置（2026-11-22）
+
+網址：https://k012727g.github.io/dog-home/beta/latest.html →「最新測試版」（遊戲 V7、美術 V5、繪本 V5）
+
+| 改了什麼 | 手動測試路徑 | 自動測試 |
+|---|---|---|
+| 家長設定「寵物與考卷」分頁加「寵物種類」：小狗／小飛龍（PET-10） | 家長 → 寵物與考卷 → 點小飛龍 → 確定 → 關閉，首頁馬上變小飛龍；重新整理後還是小飛龍 | X03；V6 → V7 的 47 步都一樣 |
+| 等級名稱、美容院毛色名稱、孩子看得到的「小狗」字樣跟著寵物種類換 | 首頁等級名稱「小龍寶寶」；地圖 → 美容院，毛色寫「薄荷龍」 | X03 |
+| 搭配舊的 art V4 時只有小狗（寵物種類不顯示），遊戲不會壞 | `index_beta_V7.html?art=V4&content=V4` | 47/47 |
+
+- 375×667、390×844 手動測：一開始小狗；換小飛龍後首頁、等級名稱、英文動作單字圖、報讀文字都變；重新整理後還是小飛龍；換回小狗正常。
+- **還沒測：同步測試**（兩個家庭互不影響、同一家庭兩台裝置跟著換）。要用正式版模式連 Firebase，寫入測試家庭；自動檢查擋下了，要 Kevin 同意才做。
+- 換正式版時，`index.html`、`art.js`、`content.js` 要一起換成 V7、art V5、content V5（content V5 的小紅帽要先重錄，見 AUD-01）。

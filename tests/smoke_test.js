@@ -267,6 +267,21 @@ async function runSuite(target) {
     return { ok, detail: `最上面=${order[0]} 最下面=${order.slice(-2).join(',')}（看過的是 ${ids[0]},${ids[1]}）` };
   });
 
+  if (await ev(() => typeof PET_KINDS !== 'undefined' && Object.keys(PET_KINDS).length > 1 && !!document.getElementById('petKindPick'))) {
+    await X('X03', '寵物種類：換成小飛龍後畫面、等級名稱、美容院馬上跟著換，再換回小狗', async () => {
+      await ensureParent(); await click('[data-ptab="pet"]');
+      const dogSvg = await ev(() => document.getElementById('pupSvg').innerHTML);
+      await click('#petKindPick [data-kind="dragon"]');
+      const r = await ev(() => ({ kind: S.pet.kind, checked: document.querySelector('#petKindPick [data-kind="dragon"]').getAttribute('aria-checked'), stage: document.getElementById('stageName') ? stageLabel(0) : '', word: petWord() }));
+      await click('#parentClose');
+      const dragonSvg = await ev(() => document.getElementById('pupSvg').innerHTML);
+      await ev(() => startSalon()); const coat = await ev(() => document.querySelector('#coatSw .sw').textContent.trim()); await click('#salonHome');
+      await ensureParent(); await click('[data-ptab="pet"]'); await click('#petKindPick [data-kind="dog"]'); const back = await ev(() => S.pet.kind); await click('#parentClose');
+      const ok = r.kind === 'dragon' && r.checked === 'true' && dragonSvg !== dogSvg && r.stage === '小龍寶寶' && r.word === '小飛龍' && /龍/.test(coat) && back === 'dog';
+      return { ok, detail: `換成=${r.kind} 畫面有變=${dragonSvg !== dogSvg} 等級=${r.stage} 稱呼=${r.word} 美容院=${coat} 換回=${back}` };
+    });
+  }
+
   // 美術總覽：同版號的 gallery；沒有的話用最新的 gallery，並帶上同樣的 art／content 版本
   const [tFile, tQuery = ''] = target.split('?');
   let gallery = tFile.replace(/index(_beta_V[\w.-]+)?\.html$/, (m, s) => 'gallery' + (s || '') + '.html');

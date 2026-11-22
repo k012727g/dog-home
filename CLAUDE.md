@@ -76,6 +76,7 @@ node tests/smoke_test.js --compare 舊.json 新.json                      # 每�
 | **最新版本** | https://k012727g.github.io/dog-home/beta/latest.html | 永遠指到最新測試版、正式版、美術總覽（讀 versions.json） | 2026-11-22 新增 |
 | 正式版 | https://k012727g.github.io/dog-home/ | 孩子玩的版本（目前 V4），會同步 Firebase | 正常 |
 | 正式版 | https://k012727g.github.io/dog-home/gallery.html | 美術總覽（art V4、content V4） | 正常 |
+| 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V7.html?art=V5&content=V5 | V7：寵物種類（小狗／小飛龍，PET-10）；要搭配 art V5 | 等 Kevin 試玩 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V6.html?art=V4&content=V5 | V6：圖書館看過的書排到下面（LIB-09） | 等 Kevin 試玩 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V5.html?art=V4&content=V5 | content V5：小紅帽依故事稿重寫（其他 16 本同 V4）；要重錄 red-2～5、7、8、10～12，red-6 用舊的 red-7 | 2026-11-22 新增，等 Kevin 試玩 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V5.html?art=V4&content=V4 | V5：只更新開發筆記與任務 | 等 Kevin 試玩 |
