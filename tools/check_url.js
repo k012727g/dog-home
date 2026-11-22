@@ -32,12 +32,15 @@ if (!urls.length) { console.log("用法：node tools/check_url.js 'https://k0127
       pup: !!document.querySelector('#pup svg, #pupSvg svg'), gallery: window.GALLERY_RESULT || null
     })).catch(() => ({}));
     const q = new URL(url).searchParams;
+    const usesGame = !!info.build || /index|gallery|\/dog-home\/?(\?|$)/.test(url);   // 設計頁、預覽頁不載入 art／content，不檢查版本
+    if (usesGame) {
     const want = (k, fileRe) => q.get(k) || ((info.build && info.build[k] || '').match(fileRe) || [])[1] || null;
     const wantArt = want('art', /art_beta_(\w+)\.js/), wantContent = want('content', /content_beta_(\w+)\.js/);
     if (wantArt) line(info.art && (info.art === wantArt || info.art.startsWith(wantArt)), `美術版本：網址要 ${wantArt}，實際 ${info.art || '沒有載入'}`);
     else line(!!info.art, `美術版本：${info.art || '沒有載入'}`);
     if (wantContent) line(info.content === wantContent, `繪本版本：網址要 ${wantContent}，實際 ${info.content || '沒有載入'}`);
     else line(!!info.content, `繪本版本：${info.content || '沒有載入'}`);
+    } else console.log('   ・這一頁不載入 art.js／content.js（設計頁），不檢查版本');
     line(!errs.length, errs.length ? `網頁錯誤：${errs.slice(0, 3).join(' ／ ')}` : '沒有網頁錯誤');
     if (/gallery/.test(url)) line(info.gallery && info.gallery.err === 0, `美術總覽：${info.gallery ? `${info.gallery.ok} 張正常、${info.gallery.err} 張畫不出來` : '沒有跑完'}`);
     else if (/index/.test(url) || /\/dog-home\/?(\?|$)/.test(url)) line(info.pup, info.pup ? '首頁有畫出寵物' : '首頁沒有畫出寵物');
