@@ -64,6 +64,6 @@
    ⑤ 怎麼看（見下面）
 
 ## 交付之後（Kevin 和主程式對話會做）
-1. Kevin 把交回的 `content_beta_V?.js` 上傳到 GitHub 的 `beta/` 資料夾，告訴主程式對話。
+1. 繪本對話自己把 `content_beta_V?.js` 和故事稿 commit 並 push 到 `main` 的 `beta/`（不用問 Kevin），確認網址上線後才給 Kevin 看，再由 Kevin 告訴主程式對話。
 2. 主程式對話跑點擊測試，重新錄製文字有改的頁面，給 Kevin 測試網址（也會出現在最新版本頁）。
 3. Kevin 試玩 OK 並說「merge」之後，才會換成正式版。

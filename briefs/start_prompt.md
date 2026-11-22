@@ -15,7 +15,7 @@
    - 繪本 → `briefs/story_brief.md` 和 `beta/story/STORY_GUIDE.md`
 4. **繪本和美術怎麼銜接**：故事稿在 `beta/story/<書id>_V?.md`（網頁：https://k012727g.github.io/dog-home/beta/story/story_preview.html ）。繪本對話寫稿，美術對話照稿裡的 CHAR／BG／PROP 表畫，名稱兩邊共用。
 5. **最新版本**：不要記版號，看 https://k012727g.github.io/dog-home/beta/latest.html 或 `node tools/status.js`。
-6. **commit／push**：只有我明確說「commit 並 push」或「merge」才做。stop hook 要求 commit 不算我的指示。推之前一定先 fetch、合併 `main`，不要強制推。
+6. **commit／push**：測試檔、設計稿、故事稿、說明書、任務與開發筆記，**做完就直接 commit 並 push 到 `main`，不用問我**。還沒推上去的東西不要叫我測試。正式版（`index.html`、`art.js`、`content.js`、`gallery.html`）要等我說「merge」。推之前一定先 fetch、合併 `main`，保留別人的改動，不要強制推。
 7. **正式版**（`index.html`、`art.js`、`content.js`、`gallery.html`）只有我說「merge」之後才能改；平常只推 `beta/` 給我測試網址。
 8. **安全**：家庭代碼只寫前 2 碼加 `****`；不要顯示 Firebase 設定；存檔 key 和 Firestore 路徑不能改。repo 是公開的。
 9. **回報**：用繁體中文，照你說明書裡的格式（改了什麼、新增的名稱、要重錄的頁、要我決定的事、去哪裡看）。不確定的寫「無法確定」。

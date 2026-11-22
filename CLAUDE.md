@@ -37,7 +37,11 @@
 
 ## 3. 一定要遵守
 
-- **不要 commit、不要 push**，除非 Kevin 明確說「commit 並 push」或「merge」。stop hook 要求 commit 不算 Kevin 的指示。
+- **commit／push 的規則（Kevin 2026-11-22 改）**：
+  - **不用問、做完就直接 commit 並 push 到 `main`**：測試檔（`beta/` 裡的 `index_beta_V?`、`art_beta_V?`、`content_beta_V?`、`gallery_beta_V?`）、設計與故事稿（`beta/design/`、`beta/story/`）、說明書與規則（`briefs/`、這份 `CLAUDE.md`）、測試（`tests/`）、工具（`tools/`）、任務與開發筆記（`DEV_TASKS`、`DEV_LOG`）、`versions.json`。
+  - **還沒推上去的東西，不可以叫 Kevin 測試或看**。給 Kevin 的網址一定是已經推上去、上線、用 `node tools/check_url.js` 確認過的。
+  - **正式版還是要等 Kevin 說「merge」**：`index.html`、`art.js`、`content.js`、`gallery.html`。
+  - 推之前一定先 `git fetch`、合併 `main`；有衝突要保留別人的改動，不要強制推。
 - 換正式版之前，提醒 Kevin：①家長設定 →「備份與其他」下載備份檔 ②備份 Firestore 的 `families/{家庭代碼}` 文件。
 - **家庭代碼不能完整寫出來**：輸出、網頁、commit、文件都只寫前 2 碼加 `****`。repo 是公開的。
 - 不要顯示完整的 Firebase 設定。
@@ -83,6 +87,7 @@ node tools/check_url.js '<線上網址>'                                     # �
 | **最新版本** | https://k012727g.github.io/dog-home/beta/latest.html | 永遠指到最新測試版、正式版、美術總覽（讀 versions.json） | 2026-11-22 新增 |
 | 正式版 | https://k012727g.github.io/dog-home/ | 孩子玩的版本（目前 V4），會同步 Firebase | 正常 |
 | 正式版 | https://k012727g.github.io/dog-home/gallery.html | 美術總覽（art V4、content V4） | 正常 |
+| 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V6.html?art=V5&content=V6 | content V6：25 本繪本都照故事稿（原本 17 本改寫＋新書 8 本）；改過字的頁還在播舊錄音，要重錄（AUD-02） | 2026-11-22 新增，等 Kevin 試玩 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V7.html?art=V5&content=V5 | V7：寵物種類（小狗／小飛龍，PET-10）；要搭配 art V5 | 等 Kevin 試玩 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V6.html?art=V4&content=V5 | V6：圖書館看過的書排到下面（LIB-09） | 等 Kevin 試玩 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/index_beta_V5.html?art=V4&content=V5 | content V5：小紅帽依故事稿重寫（其他 16 本同 V4）；要重錄 red-2～5、7、8、10～12，red-6 用舊的 red-7 | 2026-11-22 新增，等 Kevin 試玩 |
@@ -94,7 +99,7 @@ node tools/check_url.js '<線上網址>'                                     # �
 | 測試版 | https://k012727g.github.io/dog-home/beta/gallery_beta_V3.html | V3 美術總覽（V1、V2 也有） | 舊版 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/gallery_beta_V4.html | V4 美術總覽（美術、繪本對話用；可加 ?art=V5、?content=V5） | 2026-11-22 補上，上傳後可開 |
 | 測試版 | https://k012727g.github.io/dog-home/beta/story_voice_test.html | 故事聲音測試（比較不同聲音） | 正常 |
-| 繪本稿 | https://k012727g.github.io/dog-home/beta/story/story_preview.html | 繪本故事稿預覽：寫作規則、美術標注格式、每本的大綱／分鏡／試讀（讀 `beta/story/*.md`） | 2026-11-22：25 本故事稿 V1（原本 17 本＋新書 8 本；小紅帽已寫進 content V5，其他 24 本等 Kevin 看） |
+| 繪本稿 | https://k012727g.github.io/dog-home/beta/story/story_preview.html | 繪本故事稿預覽：寫作規則、美術標注格式、每本的大綱／分鏡／試讀（讀 `beta/story/*.md`） | 2026-11-22：25 本故事稿 V1（原本 17 本＋新書 8 本），全部寫進 content V6 |
 | 設計頁 | https://k012727g.github.io/dog-home/beta/design/art_directions.html | 三個美術方向比較 | 正常 |
 | 設計頁 | https://k012727g.github.io/dog-home/beta/design/art_V4_review.html | 美術 V4 總檢查 | 正常 |
 | 設計頁 | https://k012727g.github.io/dog-home/beta/design/pup_V4_preview.html | 主角小狗 V4 預覽 | 正常 |
@@ -118,7 +123,7 @@ node tools/check_url.js '<線上網址>'                                     # �
 - 給它們的說明在 `briefs/art_brief.md`、`briefs/story_brief.md`。合約或流程改了，要同步更新這兩份。
 - 三個對話開工時共用的提示：`briefs/start_prompt.md`（Kevin 貼給新對話用）。
 - **繪本先寫故事稿**：繪本對話先在 `beta/story/<書id>_V?.md` 寫大綱、分鏡和角色／背景／道具表（格式見 `beta/story/STORY_GUIDE.md`），Kevin 在 `beta/story/story_preview.html` 看過說 OK，美術對話照稿裡的表畫圖，最後繪本對話才寫進 `content_beta_V?.js`。故事稿是設計文件，可以直接推到 `main` 的 `beta/story/`。
-- 它們交付後：Kevin 把檔案上傳到 `beta/`，告訴主程式對話。主程式對話照第 2 節的流程測試，給測試網址：
+- 它們交付後：美術／繪本對話自己把檔案推到 `main` 的 `beta/`（不用 Kevin 上傳），Kevin 再告訴主程式對話。主程式對話照第 2 節的流程測試，給測試網址：
   - 只換美術：`beta/index_beta_V4.html?art=V5`、`beta/gallery_beta_V4.html?art=V5`
   - 只換繪本：`beta/index_beta_V4.html?content=V5`
 - 美術和繪本的版本號各自往上加，下一版看 `beta/latest.html` 或 `node tools/status.js`。不用整理成同一個版本號，用網址參數組合。

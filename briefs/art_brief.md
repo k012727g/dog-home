@@ -53,7 +53,7 @@
    ④ 怎麼看（見下面）
 
 ## 交付之後（Kevin 和主程式對話會做）
-1. Kevin 把交回的 `art_beta_V?.js` 上傳到 GitHub 的 `beta/` 資料夾（或 Kevin 說「commit 並 push」後由美術對話推到 `main` 的 `beta/`），告訴主程式對話。
+1. 美術對話自己把 `art_beta_V?.js` commit 並 push 到 `main` 的 `beta/`（不用問 Kevin），確認網址上線後才給 Kevin 看，再由 Kevin 告訴主程式對話。
 2. 主程式對話跑點擊測試和美術總覽檢查，給 Kevin 測試網址（也會出現在最新版本頁）。
 3. Kevin 試玩 OK 並說「merge」之後，才會換成正式版。
 
